@@ -1,0 +1,30 @@
+#logo .conteudo{
+	/* position:center; */
+	z-index: 2;
+	width: 150px;
+	height: 150px;
+	background: url('logotipo.png');														
+	/* left:96.3%; */
+	/* margin: auto; */ 
+	float: right;
+	opacity: 0.50; 				
+	/* animation: rotation 10s ease-in-out infinite; */
+}
+@keyframes rotation {
+	10%, 100% {
+	  transform: rotateY(360deg);
+	}
+  }	
+
+
+
+
+
+
+
+
+
+
+
+
+
