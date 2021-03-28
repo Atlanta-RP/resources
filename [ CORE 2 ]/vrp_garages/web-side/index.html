@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body style="background-color: transparent; display: none;">
+    <div class="container">
+        <header>
+            <div class="header_title">
+                <p style="text-transform: uppercase;font-weight: 600;display: block;">Unreal City</p>
+            </div>
+        </header>
+        <div class="section_content">
+            <div class="section_content_all">
+                <div class="section_content_header">
+                    <div class="section_content_search">
+                        <input placeholder="Procurar veículo...">
+                        <i class="icon far fa-search"></i>
+                    </div>
+                </div>
+                <div class="section_content_itens">
+                </div>
+            </div>
+        </div>
+        <div class="actions" style="padding: 0 15px 0 15px">
+            <span id="retirar" class="material-icons">Retirar</span>
+            <span id="guardar" class="material-icons">Guardar</span>
+        </div>
+        <div class="infocar container" id="infocar">
+            <div class="loading">
+                <img src="https://media.giphy.com/media/s4KqhlPU9Ypnq/giphy.gif" width="100" />
+            </div>
+            <div class="vehicle" style="display: block;">
+                <div class="title">
+                    <span id="namecar">Informações do veiculo</span>
+                </div>
+                <div class="imgcar">
+                    <img id="imgcar" src="https://img2.pngio.com/ferrari-599xx-evo-programme-racing-with-ferrari-ferrari-599xx-png-469_202.png" onerror="this.onerror=null;this.src='https://i.imgur.com/acV4tCt.png';">
+                </div>
+                <div class="infocar">
+                    <b id="name1">Informações do veiculo</b>
+                    <br>
+                    <div class="description" style="text-transform: inherit;font-family: 'Poppins', sans-serif;font-size: 12px;letter-spacing: normal;display: inline-block;word-break: break-word;max-height: 100px;overflow-y: scroll;">
+                        <span style="color: #ffffff80;"></span>
+                    </div>
+                </div>
+                <div class="details" style=>
+                    <div class="tax multa">
+                        <a>Porta Malas</a>
+                        <span id="tax">-</span>
+                    </div>
+                    <div class="fare multa">
+                        <a>Detido</a>
+                        <span id="lib">-</span>
+                    </div>
+                    <div class="ipva multa">
+                        <a>GASOLINA</a>
+                        <span id="ipva">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/font.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
