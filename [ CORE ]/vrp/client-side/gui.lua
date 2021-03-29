@@ -477,21 +477,21 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- LOCKCAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("lockVehicle",function(source,args)
-	local ped = PlayerPedId()
-	if not celular and GetEntityHealth(ped) > 101 then
-		TriggerServerEvent("vrp_garages:lockVehicle")
-	end
-end)
+-- RegisterCommand("lockVehicle",function(source,args)
+-- 	local ped = PlayerPedId()
+-- 	if not celular and GetEntityHealth(ped) > 101 then
+-- 		TriggerServerEvent("vrp_garages:lockVehicle")
+-- 	end
+-- end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TRUNKCAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("vehTrunk",function(source,args)
-	local ped = PlayerPedId()
-	if not celular and GetEntityHealth(ped) > 101 then
-		TriggerServerEvent("vrp_trunkchest:openTrunk")
-	end
-end)
+-- RegisterCommand("vehTrunk",function(source,args)
+-- 	local ped = PlayerPedId()
+-- 	if not celular and GetEntityHealth(ped) > 101 then
+-- 		TriggerServerEvent("vrp_trunkchest:openTrunk")
+-- 	end
+-- end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- KEYMAPPING
 -----------------------------------------------------------------------------------------------------------------------------------------

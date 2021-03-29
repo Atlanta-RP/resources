@@ -18,7 +18,7 @@ local timeSeconds = 0
 -- SERVICES
 -----------------------------------------------------------------------------------------------------------------------------------------
 local services = {
-	{ 393.38,-1616.67,29.3 }
+	{ 401.79,-1631.59,29.3 },
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- IMPOUND
@@ -33,7 +33,7 @@ Citizen.CreateThread(function()
 				local distance = #(coords - vector3(v[1],v[2],v[3]))
 				if distance <= 30 then
 					timeDistance = 4
-					DrawMarker(23,v[1],v[2],v[3]-1,0,0,0,0,0,0,14.0,14.0,1.0,0,255,0,30,0,0,0,0)
+					DrawMarker(23,v[1],v[2],v[3]-1,0,0,0,0,0,0,7.0,7.0,1.0,0,255,0,30,0,0,0,0)
 					if IsControlJustPressed(1,38) and timeSeconds <= 0 and distance <= 10 then
 						timeSeconds = 2
 						vSERVER.checkImpound()

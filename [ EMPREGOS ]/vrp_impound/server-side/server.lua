@@ -22,6 +22,7 @@ function cnVRP.checkImpound()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
+		--print("teste")
 		local vehicle,vehNet,vehPlate,vehName = vRPclient.vehList(source,7)
 		if vehicle then
 			if impoundVehs[vehName.."-"..vehPlate] == nil then
@@ -31,6 +32,7 @@ function cnVRP.checkImpound()
 
 				impoundVehs[vehName.."-"..vehPlate] = nil
 				vRP.giveInventoryItem(user_id,"dollars",parseInt(value),true)
+				
 				vRPRAGE.deleteVehicle(source,vehicle)
 			end
 		end

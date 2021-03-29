@@ -543,7 +543,6 @@ end
 -- SPAWNVEHICLES
 -----------------------------------------------------------------------------------------------------------------------------------------
 function cnVRP.spawnVehicles(name,use)
-	print("spawn0")
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id and name then
@@ -593,7 +592,6 @@ function cnVRP.spawnVehicles(name,use)
 
 				if garages[use].payment and not vRP.getPremium(parseInt(user_id)) then
 					if vRP.getBank(parseInt(user_id)) >= parseInt(vRP.vehiclePrice(name)*0.05) then
-						print("Spawn2")
 						local status,vehid = vCLIENT.spawnVehicle(source,name,vehicle[1].plate,vehicle[1].engine,vehicle[1].body,vehicle[1].fuel,custom,vehicle[1].windows,vehicle[1].doors,vehicle[1].tyres)
 						if status and vRP.paymentBank(parseInt(user_id),parseInt(vRP.vehiclePrice(name)*0.05)) then
 							vehlist[vehid] = { parseInt(user_id),name }
@@ -605,7 +603,6 @@ function cnVRP.spawnVehicles(name,use)
 						TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",5000)
 					end
 				else
-					print("Spawn")
 					local status,vehid = vCLIENT.spawnVehicle(source,name,vehicle[1].plate,vehicle[1].engine,vehicle[1].body,vehicle[1].fuel,custom,vehicle[1].windows,vehicle[1].doors,vehicle[1].tyres)
 					if status then
 						vehlist[vehid] = { parseInt(user_id),name }

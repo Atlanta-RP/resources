@@ -1,0 +1,108 @@
+<html>
+    
+    <head>    
+        <meta charset="utf-8"/>
+        <link type ="text/css" rel ="stylesheet" href ="css/icomoon.css"/>        
+        <link type ="text/css" rel ="stylesheet" href ="css/index.css"/>
+        <link type ="text/css" rel ="stylesheet" href ="css/colors.css"/>
+    </head>
+
+    <body>
+        <img id="background"/>
+        <img id="background2"/>
+
+        <img id="cursor"/>
+
+        <div id="music-info">
+            <p id="now-playing">Reproduzindo: n.a.</p>
+            <div id="play-button" class="icon-button icon-pause2" onclick="OnPlayClick()"></div>
+            <div id="skip-button" class="icon-button icon-next2" onclick="OnSkipClick()"></div>
+            <input type="range" min="1" max="100" id="volumeSlider">
+        </div>
+        
+        <img id="logo" style="opacity: 0;" />
+        
+
+        <h1 style="position: absolute;left: 6%;top: 7.5%;color: white;font-size: 1.75vw;font-family: 'Lucida Console';">Discord : https://discord.gg/12333</h1>
+ 
+        <div class="important" style="background-image: url('https://github.com/Atlanta-RP/RRM/blob/master/loading_images/imageLoadingAtlanta.png?raw=true');background-repeat: no-repeat;background-size: 100% 100%;width: 55.5%;height: 47.5%;position: absolute;left: 6%;top: 15%;">
+            
+        </div>
+
+
+        <div class="info1" style="width: 13.5%;height: 19%;position: absolute;left: 6%;top: 64.5%;">
+            <img src="https://github.com/Atlanta-RP/RRM/blob/master/loading_images/relogio.png?raw=true" style="position: absolute; left: 30%;top: 10%;width: 40%; height: 50%;filter:invert(100%);">
+            <h1 style="color: white;font-size: 1vw;font-family: 'Lucida Console'; text-align: center;margin-top: 55%;">24/7 O N L I N E</h1>
+        </div>
+        
+        <div class="info1" style="width: 13.5%;height: 19%;position: absolute;left: 20%;top: 64.5%;">         
+            <img src="https://github.com/Atlanta-RP/RRM/blob/master/loading_images/marcado.png?raw=true" style="position: absolute; left: 30%;top: 10%;width: 40%; height: 50%;filter:invert(100%);">
+            <h1 style="color: white;font-size: 1vw;font-family: 'Lucida Console'; text-align: center;margin-top: 55%;">RP DE VERDADE</h1></div>
+        
+        <div class="info1" style="width: 13.5%;height: 19%;position: absolute;left: 34%;top: 64.5%;">         
+            <img src="https://github.com/Atlanta-RP/RRM/blob/master/loading_images/users.png?raw=true" style="position: absolute; left: 30%;top: 0%;width: 40%; height: 72.5%;filter:invert(100%);">
+            <h1 style="color: white;font-size: 1vw;font-family: 'Lucida Console'; text-align: center;margin-top: 55%;">64 S L O T S</h1></div>
+        
+        <div class="info1" style="width: 13.5%;height: 19%;position: absolute;left: 48%;top: 64.5%;">         
+            <img src="https://github.com/Atlanta-RP/RRM/blob/master/loading_images/download.png?raw=true" style="position: absolute; left: 30%;top: 10%;width: 40%; height: 55%;filter:invert(100%);">
+            <h1 style="color: white;font-size: 1vw;font-family: 'Lucida Console'; text-align: center;margin-top: 55%;">BASE DO ZERO</h1></div>
+
+        <a href="javascript:void(0)" ><h1 style="position: absolute;left: 66.1%;top: 77%;color: white;font-size: 1.8vw;font-family: 'Lucida Console';"> ━━━━━ Notícias ━━━━━ </h1></a>
+
+        <a href="javascript:void(0)"   style="transition: 0.5s;"><h1 style="position: absolute;left: 66.1%;top: 11.75%;color: white;font-size: 1.8vw;font-family: 'Lucida Console';"> ━━━━━ Notícias ━━━━━ </h1></a>
+
+        <div id="not" style="position: absolute;top: 19%;left: 66.125%; background-color: rgba(0,0,0,0.2);width: 29%;border-radius: 10px;transition: 0.5s;height: 60%;opacity: 1;">
+            <br>
+            <div class="cards">
+              <div class="card">
+                <h4>28/03/2021</h4>
+                <p>Atualização dos peds</p>
+              </div>
+              <div class="card">
+                <h4>28/03/2021</h4>
+                <p>Atualização dos peds</p>
+              </div>
+              <div class="card">
+                <h4>28/03/2021</h4>
+                <p>Atualização dos peds</p>
+              </div>
+              <div class="card">
+                <h4>28/03/2021</h4>
+                <p>Atualização dos peds</p>
+              </div>  
+            </div>
+        </div>
+
+
+        <div id="player"></div>
+
+        <div style="background-image: url('http://cdn.lowgif.com/small/4017b2f00618bb2f-review-to-action.gif');position: absolute;bottom: 0%; left: 50%;width: 10%;height: 10%;background-repeat: no-repeat;background-size: 50px 50px;filter: grayscale(100%);"></div>
+        <script type="text/javascript">
+            function showNotify() {
+              document.getElementById("not").style.opacity = 1;
+            }
+
+            function closeNotify() {
+              document.getElementById("not").style.opacity = 0;
+            }
+            function showInfo() {
+              document.getElementById("info").style.opacity = 1;
+            }
+
+            function closeInfo() {
+              document.getElementById("info").style.opacity = 0;
+            }
+        </script>
+    </div>
+    </body>
+
+    <script src="js/synn.js"></script>    
+    <script src="js/config.js"></script>
+    <script src="js/logger.js"></script>    
+    <script src="js/progressbar-main.js"></script>
+    <script src="js/progressbar-handler.js"></script>
+    <script src="js/progressbar-renderer.js"></script>
+    <script src="js/music-handler.js"></script>
+    <script src="js/music-controls.js"></script>
+    <script src="js/background-handler.js"></script>
+</html>
