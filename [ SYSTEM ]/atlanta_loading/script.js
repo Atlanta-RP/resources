@@ -48,6 +48,7 @@ function createPhraseSvg(phrase, yOffset) {
     "font-family": "Arial"
   });
   text.appendChild(document.createTextNode(phrase + "..."));
+  
   return text;
 }
 function createCheckSvg(yOffset, index) {
@@ -88,44 +89,29 @@ function easeInOut(t) {
 
 document.addEventListener("DOMContentLoaded", function(event) {
   var phrases = shuffleArray([
-    "Carregando NPCs",
-    "Abastecendo postos ⛽",
-    "Alimentando Admins 🤡",
     "Dando ratão na viatura 🚔",
     "Deletando favelas 🏘",
     "Fazendo antiRP",
     "Pausando a música 🔇",
     "Tomando um hot coffee",
     "Desbalanceando economia 🤫",
-    "Marcando farms 😂",
     "VDM na praça 🚘",
     "Ativando o monster 💩",
     "Tunando o Peugeot 🐌",
-    "Ignorando chamados",
-    "Chamando minha mãe 😢",
     "Ping Japonês 🗾",
     "Cidade Baixa 🤑",
     "Gadando 🐮",
     "Chama o Dione",
-    "Chamando suportes",
     "Afundando seu Iate ⚓",
     "Carregando ET's 🛸",
     "24 horas de chuva ⛈",
-    "Tem dado em casa? 🎲",
-    "Vip tem vantagem 💎",
-    "RR 🔌",
     "Lavando grana 🧼",
     "Mecânico on ? 🔧",
     "Advogado on ? ⚖",
-    "NPC cego 🦯",
     "Ems on ? 🩺",
-    "Dando uma barrigada 🚽",
-    "Perma ? ⚰",
-    "Liberando corona ☣",
-    "Corridas Ilegais 🏁"
-
     ]);
   addPhrasesToDocument(phrases);
+  
   var start_time = new Date().getTime();
   var upward_moving_group = document.getElementById("phrases");
   upward_moving_group.currentY = 0;
@@ -137,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     upward_moving_group.setAttribute("transform", "translate(0 " + upward_moving_group.currentY + ")");
     upward_moving_group.currentY -= 1.35 * easeInOut(now);
     checks.forEach(function(check, i) {
+      
       var color_change_boundary = - i * verticalSpacing + verticalSpacing + 15;
       if (upward_moving_group.currentY < color_change_boundary) {
         var alpha = Math.max(Math.min(1 - (upward_moving_group.currentY - color_change_boundary + 15)/30, 1), 0);
@@ -145,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         check.check.setAttribute("fill", "rgba(255, " + check_color[0] + "," + check_color[1] + ", 1)");
       }
     })
-    if (now - start_time < 30000 && upward_moving_group.currentY > -710) {
+    if (now - start_time < 900000 && upward_moving_group.currentY > -710) {
       requestAnimationFrame(animateLoading);
     }
   }

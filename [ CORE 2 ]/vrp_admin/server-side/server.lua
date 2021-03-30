@@ -337,10 +337,35 @@ RegisterCommand("ungroup",function(source,args,rawCommand)
 			if vRP.hasPermission(parseInt(args[1]),tostring(args[2])) then
 				vRP.removePermission(parseInt(args[1]),tostring(args[2]))
 				vRP.execute("vRP/del_group",{ user_id = parseInt(args[1]), permiss = tostring(args[2]) })
+				TriggerClientEvent("Notify",source,"importante","<b>Usuário removido do grupo "..tostring(args[2]).."</b>",5000)
+			else
+				TriggerClientEvent("Notify",source,"importante","<b>Usuário não tem o grupo "..tostring(args[2]).."</b>",5000)
 			end
 		end
 	end
 end)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- GROUPS
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterCommand("groups",function(source,args,rawCommand)
+	local user_id = vRP.getUserId(source)
+	if user_id then
+		if args[1] == nil then
+			args[1] = user_id
+		end
+		if vRP.hasPermission(user_id,"Admin") then
+			local grupos = vRP.query("vRP/get_perm",{ user_id = parseInt(args[1])})
+			local texto = "("..args[1]..") Grupos:<br>"
+			for k,v in pairs(grupos) do
+				texto = texto..v.permiss.."<br>"
+				
+			end
+			TriggerClientEvent("Notify",source,"importante","<b>"..texto.."</b>",8000)
+		end
+	end
+end)
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TPTOME
 -----------------------------------------------------------------------------------------------------------------------------------------
