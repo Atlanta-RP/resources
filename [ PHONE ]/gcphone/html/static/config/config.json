@@ -295,6 +295,13 @@
       "icons": "/html/static/img/icons_app/9gag.png",
       "routeName": "9gag",
       "color": "#000"
+    },
+    {
+      "name": "Youtube",
+      "menuTitle": "visible",
+      "icons": "/html/static/img/icons_app/9gag.png",
+      "routeName": "youtube",
+      "color": "#000"
     }
   ],
   "defaultLanguage": "pt_PT",
