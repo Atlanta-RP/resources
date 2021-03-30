@@ -11,7 +11,7 @@ files {
 	'html/static/js/vendor.js',
 	'html/static/config/config.json',
 
-	'html/static/img/coque/yordi-coque.png',
+	'html/static/img/coque/s8.png',
 	'html/static/img/background/back001.jpg',
 	'html/static/img/background/back002.jpg',
 	'html/static/img/background/back003.jpg',
