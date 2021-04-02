@@ -430,6 +430,7 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 								vCLIENT.blockButtons(source,false)
 
 								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRPclient.downHealth(source,200)
 									vRP.chemicalTimer(user_id,2)
 									vRPclient.setArmour(source,20)
 									TriggerClientEvent("setMeth",source)

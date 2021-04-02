@@ -19,6 +19,7 @@ files {
     'img/background4.jpg',
     'img/background5.jpg',
     'img/background6.jpg',
+    'img/logo.png',
     'music/music0.mp3',
     'music/music1.mp3',
     'music/music2.mp3',

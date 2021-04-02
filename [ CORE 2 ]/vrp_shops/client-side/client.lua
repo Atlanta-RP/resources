@@ -100,11 +100,15 @@ local shopList = {
 	{ -509.38,278.8,83.33,"digitalDen" },
 	{ 1137.52,-470.69,66.67,"digitalDen" },
 	{ 11.27,-1599.34,29.38,"foodGrill" },
-	{ 988.12,-94.62,74.85,"comedyBar" },
+	{ -435.47,273.94,83.43,"comedyBar" },
 	{ 369.78,-1598.18,29.3,"policeStore" },
 	{ 911.13,3644.9,32.68,"drugsSelling" },
 	{ -168.69,6317.69,30.6,"vendaCodeina" },
-	{ 1135.69,-987.5,46.12,"lavandaStore" }
+	{ 1135.69,-987.5,46.12,"lavandaStore" },
+	{280.25,-971.93,29.42,"coffeshop"},
+	{-1193.9,-892.9,14.0,"burgershot"},
+	{-1195.25,-890.78,14.0,"burgershot"},
+	{-1192.67,-894.77,14.0,"burgershot"}
 }
 
 
@@ -211,11 +215,11 @@ end
 -- PROPSHOPS
 -----------------------------------------------------------------------------------------------------------------------------------------
 local propShops = {
-	{ "prop_vend_coffe_01","coffeeMachine" },
+	-- { "prop_vend_coffe_01","coffeeMachine" },
 	{ "prop_vend_soda_02","sodaMachine" },
 	{ "prop_vend_soda_01","colaMachine" },
 	{ "v_ret_247_donuts","donutMachine" },
-	{ "prop_burgerstand_01","burgerMachine" },
+	-- { "prop_burgerstand_01","burgerMachine" },
 	{ "prop_hotdogstand_01","hotdogMachine" },
 	{ "prop_vend_water_01","waterMachine" }
 }
@@ -229,5 +233,72 @@ RegisterCommand("comprar",function(source,args)
 			SetNuiFocus(true,true)
 			SendNUIMessage({ action = "showNUI", name = tostring(v[2]), type = vSERVER.getShopType(v[2]) })
 		end
+	end
+end)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- NPC no Blip Crafting Ilegal
+-----------------------------------------------------------------------------------------------------------------------------------------
+local pedList = {
+	{
+		['x'] = -1195.2, ['y'] = -893.64, ['z'] = 14.0, ['h'] = 304.77,
+		["hash"] = 0x5AA42C21,
+		["hash2"] = "g_f_y_vagos_01"
+	},
+	{
+		["x"] = -1196.63, ["y"] = -891.64, ["z"] = 14.0, ["h"] = 301.46,
+		["hash"] = 0x69E8ABC3,
+		["hash2"] = "cs_tom"
+	},
+	{
+		["x"] = -1193.96, ["y"] = -895.48, ["z"] = 14.0, ["h"] = 304.11,
+		["hash"] = 0xCE9113A9,
+		["hash2"] = "s_m_m_strvend_01"
+	},
+	{
+		["x"] = 280.27, ["y"] = -973.14, ["z"] = 29.43, ["h"] = 358.89,
+		["hash"] = 0xD090C350,
+		["hash2"] = "ig_fabien"
+	},
+	{
+		["x"] = 371.54, ["y"] = -924.86, ["z"] = 30.25, ["h"] = 175.26,
+		["hash"] = 0x4D6DE57E,
+		["hash2"] = "cs_priest"
+	},
+	{
+		["x"] = 113.84, ["y"] = -140.6, ["z"] = 54.87, ["h"] = 164.31,
+		["hash"] = 0x6B38B8F8,
+		["hash2"] = "cs_paper"
+	},
+	{
+		["x"] = 149.45, ["y"] = -1042.15, ["z"] = 29.37, ["h"] = 340.29,
+		["hash"] = 0x342333D3,
+		["hash2"] = "u_m_m_fibarchitect"
+	},
+	{
+		["x"] = -434.35, ["y"] = 273.87, ["z"] = 83.43, ["h"] = 92.18,
+		["hash"] = 0xE5A11106,
+		["hash2"] = "s_m_y_barman_01"
+	},
+	{
+		["x"] = 807.88, ["y"] = -496.66, ["z"] = 30.69, ["h"] = 10.2,
+		["hash"] = 0xD47303AC,
+		["hash2"] = "s_m_m_doctor_01"
+	}
+}
+
+Citizen.CreateThread( function()
+	for k, v in pairs(pedList) do
+		RequestModel(GetHashKey(v.hash2))
+
+		while not HasModelLoaded(GetHashKey(v.hash2)) do
+			Citizen.Wait(100)
+		end
+
+		local ped = CreatePed(4, v.hash, v.x, v.y, v.z -1, v.h, false, true)
+		FreezeEntityPosition(ped, true)
+		SetEntityInvincible(ped, true)
+		SetBlockingOfNonTemporaryEvents(ped, true)
 	end
 end)

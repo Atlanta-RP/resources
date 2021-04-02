@@ -69,6 +69,7 @@ local doors = {
 	[36] = { ["x"] = 939.67, ["y"] = -1489.76, ["z"] = 30.22, ["hash"] = 1052098579, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Dk", ["sound"] = true },
 	[37] = { ["x"] = -1123.18, ["y"] = -2013.15, ["z"] = 13.2, ["hash"] = -703043502, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mechanic", ["sound"] = true },
 	[38] = { ["x"] = -1142.68, ["y"] = -1993.52, ["z"] = 13.17, ["hash"] = -1434889563, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mechanic", ["sound"] = true },
+	[39] = { ["x"] = 282.33, ["y"] = -974.54, ["z"] = 29.43, ["hash"] = -1320876379, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "BeanMachine", ["sound"] = true },
 
 	-- [XX] = { ["x"] = , ["y"] = , ["z"] = , ["hash"] = , ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "XXXXXX", ["sound"] = true }
 }

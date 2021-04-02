@@ -18,14 +18,13 @@ local typeBikes = {}
 local localVehicles = {}
 local vehicles = {}
 local vehIds = {}
-local open = vector3(471.99,-1114.81,29.4)
-local zone = vector3(471.99,-1114.81,29.4)
+local open = vector3(113.62,-141.57,54.87)
+local zone = vector3(113.62,-141.57,54.87)
 
 local coords = {
-	[1] = { cds = vector3(485.57,-1102.04,29.21), h = 89.81 },
-	[2] = { cds = vector3(485.49,-1105.5,29.21), h = 89.81 },
-	[3] = { cds = vector3(485.4,-1109.41,29.2), h = 89.81 },
-	[4] = { cds = vector3(485.45,-1112.44,29.2), h = 89.81 }
+	[1] = { cds = vector3(126.05,-157.59,53.80), h = 326.51 },
+	[2] = { cds = vector3(133.5,-160.79,53.80), h = 326.51 },
+	[3] = { cds = vector3(141.63,-163.78,53.80), h = 326.51 }
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SYNCVEHICLES
@@ -141,15 +140,14 @@ function swapVehicle(veh,slot)
 			RequestModel(hash)
 			Citizen.Wait(10)
 		end
-
-		local id = CreateVehicle(hash,coords[slot].cds.x,coords[slot].cds.y,coords[slot].cds.z,coords[slot].h,false,false)
-		SetVehicleDoorsLocked(id,2)
-		SetVehicleDirtLevel(id,0.0)
-		FreezeEntityPosition(id,true)
-		SetEntityAsMissionEntity(id,true,true)
-		SetVehicleNumberPlateText(id,"PDMSALE"..slot)
-		vehIds[slot] = id
-		vehicles[slot].model = veh
+			local id = CreateVehicle(hash,coords[slot].cds.x,coords[slot].cds.y,coords[slot].cds.z,coords[slot].h,false,false)
+			SetVehicleDoorsLocked(id,2)
+			SetVehicleDirtLevel(id,0.0)
+			FreezeEntityPosition(id,true)
+			SetEntityAsMissionEntity(id,true,true)
+			SetVehicleNumberPlateText(id,"PDMSALE"..slot)
+			vehIds[slot] = id
+			vehicles[slot].model = veh
 	end
 end
 -----------------------------------------------------------------------------------------------------------------------------------------

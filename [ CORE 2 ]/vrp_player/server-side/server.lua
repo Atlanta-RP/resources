@@ -723,19 +723,19 @@ local preset = {
 	["Police"] = {
 		["1"] = {
 			["homem"] = {
-				["hat"] = { item = -1, texture = 0, defaultItem = -1, defaultTexture = 0 },
-				["pants"] = { item = 14, texture = 1, defaultItem = 0, defaultTexture = 0 },
+				["hat"] = { item = 106, texture = 20, defaultItem = -1, defaultTexture = 0 },
+				["pants"] = { item = 59, texture = 9, defaultItem = 0, defaultTexture = 0 },
 				["vest"] = { item = 0, texture = 0, defaultItem = 0, defaultTexture = 0 },
 				["bracelet"] = { item = -1, texture = 0, defaultItem = -1, defaultTexture = 0 },
 				["decals"] = { item = 0, texture = 0, defaultItem = 0, defaultTexture = 0 },
-				["mask"] = { item = 0, texture = 0, defaultItem = 0, defaultTexture = 0 },
-				["shoes"] = { item = 27, texture = 0, defaultItem = 1, defaultTexture = 0 },
-				["t-shirt"] = { item = 53, texture = 0, defaultItem = 1, defaultTexture = 0 },
+				["mask"] = { item = 121, texture = 0, defaultItem = 0, defaultTexture = 0 },
+				["shoes"] = { item = 60, texture = 0, defaultItem = 1, defaultTexture = 0 },
+				["t-shirt"] = { item = 131, texture = 0, defaultItem = 1, defaultTexture = 0 },
 				["bag"] = { item = 0, texture = 0, defaultItem = 0, defaultTexture = 0 },
-				["torso2"] = { item = 26, texture = 0, defaultItem = 0, defaultTexture = 0 },
+				["torso2"] = { item = 53, texture = 0, defaultItem = 0, defaultTexture = 0 },
 				["accessory"] = { item = -1, texture = 0, defaultItem = 0, defaultTexture = 0 },
 				["watch"] = { item = -1, texture = 0, defaultItem = -1, defaultTexture = 0 },
-				["arms"] = { item = 2, texture = 0, defaultItem = 0, defaultTexture = 0 },
+				["arms"] = { item = 4, texture = 0, defaultItem = 0, defaultTexture = 0 },
 				["glass"] = { item = 0, texture = 0, defaultItem = 0, defaultTexture = 0 },
 				["ear"] = { item = -1, texture = 0, defaultItem = -1, defaultTexture = 0 }
 			},

@@ -92,7 +92,7 @@ RegisterCommand("item",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.hasPermission(user_id,"Admin") then
-			if args[1] and args[2] and vRP.itemNameList(args[1]) ~= nil and vRP.itemNameList(args[1]) ~= "Dinheiro" then
+			if args[1] and args[2] and vRP.itemNameList(args[1]) ~= nil then
 				print(vRP.itemNameList(args[1]))
 				vRP.giveInventoryItem(user_id,args[1],parseInt(args[2]),true)
 				SendWebhookMessage(webhookgive,"```prolog\n[ID]: "..user_id.."\n[PEGOU]: "..args[1].." \n[QUANTIDADE]: "..parseInt(args[2]).." "..os.date("\n[Data]: %d/%m/%Y [Hora]: %H:%M:%S").." \r```")
@@ -298,7 +298,7 @@ RegisterCommand("cds2",function(source,args,rawCommand)
 	if user_id then
 		if vRP.hasPermission(user_id,"Admin") then
 			local x,y,z,h = vRPclient.getPositions(source)
-			vRP.prompt(source,"Cordenadas:","['x'] = "..x..".0, ['y'] = "..y..".0, ['z'] = "..z..".0, ['h'] = "..h..".0")
+			vRP.prompt(source,"Cordenadas:","[\"x\"] = "..x..", [\"y\"] = "..y..", [\"z\"] = "..z..", [\"h\"] = "..h.."")
 		end
 	end
 end)
