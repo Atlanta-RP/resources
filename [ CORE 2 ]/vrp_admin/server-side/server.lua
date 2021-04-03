@@ -302,6 +302,16 @@ RegisterCommand("cds2",function(source,args,rawCommand)
 		end
 	end
 end)
+
+RegisterCommand("cds3",function(source,args,rawCommand)
+	local user_id = vRP.getUserId(source)
+	if user_id then
+		if vRP.hasPermission(user_id,"Admin") then
+			local x,y,z,h = vRPclient.getPositions(source)
+			vRP.prompt(source,"Cordenadas:","[\"marcadorX\"] = "..x..", [\"marcadorY\"] = "..y..", [\"marcadorZ\"] = "..z)
+		end
+	end
+end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- GROUP
 -----------------------------------------------------------------------------------------------------------------------------------------

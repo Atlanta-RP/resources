@@ -315,7 +315,7 @@ local shops = {
 	["burgershot"] = {
 		["mode"] = "Buy",
 		["type"] = "Consume",
-		["item"] = "dollars2",
+		["item"] = "dollars",
 		["list"] = {
 			["hamburger"] = 30
 		}
@@ -327,6 +327,14 @@ local shops = {
 		["item"] = "dollars",
 		["list"] = {
 			["codeina"] = 200
+		}
+	},
+	["vendaLock"] = {
+		["mode"] = "Buy",
+		["type"] = "Consume",
+		["item"] = "dollars2",
+		["list"] = {
+			["lockpick"] = 10
 		}
 	}
 }
