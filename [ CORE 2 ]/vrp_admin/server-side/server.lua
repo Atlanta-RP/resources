@@ -321,7 +321,7 @@ RegisterCommand("group",function(source,args,rawCommand)
 		if vRP.hasPermission(user_id,"Admin") then
 			local grupo = vRP.query("vRP/get_perms",{ group_name = tostring(args[2]) })
 			for k,v in pairs(grupo) do
-				TriggerClientEvent("Notify",source,"importante","<b>Usuário adicionado ao grupo:</b> "..v.group_name,5000)
+				TriggerClientEvent("Notify",source,"sucesso","<b>Usuário adicionado ao grupo:</b> "..v.group_name,5000)
 				if not vRP.hasPermission(parseInt(args[1]),tostring(args[2])) then
 					vRP.insertPermission(parseInt(args[1]),tostring(args[2]))
 					vRP.execute("vRP/add_group",{ user_id = parseInt(args[1]), permiss = tostring(args[2]) })
@@ -329,11 +329,11 @@ RegisterCommand("group",function(source,args,rawCommand)
 				end
 			end
 			if json.encode(grupo) == '[]' then
-				TriggerClientEvent("Notify",source,"importante","<b>Grupo: "..tostring(args[2]).." não existe</b>",5000)
+				TriggerClientEvent("Notify",source,"negado","<b>Grupo: "..tostring(args[2]).." não existe</b>",5000)
 			end			
 		end
 	else
-		TriggerClientEvent("Notify",source,"importante","<b>Usuário não encontrado ou não está online no momento</b>",5000)
+		TriggerClientEvent("Notify",source,"negado","<b>Usuário não encontrado ou não está online no momento</b>",5000)
 	end
 	
 end)
@@ -347,9 +347,9 @@ RegisterCommand("ungroup",function(source,args,rawCommand)
 			if vRP.hasPermission(parseInt(args[1]),tostring(args[2])) then
 				vRP.removePermission(parseInt(args[1]),tostring(args[2]))
 				vRP.execute("vRP/del_group",{ user_id = parseInt(args[1]), permiss = tostring(args[2]) })
-				TriggerClientEvent("Notify",source,"importante","<b>Usuário removido do grupo "..tostring(args[2]).."</b>",5000)
+				TriggerClientEvent("Notify",source,"sucesso","<b>Usuário removido do grupo "..tostring(args[2]).."</b>",5000)
 			else
-				TriggerClientEvent("Notify",source,"importante","<b>Usuário não tem o grupo "..tostring(args[2]).."</b>",5000)
+				TriggerClientEvent("Notify",source,"negado","<b>Usuário não tem o grupo "..tostring(args[2]).."</b>",5000)
 			end
 		end
 	end
@@ -371,7 +371,7 @@ RegisterCommand("groups",function(source,args,rawCommand)
 				texto = texto..v.permiss.."<br>"
 				
 			end
-			TriggerClientEvent("Notify",source,"importante","<b>"..texto.."</b>",8000)
+			TriggerClientEvent("Notify",source,"aviso","<b>"..texto.."</b>",8000)
 		end
 	end
 end)

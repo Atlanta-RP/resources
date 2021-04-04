@@ -13,7 +13,7 @@
                 o = (a(63), a(98)),
                 s = a(49),
                 i = a(102),
-                u = function() { return r.a.createElement(o.a, { className: "landingContainer", maxWidth: !1 }, r.a.createElement("div", { className: "container" }, r.a.createElement("div", { className: "text-box" }, r.a.createElement(s.a, { variant: "h4" }, "Bem-vindo a Unreal City"), r.a.createElement(s.a, { variant: "h5" }, "Estamos carregando seus dados")), r.a.createElement(i.a, { className: "spinner" }))) },
+                u = function() { return r.a.createElement(o.a, { className: "landingContainer", maxWidth: !1 }, r.a.createElement("div", { className: "container" }, r.a.createElement("div", { className: "text-box" }, r.a.createElement(s.a, { variant: "h4" }, "Bem-vindo a Atlanta City"), r.a.createElement(s.a, { variant: "h5" }, "Estamos carregando seus dados")), r.a.createElement(i.a, { className: "spinner" }))) },
                 m = a(21),
                 d = (a(67), a(103)),
                 p = a(104),

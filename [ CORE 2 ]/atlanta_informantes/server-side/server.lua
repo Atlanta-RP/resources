@@ -12,16 +12,16 @@ Tunnel.bindInterface("atlanta_informantes",cnVRP)
 vCLIENT = Tunnel.getInterface("atlanta_informantes")
 
 
-function cnVRP.pergunta(introducao,valor,resposta)
+function cnVRP.pergunta(introducao,valor,resposta,itemTroca,respostaNegativa)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.request(source,introducao,30) then
-			if vRP.tryGetInventoryItem(user_id,"dollars2",10) then
-				TriggerClientEvent("Notify",source,"importante",resposta,5000)
+			if vRP.tryGetInventoryItem(user_id,itemTroca,10) then
+				TriggerClientEvent("Notify",source,"importante",resposta,7000)
 				return true
 			else
-				TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente na sua mochila.",5000)
+				TriggerClientEvent("Notify",source,"negado",respostaNegativa,6000)
 			end
 		end
 		return false

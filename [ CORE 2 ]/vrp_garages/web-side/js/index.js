@@ -55,7 +55,7 @@ $(document).ready(function() {
 							<span>${item.fuel}%</span>
 						</div>
 					</div>
-					<img src="http://localhost/imagens/${item.name}.png" onerror="this.onerror=null;this.src='https://i.imgur.com/acV4tCt.png';">
+					<img src="https://raw.githubusercontent.com/9SEC/RRM/master/images/${item.name}.png" onerror="this.onerror=null;this.src='https://i.imgur.com/acV4tCt.png';">
 				</div>
 				`)).join('')}
 			`);
@@ -111,7 +111,7 @@ $(document).on('click','.section_content_item',function(){
 			$('#namecar').html($el.attr('data-name2'));
 			$('#lib').html($el.attr('data-detido'));
 			$('#ipva').html($el.attr('data-fuel') + "%");
-			$('.imgcar').html(`<img src="https://raw.githubusercontent.com/9SEC/RRM/master/images/${$el.attr('data-name')}.png" onerror="this.onerror=null;this.src='https://i.imgur.com/acV4tCt.png';" style="width: 340px;">`);
+			$('.imgcar').html(`<img src="https://raw.githubusercontent.com/9SEC/RRM/master/images/${$el.attr('data-name')}.png" onerror="this.onerror=null;this.src='https://i.imgur.com/acV4tCt.png';" style="width: 80%;">`);
 		}, 1500);
 	}, 500);
 });

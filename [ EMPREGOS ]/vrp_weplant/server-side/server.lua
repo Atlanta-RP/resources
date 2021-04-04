@@ -110,7 +110,7 @@ function cnVRP.checkTimers(id)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.hasPermission(user_id,"Admin") then
-			TriggerClientEvent("Notify",source,"aviso",parseInt(wePlants[id][5]),5000)
+			TriggerClientEvent("Notify",source,"aviso","Responsável: [ID] "..parseInt(wePlants[id][5]),5000)
 		end
 
 		if wePlants[id] ~= nil and parseInt(wePlants[id][4]) >= 100 then

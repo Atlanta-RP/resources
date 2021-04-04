@@ -343,7 +343,7 @@ AddEventHandler("baseModule:idLoaded",function(source,user_id,model)
 		vRP.user_sources[user_id] = source
 
 		if model ~= nil then
-			TriggerClientEvent("Notify",source,"importante","Seja bem-vindo a <b>Unreal City</b>.<br>A cidade foi desenvolvida pensando especialmente em voce, desenvolva sua historia e nao esqueca que deixamos separado para voce um agrado em seu banco.",15000)
+			TriggerClientEvent("Notify",source,"importante","Seja bem-vindo a <b>Atlanta City</b>.<br>A cidade foi desenvolvida pensando especialmente em voce, desenvolva sua historia e nao esqueca que deixamos separado para voce um agrado em seu banco.",15000)
 			vRP.user_tables[user_id].weaps = {}
 			vRP.user_tables[user_id].inventorys = {}
 			vRP.user_tables[user_id].skin = GetHashKey(model)
