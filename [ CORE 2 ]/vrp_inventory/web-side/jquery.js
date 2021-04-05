@@ -313,7 +313,7 @@ const updateMochila = () => {
 
 			if (data.inventario[slot] !== undefined) {
 				const v = data.inventario[slot];
-				const item = `<div class="item populated" style="background-image: url(https://raw.githubusercontent.com/9SEC/RRM/master/images/${v.index}.png); background-position: center; background-repeat: no-repeat;" data-amount="${v.amount}" data-peso="${v.peso}" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
+				const item = `<div class="item populated" style="background-image: url(https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png); background-position: center; background-repeat: no-repeat;" data-amount="${v.amount}" data-peso="${v.peso}" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
 					<div class="top">
 					<div class="itemWeight"></div>
 					<div class="itemAmount">${formatarNumero(v.amount)}x   |   ${(v.peso * v.amount).toFixed(2)}</div>
@@ -333,7 +333,7 @@ const updateMochila = () => {
 
 			if (nameList2[x - 1] !== undefined) {
 				const v = nameList2[x - 1];
-				const item = `<div class="item populated" style="background-image: url(https://raw.githubusercontent.com/9SEC/RRM/master/images/${v.index}.png); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-id="${v.id}" data-grid="${v.grid}" data-amount="${v.amount}" data-peso="${v.peso}" data-slot="${slot}">
+				const item = `<div class="item populated" style="background-image: url(https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-id="${v.id}" data-grid="${v.grid}" data-amount="${v.amount}" data-peso="${v.peso}" data-slot="${slot}">
 					<div class="top">
 						<div class="itemWeight"></div>
 						<div class="itemAmount">${formatarNumero(v.amount)}x   |   ${(v.peso * v.amount).toFixed(2)}</div>

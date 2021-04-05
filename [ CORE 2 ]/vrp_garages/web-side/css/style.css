@@ -336,19 +336,22 @@ p {
 
 .title {
     display: flex;
-    width: 86%;
-    left: 1.25vw;
+    top: 34.5%;
+    width: 80%;
+    left: 9%;
     position: absolute;
     bottom: 27.9vw;
     height: 42px;
     color: #ffffffc7;
     font-size: 30px;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     align-items: center;
     letter-spacing: 1px;
     justify-content: center;
     font-family: "Bebas Neue";
-    background-color: rgb(83, 83, 85)
+    background-color: rgb(83, 83, 85);
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .loading {
@@ -428,11 +431,16 @@ p {
 }
 
 .imgcar {
+    
     position: absolute;
-    width: 29vw;
-    right: -9.7vw;
-    height: 12vw;
-    bottom: 16vw;
+    width: 100%;
+    left: 9%;
+    /* right: 40%; */
+    top:8%;
+}
+.imagemCarro {
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
 }
 
 

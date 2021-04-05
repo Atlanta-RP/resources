@@ -1,6 +1,6 @@
 $(document).ready(function(){
     window.addEventListener("message",function(event){
-        var html = `<div class="item" style="background-image: url('https://raw.githubusercontent.com/9SEC/RRM/master/images/${event.data.item}.png');">
+        var html = `<div class="item" style="background-image: url('https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${event.data.item}.png');">
             <div class="top">
                 <div class="itemWeight">${event.data.mode}</div>
                 <div class="itemAmount">${event.data.amount}x</div>

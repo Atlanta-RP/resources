@@ -883,7 +883,7 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 									TriggerClientEvent("vrp_inventory:repairVehicle",-1,vehNet,false)
 									TriggerClientEvent("Notify",source,"aviso","Carro arrumado com sucesso.",7000)
 								else
-									TriggerClientEvent("Notify",source,"aviso","Voce falhou.",7000)
+									TriggerClientEvent("Notify",source,"negado","Voce falhou.",7000)
 								end
 
 								vRPclient._stopAnim(source,false)
@@ -907,7 +907,7 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 									vRP.upgradeStress(user_id,4)
 									local iddoroubado = vRP.getVehiclePlate(vehPlate)
 									if iddoroubado and math.random(100) >= 50 then
-										TriggerClientEvent("Notify",source,"aviso","O alarme do seu veículo <b>"..vRP.vehicleName(vehName).."</b> foi acionado.",7000)
+										TriggerClientEvent("Notify",source,"negado","O alarme do seu veículo <b>"..vRP.vehicleName(vehName).."</b> foi acionado.",7000)
 									end
 									if math.random(100) >= 20 then
 										TriggerEvent("setPlateEveryone",vehPlate)
@@ -919,12 +919,14 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 										local copAmount = vRP.numPermission("Police")
 										for k,v in pairs(copAmount) do
 											async(function()
-												TriggerClientEvent("NotifyPush",v,{ time = os.date("%H:%M:%S - %d/%m/%Y"), text = "Opa tem um cara aqui no bairro querendo roubar um carro!", code = 31, title = "Roubo de Veículo", x = x, y = y, z = z, vehicle = vRP.vehicleName(vehName).." - "..vehPlate, rgba = {15,110,110} })
+												TriggerClientEvent("NotifyPush",v,{ time = os.date("%H:%M:%S - %d/%m/%Y"), text = "Oi, tem um cara aqui no bairro querendo roubar um carro!", code = 31, title = "Roubo de Veículo", x = x, y = y, z = z, vehicle = vRP.vehicleName(vehName).." - "..vehPlate, rgba = {15,110,110} })
 											end)
 										end
 									end
+
+									TriggerClientEvent("Notify",source,"sucesso","Lockpick aplicado com sucesso!",7000)
 								else
-									TriggerClientEvent("Notify",source,"aviso","Voce falhou, tente novamente.",7000)
+									TriggerClientEvent("Notify",source,"negado","Voce falhou, tente novamente.",7000)
 								end
 
 								if parseInt(math.random(1000)) >= 950 then
@@ -962,8 +964,9 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 											end)
 										end
 									end
+									TriggerClientEvent("Notify",source,"sucesso","Lockpick aplicado com sucesso!",7000)
 								else
-									TriggerClientEvent("Notify",source,"aviso","Voce falhou.",7000)
+									TriggerClientEvent("Notify",source,"negado","Voce falhou.",7000)
 								end
 
 								if parseInt(math.random(1000)) >= 950 then
@@ -988,9 +991,10 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 									vRP.upgradeStress(user_id,4)
 									vHOMES.enterHomesTheft(source,homeName)
 									TriggerEvent("vrp:homes:ApplyTime",homeName)
+									TriggerClientEvent("Notify",source,"sucesso","Lockpick aplicado com sucesso!",7000)
 								
 								else
-									TriggerClientEvent("Notify",source,"aviso","Voce falhou.",7000)
+									TriggerClientEvent("Notify",source,"negado","Voce falhou.",7000)
 								end
 
 								if parseInt(math.random(1000)) >= 950 then
@@ -1036,7 +1040,7 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 									if x ~= nil and y ~= nil and z ~= nil then
 										for k,v in pairs(registerTimers) do
 											if v[1] == x and v[2] == y and v[3] == z then
-												TriggerClientEvent("Notify",source,"importante","Aguarde "..vRP.getTimers(parseInt(v[4]*10))..".",5000)
+												TriggerClientEvent("Notify",source,"aviso","Aguarde "..vRP.getTimers(parseInt(v[4]*10))..".",5000)
 											end
 											Citizen.Wait(1)
 										end

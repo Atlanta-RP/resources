@@ -502,7 +502,7 @@ local itemlist = {
 	},
 	["lighter"] = {
 		index = "lighter",
-		name = "Isqueiro",
+		name = "Isqueiro Zippo",
 		type = "use",
 		weight = 0.3
 	},

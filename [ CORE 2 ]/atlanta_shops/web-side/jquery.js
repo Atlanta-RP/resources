@@ -195,7 +195,7 @@ const requestShop = () => {
 
 			if (data.inventoryUser[slot] !== undefined) {
 				const v = data.inventoryUser[slot];
-				const item = `<div class="item populated" style="background-image: url('https://raw.githubusercontent.com/9SEC/RRM/master/images/${v.index}.png'); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-amount="${v.amount}" data-slot="${slot}">
+				const item = `<div class="item populated" style="background-image: url('https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png'); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-amount="${v.amount}" data-slot="${slot}">
 					<div class="top">
 						<div class="itemWeight">${(v.peso*v.amount).toFixed(2)}</div>
 						<div class="itemAmount">${formatarNumero(v.amount)}x</div>
@@ -216,7 +216,7 @@ const requestShop = () => {
 
 			if (nameList2[x-1] !== undefined) {
 				const v = nameList2[x-1];
-				const item = `<div class="item populated" style="background-image: url('https://raw.githubusercontent.com/9SEC/RRM/master/images/${v.index}.png'); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-amount="${v.amount}" data-slot="${slot}">
+				const item = `<div class="item populated" style="background-image: url('https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png'); background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-amount="${v.amount}" data-slot="${slot}">
 					<div class="top">
 						<div class="itemWeight">${(v.weight).toFixed(2)}</div>
 						<div class="itemAmount">$${formatarNumero(v.price)}</div>
