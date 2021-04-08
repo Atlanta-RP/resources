@@ -128,7 +128,7 @@ function func.Mochila()
 					inventory[k] = v
 				end
 			end
-
+			--print(vRP.getBackpack(user_id))
 			local identity = vRP.getUserIdentity(user_id)
 			return inventory,vRP.computeInvWeight(user_id),vRP.getBackpack(user_id),{ identity.name.." "..identity.name2,parseInt(user_id),parseInt(identity.bank),parseInt(vRP.getGmsId(user_id)),identity.phone,identity.registration }
 		end

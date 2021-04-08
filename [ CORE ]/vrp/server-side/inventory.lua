@@ -1402,3 +1402,89 @@ function vRP.storeChestItem(user_id,chestData,itemName,amount,chestWeight,slot)
 	end
 	return false
 end
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- STORECHESTITEMVENDA
+-----------------------------------------------------------------------------------------------------------------------------------------
+function vRP.storeChestItemVenda(user_id,chestData,itemName,amount,chestWeight,slot)
+	if actived[user_id] == nil then
+		actived[user_id] = 1
+		local slot = tostring(slot)
+		local data = vRP.getSData(chestData)
+		local items = json.decode(data) or {}
+		if data and items ~= nil then
+
+			if parseInt(amount) > 0 then
+				activedAmount[user_id] = parseInt(amount)
+			else
+				local inv = vRP.getInventory(user_id)
+				if inv[slot] then
+					activedAmount[user_id] = parseInt(inv[slot].amount)
+				end
+			end
+
+			local new_weight = vRP.computeChestWeight(items) + vRP.itemWeightList(itemName) * parseInt(activedAmount[user_id])
+			if new_weight <= chestWeight then
+					if items[itemName] ~= nil then
+						items[itemName].amount = parseInt(items[itemName].amount) + parseInt(activedAmount[user_id])
+					else
+						items[itemName] = { amount = parseInt(activedAmount[user_id]) }
+					end
+					vRP.setSData(chestData,json.encode(items))
+			end
+		end
+	end
+	return false
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- TRYCHESTITEMVENDA
+-----------------------------------------------------------------------------------------------------------------------------------------
+function vRP.tryChestItemVenda(user_id,chestData,itemName,amount,slot)
+	actived[user_id] = 1
+	local data = vRP.getSData(chestData)
+	local items = json.decode(data) or {}
+	if data and items ~= nil then
+		if items[itemName] ~= nil then
+			if parseInt(amount) > 0 then
+				activedAmount[user_id] = parseInt(amount)
+			else
+				activedAmount[user_id] = parseInt(items[itemName].amount)
+			end
+
+			local new_weight = vRP.computeInvWeight(user_id) + vRP.itemWeightList(itemName) * parseInt(activedAmount[user_id])
+
+			items[itemName].amount = parseInt(items[itemName].amount) - parseInt(activedAmount[user_id])
+
+			if parseInt(items[itemName].amount) <= 0 then
+				items[itemName] = nil
+			end
+
+			vRP.setSData(chestData,json.encode(items))
+			return true
+		end
+	end
+	return false
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- TRYCHESTITEMVENDAEXISTE
+-----------------------------------------------------------------------------------------------------------------------------------------
+function vRP.tryChestItemVendaExiste(user_id,chestData,itemName,amount,slot)
+	if actived[user_id] == nil then
+		actived[user_id] = 1
+		local data = vRP.getSData(chestData)
+		local items = json.decode(data) or {}
+		if data and items ~= nil then
+			if items[itemName] ~= nil and parseInt(amount) > 0 then
+				if parseInt(amount) >= parseInt(items[itemName].amount) then
+					return parseInt(items[itemName].amount)
+				else
+					return parseInt(amount)
+				end
+			end
+		end
+	end
+	return 0
+end

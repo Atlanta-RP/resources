@@ -1161,56 +1161,6 @@ RegisterCommand("extras",function(source,args,rawCommand)
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
--- ADD
------------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("add",function(source,args,rawCommand)
-	local user_id = vRP.getUserId(source)
-	if user_id then
-		if parseInt(args[2]) > 0 then
-			if args[1] == "Policia" then
-				if vRP.hasPermission(user_id,"PolMaster") then
-					vRP.execute("vRP/cle_group",{ user_id = parseInt(args[2]) })
-					vRP.execute("vRP/add_group",{ user_id = parseInt(args[2]), permiss = tostring("waitPolice") })
-					vRP.insertPermission(parseInt(args[2]),tostring("waitPolice"))
-					TriggerClientEvent("Notify",source,"sucesso","Passaporte <b>"..vRP.format(parseInt(args[2])).."</b> adicionado com sucesso.",5000)
-				end
-			end
-
-			if args[1] == "Mecanico" then
-				if vRP.hasPermission(user_id,"MecMaster") then
-					vRP.execute("vRP/cle_group",{ user_id = parseInt(args[2]) })
-					vRP.execute("vRP/add_group",{ user_id = parseInt(args[2]), permiss = tostring("Mechanic") })
-					vRP.insertPermission(parseInt(args[2]),tostring("Mechanic"))
-					TriggerClientEvent("Notify",source,"sucesso","Passaporte <b>"..vRP.format(parseInt(args[2])).."</b> adicionado com sucesso.",5000)
-				end
-			end
-
-			if args[1] == "Paramedico" then
-				if vRP.hasPermission(user_id,"ParMaster") then
-					vRP.execute("vRP/cle_group",{ user_id = parseInt(args[2]) })
-					vRP.execute("vRP/add_group",{ user_id = parseInt(args[2]), permiss = tostring("waitParamedic") })
-					vRP.insertPermission(parseInt(args[2]),tostring("waitParamedic"))
-					TriggerClientEvent("Notify",source,"sucesso","Passaporte <b>"..vRP.format(parseInt(args[2])).."</b> adicionado com sucesso.",5000)
-				end
-			end
-		end
-	end
-end)
------------------------------------------------------------------------------------------------------------------------------------------
--- REMOVE
------------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("rem",function(source,args,rawCommand)
-	local user_id = vRP.getUserId(source)
-	if user_id then
-		if parseInt(args[1]) > 0 then
-			if vRP.hasPermission(user_id,"PolMaster") or vRP.hasPermission(user_id,"MecMaster") or vRP.hasPermission(user_id,"ParMaster") then
-				vRP.execute("vRP/cle_group",{ user_id = parseInt(args[1]) })
-				TriggerClientEvent("Notify",source,"sucesso","Passaporte <b>"..vRP.format(parseInt(args[1])).."</b> removido com sucesso.",5000)
-			end
-		end
-	end
-end)
------------------------------------------------------------------------------------------------------------------------------------------
 -- TRUNKIN
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterCommand("trunkin",function(source,args,rawCommand)
@@ -1449,6 +1399,9 @@ function cnVRP.checkRoupas()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
+		if vRP.getInventoryItemAmount(user_id,"roupas") == nil then
+			return false
+		end
 		if vRP.getInventoryItemAmount(user_id,"roupas") >= 1 or vRP.hasPermission(user_id,"Admin") then
 			return true
 		else

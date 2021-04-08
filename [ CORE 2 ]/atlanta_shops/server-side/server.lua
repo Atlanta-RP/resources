@@ -13,6 +13,9 @@ vCLIENT = Tunnel.getInterface("atlanta_shops")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VARIABLES
 -----------------------------------------------------------------------------------------------------------------------------------------
+
+local taxaLucro = 0.5 
+
 local shops = {
 	["departamentStore"] = {
 		["mode"] = "Buy",
@@ -175,16 +178,10 @@ local shops = {
 			["postit"] = 20,
 			["energetic"] = 50,
 			["emptybottle"] = 40,
-			["cigarette"] = 20,
-			["lighter"] = 600,
 			["chocolate"] = 10,
 			["cola"] = 18,
 			["teddy"] = 500,
 			["rose"] = 50,
-			["bucket"] = 200,
-			["compost"] = 10,
-			["cannabisseed"] = 10,
-			["silk"] = 3,
 			["plastic"] = 80,
 			["glass"] = 80,
 			["rubber"] = 80,
@@ -197,18 +194,53 @@ local shops = {
 			["analgesic"] = 150
 		}
 	},
+	["weedz"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["list"] = {
+			["cigarette"] = 9,
+			["lighter"] = 22,
+			["bucket"] = 12,
+			["compost"] = 10,
+			["cannabisseed"] = 100,
+			["silk"] = 6,
+		}
+	},
 	["comedyBar"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
 		["list"] = {
-			["energetic"] = 50,
-			["cola"] = 18,
-			["soda"] = 18,
-			["fries"] = 10,
-			["absolut"] = 40,
+			["energetic"] = 10,
+			["cola"] = 7,
+			["soda"] = 7,
+			["fries"] = 8,
+			["absolut"] = 22,
 			["chandon"] = 45,
-			["dewars"] = 25,
+			["dewars"] = 20,
 			["hennessy"] = 30,
+		}
+	},
+	["bar"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["list"] = {
+			["energetic"] = 10,
+			["cola"] = 7,
+			["soda"] = 7,
+			["absolut"] = 22,
+			["chandon"] = 45,
+			["dewars"] = 20,
+			["hennessy"] = 30,
+		}
+	},
+	["cinema"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["list"] = {
+			["energetic"] = 10,
+			["cola"] = 7,
+			["soda"] = 7,
+			["fries"] = 8,
 		}
 	},
 	["coffeeMachine"] = {
@@ -275,15 +307,29 @@ local shops = {
 	},
 	["coffeshop"] = {
 		["mode"] = "Buy",
-		["type"] = "Consume",
-		["item"] = "dollars2",
+		["type"] = "Cash",
+		["item"] = "dollars",
+		["loja"] = "BeanMachineMaster",
 		["list"] = {
 			["coffee"] = 12
 		}
 	},
 	["burgershot"] = {
 		["mode"] = "Buy",
-		["type"] = "Consume",
+		["type"] = "Cash",
+		["item"] = "dollars",
+		["list"] = {
+			["hamburger"] = 20,
+			["sandwich"] = 12,
+			["energetic"] = 9,
+			["cola"] = 6,
+			["soda"] = 6,
+			["fries"] = 7,
+		}
+	},
+	["mcdonalds"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
 		["item"] = "dollars",
 		["list"] = {
 			["hamburger"] = 20,
@@ -356,7 +402,19 @@ local shops = {
 			["WEAPON_NIGHTSTICK"] = 1,
 			["WEAPON_COMBATPISTOL"] = 60,
 		}
-	}
+	},
+	["lojaMochilas"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["item"] = "dollars",
+		["list"] = {
+			["backpackp"] = 4000,
+			["backpackm"] = 10000,
+			["backpackg"] = 15000,
+			["backpackx"] = 20000,
+		}
+	},
+
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- REQUESTPERM
@@ -443,7 +501,32 @@ function cnVRP.functionShops(shopType,shopItem,shopAmount,slot)
 									vRP.giveInventoryItem(parseInt(user_id),shopItem,parseInt(shopAmount),false)
 								else
 									vRP.giveInventoryItem(parseInt(user_id),shopItem,parseInt(shopAmount),false,slot)
-								end							else
+								end
+								--print("teste")
+								if shops[shopType]["loja"] ~= nil then
+									local valor = parseInt(parseInt(shops[shopType]["list"][shopItem]*shopAmount) * taxaLucro)
+									local quantidade = vRP.tryChestItemVendaExiste(user_id,"chestLoja:"..tostring(shops[shopType]["loja"]),'dollars2',valor,2)
+									if quantidade > 0 then
+										if quantidade >= valor then
+											if vRP.tryChestItemVenda(user_id,"chestLoja:"..tostring(shops[shopType]["loja"]),'dollars2',valor,2) then
+												valor = valor + (valor * 10) -- alterar valor
+												print("adicionado 1: "..valor)
+											end
+										else
+											if vRP.tryChestItemVenda(user_id,"chestLoja:"..tostring(shops[shopType]["loja"]),'dollars2',valor,2) then
+												valor = valor + (quantidade * 10) -- alterar valor
+												print("adicionado 2: "..quantidade)
+											end
+										end
+									end
+									vRP.storeChestItemVenda(user_id,"chestLoja:"..tostring(shops[shopType]["loja"]),'dollars',valor,1,1)
+									--print(tostring(shops[shopType]["loja"]))
+									--print(parseInt(shops[shopType]["list"][shopItem]*shopAmount))
+								end
+								
+								
+								
+							else
 								TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente.",5000)
 							end
 						end

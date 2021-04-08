@@ -17,7 +17,7 @@ function cnVRP.pergunta(introducao,valor,resposta,itemTroca,respostaNegativa)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.request(source,introducao,30) then
-			if vRP.tryGetInventoryItem(user_id,itemTroca,10) then
+			if vRP.tryGetInventoryItem(user_id,itemTroca,valor) then
 				TriggerClientEvent("Notify",source,"importante",resposta,7000)
 				return true
 			else

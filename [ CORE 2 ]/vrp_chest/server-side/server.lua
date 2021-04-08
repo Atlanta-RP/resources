@@ -40,6 +40,7 @@ RegisterCommand('createChest',function(source, args, rawCommand)
 
 		vCLIENT.insertTable(-1,nome, { x,y,z } )
 		vRP.execute("vRP/addChest", { permiss = perm, name = nome, x = x, y = y, z = z, weight = tamanho })
+		vRP.execute("vRP/insertChest", { name = 'chest:'..nome, value = '{}' })
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -229,11 +230,12 @@ function cnVRP.storeItem(itemName,slot,amount)
 			if noStore[itemName] then
 				TriggerClientEvent("Notify",source,"importante","Você não pode armazenar este item em baús.",5000)
 				return
-			end
-			local consult = vRP.query("vRP/getExistChest",{ name = tostring(chestOpen[parseInt(user_id)]) })
-			if consult[1].name == tostring(chestOpen[parseInt(user_id)]) then
-				if vRP.storeChestItem(user_id,"chest:"..tostring(chestOpen[parseInt(user_id)]),itemName,amount,consult[1].weight,slot) then
-					TriggerClientEvent("vrp_chest:Update",source,"updateChest")
+			else
+				local consult = vRP.query("vRP/getExistChest",{ name = tostring(chestOpen[parseInt(user_id)]) })
+				if consult[1].name == tostring(chestOpen[parseInt(user_id)]) then
+					if vRP.storeChestItem(user_id,"chest:"..tostring(chestOpen[parseInt(user_id)]),itemName,amount,consult[1].weight,slot) then
+						TriggerClientEvent("vrp_chest:Update",source,"updateChest")
+					end
 				end
 			end
 		end

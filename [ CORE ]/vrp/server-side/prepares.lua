@@ -131,3 +131,8 @@ vRP.prepare("vRP/set_rental_time","UPDATE vrp_vehicles SET premiumtime = @premiu
 vRP.prepare("vRP/getExistChest","SELECT * FROM vrp_chests WHERE name = @name")
 vRP.prepare("vRP/get_alltable","SELECT * FROM vrp_chests")
 vRP.prepare("vRP/addChest","INSERT INTO vrp_chests (permiss,name,x,y,z,weight) VALUES (@permiss,@name,@x,@y,@z,@weight)")
+vRP.prepare("vRP/insertChest","INSERT INTO vrp_srv_data (dkey,dvalue) VALUES (@name,@value)")
+
+vRP.prepare("vRP/getExistChestLoja","SELECT * FROM vrp_chests_lojas WHERE name = @name")
+vRP.prepare("vRP/get_alltableLoja","SELECT * FROM vrp_chests_lojas")
+vRP.prepare("vRP/addChestLoja","INSERT INTO vrp_chests_lojas (permiss,name,x,y,z,weight) VALUES (@permiss,@name,@x,@y,@z,@weight)")
