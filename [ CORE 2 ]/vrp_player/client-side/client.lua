@@ -621,7 +621,7 @@ Citizen.CreateThread(function()
 				end
 
 				if not bWeapons then
-					vSERVER.shotsFired()
+					-- vSERVER.shotsFired()
 					gsrTime = 60
 				end
 

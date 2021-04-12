@@ -16,26 +16,30 @@ vTASKBAR = Tunnel.getInterface("vrp_taskbar")
 vSKINSHOP = Tunnel.getInterface("vrp_skinshop")
 local idgens = Tools.newIDGenerator()
 -----------------------------------------------------------------------------------------------------------------------------------------
--- WECOLOR
+-- WECOLOR VIPFUNC
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("wecolor",function(source,args,rawCommand)
+RegisterCommand("color",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		if parseInt(args[1]) >= 0 and parseInt(args[1]) <= 7 then
-			if vRP.getPremium(user_id) then
-				vCLIENT.weColors(source,parseInt(args[1]))
+		if vRP.getPremium(user_id) then
+			if parseInt(args[1]) >= 0 and parseInt(args[1]) <= 7 then
+				if vRP.getPremium(user_id) then
+					vCLIENT.weColors(source,parseInt(args[1]))
+				end
 			end
 		end
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
--- WELUX
+-- WELUX VIPFUNC
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("welux",function(source,args,rawCommand)
+RegisterCommand("luxury",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.getPremium(user_id) then
-			vCLIENT.weLux(source)
+			if vRP.getPremium(user_id) then
+				vCLIENT.weLux(source)
+			end
 		end
 	end
 end)
@@ -83,7 +87,7 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PREMIUM
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("premium",function(source,args,rawCommand)
+RegisterCommand("vip",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		local identity = vRP.getUserIdentity(user_id)
@@ -140,44 +144,31 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- RECEIVESALARY
 -----------------------------------------------------------------------------------------------------------------------------------------
+
+local salarios = {
+	{"Police",5000},
+	{"Mechanic",3000},
+	{"Advogado",4000},
+	{"Juiz",6000},
+	{"Taxi",2500},
+	{"Paramedic",5000}
+}
+
 RegisterNetEvent("vrp_player:salary")
 AddEventHandler("vrp_player:salary",function()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
+		for k,v in pairs(salarios) do
+			if vRP.hasPermission(parseInt(user_id),v[1]) then
+				vRP.setSalary(parseInt(user_id),v[2])
+				TriggerClientEvent("Notify",source,"sucesso","["..v[1].."] Voce recebeu seu salario, vá sacar no banco!.",4000)
+			end
+		end
+
 		if vRP.getPremium(parseInt(user_id)) then
 			vRP.setSalary(parseInt(user_id),2500)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario PREMIUM.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Police") then
-			vRP.setSalary(parseInt(user_id),5000)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Mechanic") then
-			vRP.setSalary(parseInt(user_id),3000)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Advogado") then
-			vRP.setSalary(parseInt(user_id),3000)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Juiz") then
-			vRP.setSalary(parseInt(user_id),3000)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Taxi") then
-			vRP.setSalary(parseInt(user_id),500)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
-		end
-
-		if vRP.hasPermission(parseInt(user_id),"Paramedic") then
-			vRP.setSalary(parseInt(user_id),6000)
-			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario.",5000)
+			TriggerClientEvent("Notify",source,"sucesso","Voce recebeu seu salario PREMIUM.",4000)
 		end
 	end
 end)
@@ -519,7 +510,7 @@ RegisterCommand("service",function(source,args,rawCommand)
 					end
 				end
 			else
-				TriggerClientEvent("Notify",source,"importante","Você esta lonje de sua sede.",5000)
+				TriggerClientEvent("Notify",source,"importante","Você esta longe de sua sede.",5000)
 			end
 		end
 	end
@@ -1419,6 +1410,6 @@ RegisterCommand('bvida', function(source,rawCommand)
 	vRP.removeCloak(source)
 end)
 
-RegisterCommand('login', function(source,rawCommand)
-	TriggerClientEvent("vrp_spawn:setupChars",source)
-end)
+-- RegisterCommand('login', function(source,rawCommand)
+-- 	TriggerClientEvent("vrp_spawn:setupChars",source)
+-- end)

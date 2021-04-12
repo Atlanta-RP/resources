@@ -18,7 +18,6 @@ files {
 -- data_file "DLC_ITYP_REQUEST" "stream/vrpInteriores/v_int_49.ytyp"
 -- data_file "DLC_ITYP_REQUEST" "stream/vrpMechanic/v_int_46.ytyp"
 data_file "DLC_ITYP_REQUEST" "stream/creativeTaco/taco.ytyp"
-data_file "DLC_ITYP_REQUEST" "stream/unreal_dp_map/taco.ytyp"
 data_file "DLC_ITYP_REQUEST" "stream/vrpInteriores/creative_hotel.ytyp"
 data_file "DLC_ITYP_REQUEST" "stream/vrpInteriores/creative_middle.ytyp"
 data_file 'TIMECYCLEMOD_FILE' 'stream/CdnPillboxhospital/gabz_timecycle_mods_1.xml'
