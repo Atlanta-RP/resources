@@ -559,12 +559,27 @@ Citizen.CreateThread(function()
 							timeDistance = 4
 							if not v.locked then
 								if IsControlJustPressed(1,201) then
-									if emP.checkWanted() then
+									service = vRP.numPermission("Mechanic")
+									local contador = 0
+									for k,v in pairs(service) do
+										contador = contador + 1
+									end
+									if contador >= 1 then
+										if emP.checkWanted() then
+											inside = true
+											currentpos = v
+											currentgarage = k
+											DriveInGarage()
+										else
+											TriggerClientEvent("Notify",source,"negado","Existem mecânicos na cidade, use /mecs ou /call mec.",5000)
+										end
+									else
 										inside = true
 										currentpos = v
 										currentgarage = k
 										DriveInGarage()
 									end
+									
 								else
 									DrawText3D(outside.x,outside.y,outside.z,"~g~ENTER~w~   PARA ENTRAR      ")
 								end

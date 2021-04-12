@@ -195,11 +195,11 @@ LSC_Config.prices = {
 		{ name = "Blacklight", xenon = 12, price = 4000 }
 	},
 	plates = {
-		{ name = "Blue on White 1", plateindex = 0, price = 1000 },
-		{ name = "Blue On White 2", plateindex = 3, price = 1000 },
-		{ name = "Blue On White 3", plateindex = 4, price = 1000 },
-		{ name = "Yellow on Blue", plateindex = 2, price = 1000 },
-		{ name = "Yellow on Black", plateindex = 1, price = 1000 }
+		{ name = "Blue on White 1", plateindex = 0, price = 300 },
+		{ name = "Blue On White 2", plateindex = 3, price = 300 },
+		{ name = "Blue On White 3", plateindex = 4, price = 300 },
+		{ name = "Yellow on Blue", plateindex = 2, price = 300 },
+		{ name = "Yellow on Black", plateindex = 1, price = 300 }
 	},
 	wheelaccessories = {
 		{ name = "Stock Tires", price = 500 },

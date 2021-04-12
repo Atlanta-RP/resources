@@ -214,9 +214,9 @@ RegisterNUICallback("requestMochila",function(data,cb)
 		end
 	end
 
-	local inventario,peso,maxpeso,infos = vSERVER.Mochila()
+	local inventario,peso,maxpeso,infos,grupos = vSERVER.Mochila()
 	if inventario then
-		cb({ inventario = inventario, drop = dropItems, peso = peso, maxpeso = maxpeso, infos = infos })
+		cb({ inventario = inventario, drop = dropItems, peso = peso, maxpeso = maxpeso, infos = infos, grupos = grupos })
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------

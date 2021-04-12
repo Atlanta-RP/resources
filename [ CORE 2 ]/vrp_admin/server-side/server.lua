@@ -60,7 +60,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------
 RegisterCommand("say",function(source,args,rawCommand)
 	if source == 0 then
-		TriggerClientEvent("Notify",-1,"negado",rawCommand:sub(4).."<br><b>Mensagem enviada por:</b> Governador",15000)
+		TriggerClientEvent("Notify",-1,"importante",rawCommand:sub(4).."<br><b>Mensagem enviada por:</b> Governador",15000)
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- GEMS
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("Coins",function(source,args,rawCommand)
+RegisterCommand("coins",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.hasPermission(user_id,"Owner") and parseInt(args[1]) > 0 and parseInt(args[2]) > 0 then

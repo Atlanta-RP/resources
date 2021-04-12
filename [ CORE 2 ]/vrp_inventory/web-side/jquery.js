@@ -295,6 +295,7 @@ const updateMochila = () => {
 				<span><s>BANCO:</s> $${formatarNumero(data.infos[2])}</span>
 				<span><s>COINS:</s> ${formatarNumero(data.infos[3])}</span>
 				<span>{${(data.peso).toFixed(2)} / ${(data.maxpeso).toFixed(2)}}</span>
+				<span><s>Grupos:</s> ${data.grupos}</span>
 			</div>
 		`);
 
