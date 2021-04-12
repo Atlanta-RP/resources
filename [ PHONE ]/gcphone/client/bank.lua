@@ -1,5 +1,5 @@
 --====================================================================================
---  Function APP BANK
+-- # Discord XenKnighT#7085
 --====================================================================================
 
 --[[
@@ -8,45 +8,48 @@
 --]]
 
 -- ES / ESX Implementation
-
+inMenu                      = false
 local bank = 0
 local firstname = ''
-function setBankBalance (value)
-      bank = value
-      SendNUIMessage({event = 'updateBankbalance', banking = bank})
-end
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(playerData)
+
+RegisterNetEvent("vRP:updateBalanceGc")
+AddEventHandler('vRP:updateBalanceGc', function(bank)
+SendNUIMessage({event = 'updateBankbalance', banking = bank})    
+end)
+
+
+RegisterNetEvent('esx:playerLoaded69696969')
+AddEventHandler('esx:playerLoaded69696969', function(playerData)
       local accounts = playerData.accounts or {}
       for index, account in ipairs(accounts) do 
             if account.name == 'bank' then
-                  setBankBalance(account.money)
+                  setBank(account.money)
                   break
             end
       end
 end)
 
-RegisterNetEvent('esx:setAccountMoney')
-AddEventHandler('esx:setAccountMoney', function(account)
+RegisterNetEvent('esx:setAccountMoney69696969')
+AddEventHandler('esx:setAccountMoney69696969', function(account)
       if account.name == 'bank' then
-            setBankBalance(account.money)
+            setBank(account.money)
       end
 end)
 
 RegisterNetEvent("es:addedBank")
 AddEventHandler("es:addedBank", function(m)
-      setBankBalance(bank + m)
+      setBank(bank + m)
 end)
 
 RegisterNetEvent("es:removedBank")
 AddEventHandler("es:removedBank", function(m)
-      setBankBalance(bank - m)
+      setBank(bank - m)
 end)
 
 RegisterNetEvent('es:displayBank')
 AddEventHandler('es:displayBank', function(bank)
-      setBankBalance(bank)
+      setBank(bank)
 end)
 
 
@@ -54,14 +57,16 @@ end)
 --===============================================
 --==         Transfer Event                    ==
 --===============================================
--- route request to custom gcphone resource that handles phone numbers and offline functionality
-AddEventHandler('gcphone:bankTransferByPhoneNumber', function(data)
-      TriggerServerEvent('gcPhone:bankTransferByPhoneNumber', data.phoneNumber, data.amount)
-      TriggerServerEvent('bank:balance')
+
+
+AddEventHandler('gcphone:bankTransfer', function(data)
+      TriggerServerEvent('bank:transfer', data.id, data.amount)
+      print('id:'..data.id..'valor:'..data.amount)
+      --TriggerServerEvent('bank:balance')
 end)
 
--- route request to the banking resource, this is the nominal path
-AddEventHandler('gcphone:bankTransferById', function(data)
-      TriggerServerEvent('bank:transfer', tonumber(data.id), tonumber(data.amount))
-      TriggerServerEvent('bank:balance')
-end)
+
+
+
+
+

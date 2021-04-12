@@ -68,12 +68,12 @@ local itemlist = {
 		type = "use",
 		weight = 0.6
 	},
-	["raceticket"] = {
-		index = "raceticket",
-		name = "Ticket de Corrida",
-		type = "use",
-		weight = 0.2
-	},
+	-- ["raceticket"] = {
+	-- 	index = "raceticket",
+	-- 	name = "Ticket de Corrida",
+	-- 	type = "use",
+	-- 	weight = 0.2
+	-- },
 	["pouch"] = {
 		index = "pouch",
 		name = "Malote",
@@ -1057,6 +1057,18 @@ local itemlist = {
 		type = "use",
 		weight = 0.75
 	},
+	["uva"] = {
+		index = "uva",
+		name = "Uva",
+		type = "use",
+		weight = 0.15
+	},
+	["vinho"] = {
+		index = "vinho",
+		name = "Vinho",
+		type = "use",
+		weight = 2.15
+	},
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- GENERATE:ADVTOOLBOX
@@ -1408,33 +1420,16 @@ end
 -- STORECHESTITEMVENDA
 -----------------------------------------------------------------------------------------------------------------------------------------
 function vRP.storeChestItemVenda(user_id,chestData,itemName,amount,chestWeight,slot)
-	if actived[user_id] == nil then
 		actived[user_id] = 1
 		local slot = tostring(slot)
 		local data = vRP.getSData(chestData)
 		local items = json.decode(data) or {}
-		if data and items ~= nil then
-
-			if parseInt(amount) > 0 then
-				activedAmount[user_id] = parseInt(amount)
+			if items[itemName] ~= nil then
+				items[itemName].amount = parseInt(items[itemName].amount) + parseInt(amount)
 			else
-				local inv = vRP.getInventory(user_id)
-				if inv[slot] then
-					activedAmount[user_id] = parseInt(inv[slot].amount)
-				end
+				items[itemName] = { amount = parseInt(amount) }
 			end
-
-			local new_weight = vRP.computeChestWeight(items) + vRP.itemWeightList(itemName) * parseInt(activedAmount[user_id])
-			if new_weight <= chestWeight then
-					if items[itemName] ~= nil then
-						items[itemName].amount = parseInt(items[itemName].amount) + parseInt(activedAmount[user_id])
-					else
-						items[itemName] = { amount = parseInt(activedAmount[user_id]) }
-					end
-					vRP.setSData(chestData,json.encode(items))
-			end
-		end
-	end
+			vRP.setSData(chestData,json.encode(items))
 	return false
 end
 

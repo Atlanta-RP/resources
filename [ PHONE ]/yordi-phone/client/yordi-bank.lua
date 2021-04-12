@@ -13,7 +13,7 @@ vBANK = Tunnel.getInterface("vrp_bank")
 
 local bank = 0
 
-function setBankBalance (value)
+function setBank (value)
     bank = value
     SendNUIMessage({event = 'updateBankbalance', banking = bank})
 end
@@ -22,14 +22,14 @@ RegisterNetEvent('vrp_bank:updates12ds')
 AddEventHandler('vrp_bank:updates12ds', function(playerData)
    local bankmoney = vBANK.requestBank()
    if bankmoney then
-      setBankBalance(bankmoney)
+      setBank(bankmoney)
    end
 end)
 
 function cnVRP.requestBankClient()
    local bankmoney = vBANK.requestBank()
    if bankmoney then
-      return setBankBalance(bankmoney)
+      return setBank(bankmoney)
    end
 end
 

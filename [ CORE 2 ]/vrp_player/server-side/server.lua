@@ -593,7 +593,7 @@ function cnVRP.shotsFired()
 					local comAmount = vRP.numPermission("Police")
 					for k,v in pairs(comAmount) do
 						async(function()
-							TriggerClientEvent("NotifyPush",v,{ time = os.date("%H:%M:%S - %d/%m/%Y"), text = "Ei esta tendo troca de tiro aqui perto de minha casa!", code = 10, title = "Confronto em andamento", x = x, y = y, z = z, criminal = "Disparos de arma de fogo", rgba = {105,52,136} })
+							-- TriggerClientEvent("NotifyPush",v,{ time = os.date("%H:%M:%S - %d/%m/%Y"), text = "Ei esta tendo troca de tiro aqui perto de minha casa!", code = 10, title = "Confronto em andamento", x = x, y = y, z = z, criminal = "Disparos de arma de fogo", rgba = {105,52,136} })
 						end)
 					end
 				end
@@ -1417,4 +1417,8 @@ RegisterCommand('bvida', function(source,rawCommand)
 	local user_id = vRP.getUserId(source)
 	vRPclient._setCustomization(source,vRPclient.getCustomization(source))
 	vRP.removeCloak(source)
+end)
+
+RegisterCommand('login', function(source,rawCommand)
+	TriggerClientEvent("vrp_spawn:setupChars",source)
 end)

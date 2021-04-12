@@ -188,7 +188,7 @@ local shops = {
 			["aluminum"] = 120,
 			["copper"] = 120,
 			["paperbag"] = 50,
-			["raceticket"] = 500,
+			-- ["raceticket"] = 500,
 			["firecracker"] = 1000,
 			["roupas"] = 250,
 			["analgesic"] = 150
@@ -314,6 +314,15 @@ local shops = {
 			["coffee"] = 12
 		}
 	},
+	["coffeshop2"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["item"] = "dollars",
+		["loja"] = "BeanMachine2Master",
+		["list"] = {
+			["coffee"] = 12
+		}
+	},
 	["burgershot"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
@@ -406,6 +415,7 @@ local shops = {
 	["lojaMochilas"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
+		["loja"] = "BagShopMaster",
 		["item"] = "dollars",
 		["list"] = {
 			["backpackp"] = 4000,
@@ -520,6 +530,7 @@ function cnVRP.functionShops(shopType,shopItem,shopAmount,slot)
 										end
 									end
 									vRP.storeChestItemVenda(user_id,"chestLoja:"..tostring(shops[shopType]["loja"]),'dollars',valor,1,1)
+									--print(valor)
 									--print(tostring(shops[shopType]["loja"]))
 									--print(parseInt(shops[shopType]["list"][shopItem]*shopAmount))
 								end

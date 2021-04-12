@@ -35,7 +35,7 @@ AddEventHandler("vrp_spawn:setupChars",function()
 	FreezeEntityPosition(PlayerPedId(),true)
 	SetEntityInvincible(PlayerPedId(),false) -- mqcu
 
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA",232.42,-419.45,224.98,360.0,0.0,140.0,60.0,false,0)
+	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA",-1867.05,-1173.85,15.39,1.0,0.0,300.0,60.0,false,0)
 	SetCamActive(cam,true)
 	RenderScriptCams(true,false,1,true,true)
 

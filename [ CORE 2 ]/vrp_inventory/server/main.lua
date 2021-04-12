@@ -1145,6 +1145,30 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 						until active[user_id] == nil
 					end
 
+					if itemName == "vinho" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_drinking@beer@male@idle_a","idle_a","prop_drink_redwine",49,28422,0.0,0.0,-0.10,0.0,0.0,0.0)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.alcoholTimer(user_id,1)
+									vRP.upgradeThirst(user_id,20)
+									TriggerClientEvent("setDrunkTime",source,500)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
 					if itemName == "dewars" then
 						active[user_id] = 10
 						vRPclient.stopActived(source)

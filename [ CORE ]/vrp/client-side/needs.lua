@@ -80,6 +80,6 @@ end
 function tvRP.setArmour(amount)
 	local ped = PlayerPedId()
 	local armour = GetPedArmour(ped)
-	--SetPedArmour(ped,parseInt(armour+amount))
+	SetPedArmour(ped,parseInt(armour+amount))
 	TriggerEvent("nahu:clock",amount)
 end

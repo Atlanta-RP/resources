@@ -18,6 +18,10 @@ local lideres = {
     {"Dk","DkMaster","Dk"},
     {"TheLost","TheLostMaster","TheLost"},
     {"BeanMachine","BeanMachineMaster","BeanMachine"},
+    {"BeanMachine2","BeanMachine2Master","BeanMachine2"},
+    {"BagShop","BagShopMaster","BagShop"},
+    {"Judiciario","Juiz","Judiciario"},
+    
 }
 
 -----------------------------------------------------------------------------------------------------------------------------------------

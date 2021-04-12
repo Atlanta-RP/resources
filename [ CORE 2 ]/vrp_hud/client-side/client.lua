@@ -145,11 +145,11 @@ end)
 -- DISCORDHOOD
 -----------------------------------------------------------------------------------------------------------------------------------------
 local discordHood = true
-RegisterCommand("seialal",function(source,args,rawCommand)
-	discordHood = true
-		SendNUIMessage({ hood = false })
+-- RegisterCommand("seialal",function(source,args,rawCommand)
+-- 	discordHood = true
+-- 		SendNUIMessage({ hood = false })
 
-end)
+-- end)
 RegisterNetEvent("vrp_hud:discordTrue")
 AddEventHandler("vrp_hud:discordTrue",function()
 	if not discordHood then

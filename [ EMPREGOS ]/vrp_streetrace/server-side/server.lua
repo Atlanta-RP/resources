@@ -65,13 +65,13 @@ function cnVRP.paymentMethod(vehPlate)
 	if user_id then
 		vRP.wantedTimer(user_id,300)
 		TriggerEvent("vrp_blipsystem:serviceExit",source)
-		vRP.giveInventoryItem(user_id,"dollars",parseInt(math.random(4000,5000)),true)
+		vRP.giveInventoryItem(user_id,"dollars2",parseInt(math.random(30,50)),true)
 	end
 end
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DEFUSAR
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("defusar",function(source,args,rawCommand)
+RegisterCommand("destivarCorrida",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.hasPermission(user_id,"Police") then

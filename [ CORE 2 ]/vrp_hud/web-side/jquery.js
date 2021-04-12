@@ -65,6 +65,13 @@ $(document).ready(function(){
 			$("#displayHealth").css("height",event.data.health + "%");
 		}
 
+		if(parseInt(event.data.oxigen) <= 9 ){
+			$("#backOxigen").css("display", "block")
+			$("#displayOxigen").css("height",event.data.armour + "%");
+		}else{			
+			$("#backOxigen").css("display", "none")
+		}
+
 		if(parseInt(event.data.armour) > 0 ){
 			$("#backArmour").css("display", "block")
 			$("#displayArmour").css("height",event.data.armour + "%");

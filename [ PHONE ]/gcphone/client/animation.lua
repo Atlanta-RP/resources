@@ -1,18 +1,11 @@
---====================================================================================
--- #Author: Jonathan D @ Gannon
---====================================================================================
-
--- JUST TESTING THAT IT ACTUALLY WORKS
+local Tunnel = module("vrp","lib/Tunnel")
+local Proxy = module("vrp","lib/Proxy")
+vRP = Proxy.getInterface("vRP")
 
 local myPedId = nil
-
 local phoneProp = 0
-local phoneModel = -1038739674
--- OR "prop_npc_phone"
--- OR "prop_npc_phone_02"
--- OR "prop_cs_phone_01"
-
-local currentStatus = 'out'
+local phoneModel = "prop_amb_phone"
+local currentStatus = "out"
 local lastDict = nil
 local lastAnim = nil
 local lastIsFreeze = false
@@ -52,67 +45,63 @@ local ANIMS = {
 	}
 }
 
-function isDoingCall()
-	print(lastAnim)
-	if lastAnim == 'cellphone_text_to_call' then
-		return true
-	end
-end
-
 function newPhoneProp()
 	deletePhone()
 	RequestModel(phoneModel)
 	while not HasModelLoaded(phoneModel) do
-		Citizen.Wait(1)
+		Citizen.Wait(10)
 	end
-	phoneProp = CreateObject(phoneModel, 1.0, 1.0, 1.0, 1, 1, 0)
-	local bone = GetPedBoneIndex(myPedId, 28422)
-	local isUnarmed = GetCurrentPedWeapon(myPedId, 0xA2719263)
-	if not isUnarmed then
-		AttachEntityToEntity(phoneProp, myPedId, bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
-	else
-		SetCurrentPedWeapon(myPedId, 0xA2719263, true)
-		AttachEntityToEntity(phoneProp, myPedId, bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
-	end
+	phoneProp = CreateObject(GetHashKey(phoneModel),1.0,1.0,1.0,1,1,0)
+	SetEntityCollision(phoneProp,false,false)
+	AttachEntityToEntity(phoneProp,myPedId,GetPedBoneIndex(myPedId,28422),0.0,0.0,0.0,0.0,0.0,0.0,1,1,0,0,2,1)
+	Citizen.InvokeNative(0xAD738C3085FE7E11,phoneProp,true,true)
 end
 
 function deletePhone()
-	if phoneProp ~= 0 then
-		Citizen.InvokeNative(0xAE3CBE5BF394C9C9 , Citizen.PointerValueIntInitialized(phoneProp))
-		phoneProp = 0
+	TriggerEvent("binoculos")
+	if DoesEntityExist(phoneProp) then
+		DetachEntity(phoneProp,true,true)
+		Citizen.InvokeNative(0xAD738C3085FE7E11,phoneProp,true,true)
+		SetEntityAsNoLongerNeeded(Citizen.PointerValueIntInitialized(phoneProp))
+		DeleteEntity(phoneProp)
+		phoneProp = nil
 	end
 end
 
---[[
-	out || text || Call ||
---]]
-function PhonePlayAnim (status, freeze, force)
+function PhonePlayAnim(status,freeze,force)
+	if status ~= 'out' and currentStatus == 'out' then
+		vRP._DeletarObjeto()
+	end
+
 	if currentStatus == status and force ~= true then
 		return
 	end
 
-	myPedId = GetPlayerPed(-1)
+	myPedId = PlayerPedId()
 	local freeze = freeze or false
 
 	local dict = "cellphone@"
-	if IsPedInAnyVehicle(myPedId, false) then
+	if IsPedInAnyVehicle(myPedId,false) then
 		dict = "anim@cellphone@in_car@ps"
 	end
 	loadAnimDict(dict)
 
 	local anim = ANIMS[dict][currentStatus][status]
 	if currentStatus ~= 'out' then
-		StopAnimTask(myPedId, lastDict, lastAnim, 1.0)
+		StopAnimTask(myPedId,lastDict,lastAnim,1.0)
 	end
+
 	local flag = 50
 	if freeze == true then
 		flag = 14
 	end
-	TaskPlayAnim(myPedId, dict, anim, 3.0, -1, -1, flag, 0, false, false, false)
+	TaskPlayAnim(myPedId,dict,anim,3.0,-1,-1,flag,0,false,false,false)
 
 	if status ~= 'out' and currentStatus == 'out' then
 		Citizen.Wait(380)
 		newPhoneProp()
+		TriggerEvent("status:celular",true)
+		SetCurrentPedWeapon(myPedId,GetHashKey("WEAPON_UNARMED"),true)
 	end
 
 	lastDict = dict
@@ -123,24 +112,24 @@ function PhonePlayAnim (status, freeze, force)
 	if status == 'out' then
 		Citizen.Wait(180)
 		deletePhone()
-		StopAnimTask(myPedId, lastDict, lastAnim, 1.0)
+		StopAnimTask(myPedId,lastDict,lastAnim,1.0)
+		TriggerEvent("status:celular",false)
 	end
-
 end
 
-function PhonePlayOut ()
+function PhonePlayOut()
 	PhonePlayAnim('out')
 end
 
-function PhonePlayText ()
+function PhonePlayText()
 	PhonePlayAnim('text')
 end
 
-function PhonePlayCall (freeze)
-	PhonePlayAnim('call', freeze)
+function PhonePlayCall(freeze)
+	PhonePlayAnim('call',freeze)
 end
 
-function PhonePlayIn () 
+function PhonePlayIn()
 	if currentStatus == 'out' then
 		PhonePlayText()
 	end
@@ -149,20 +138,6 @@ end
 function loadAnimDict(dict)
 	RequestAnimDict(dict)
 	while not HasAnimDictLoaded(dict) do
-		Citizen.Wait(1)
+		Citizen.Wait(10)
 	end
 end
-
--- Citizen.CreateThread(function ()
--- 	Citizen.Wait(200)
--- 	PhonePlayCall()
--- 	Citizen.Wait(2000)
--- 	PhonePlayOut()
--- 	Citizen.Wait(2000)
-
--- 	PhonePlayText()
--- 	Citizen.Wait(2000)
--- 	PhonePlayCall()
--- 	Citizen.Wait(2000)
--- 	PhonePlayOut()
--- end)

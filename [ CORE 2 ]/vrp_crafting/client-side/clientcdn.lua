@@ -65,9 +65,10 @@ local craftList = {
     { 2662.41,3468.25,55.95,"ilegalCrafting","TROCA ILEGAL" },
     { -882.04,-438.7,39.6,"fueltechCrafting","TROCA DE PEÇAS" },
 	{ 947.71,-1466.8,30.41,"dkCrafting","FABRICAR EQUIPAMENTOS" },
-    { -308.59,-1358.87,18.29,"mafiaCrafting","FABRICAR ARMAS" },
+    { -1870.43,2061.91,135.44,"mafiaCrafting","FABRICAR ARMAS" },
 	{ 987.0,-92.89,74.85,"theLostCrafting","FABRICAR MUNIÇÃO" },
-    { -1162.21,-2021.75,13.19,"mecanicoCrafting","TROCA MECÂNICO" }
+    { -1162.21,-2021.75,13.19,"mecanicoCrafting","TROCA MECÂNICO" },
+	{-1874.53,2059.22,135.92,"vinhoCrafting","FABRICAR VINHO"}
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- THREADOPEN
@@ -84,7 +85,7 @@ Citizen.CreateThread(function()
 				local distance = #(coords - vector3(v[1],v[2],v[3]))
 				if distance <= 1.5 then
 					timeDistance = 4
-					DrawText3D(v[1],v[2],v[3],"~g~E~w~   ABRIR "..v[5].."")
+					DrawText3D(v[1],v[2],v[3],"~g~E~w~    "..v[5].."")
 					if IsControlJustPressed(1,38) and vSERVER.requestPerm(v[4]) then
 						SetNuiFocus(true,true)
 						TransitionToBlurred(1000)

@@ -163,16 +163,13 @@ end
 -- TASKTHREE
 -----------------------------------------------------------------------------------------------------------------------------------------
 function cnVRP.taskLockpick()
-	local finished = taskBar(2600,math.random(15,18))
+	local finished = taskBar(2400,math.random(8,10))
 	if finished then
-		local finished = taskBar(2200,math.random(11,14))
+		local finished = taskBar(1600,math.random(8,10))
 		if finished then
-			local finished = taskBar(1800,math.random(9,10))
+			local finished = taskBar(800,math.random(8,10))
 			if finished then
-				local finished = taskBar(1800,math.random(8))
-				if finished then
-					return true
-				end
+				return true
 			end
 		end
 	end

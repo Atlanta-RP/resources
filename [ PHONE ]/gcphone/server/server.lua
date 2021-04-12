@@ -1,1477 +1,654 @@
---====================================================================================
--- #Author: Jonathan D @Gannon
--- Modified by:
--- BTNGaming 
--- Chip
--- DmACK (f.sanllehiromero@uandresbello.edu)
--- nikerays (lhuanluz)
---====================================================================================
+local Tunnel = module("vrp","lib/Tunnel")
 local Proxy = module("vrp","lib/Proxy")
 vRP = Proxy.getInterface("vRP")
+src = {}
+Tunnel.bindInterface("gcphone",src)
+vRPclient = Tunnel.getInterface("vRP", "gcphone")
+local Tools = module("vrp","lib/Tools")
+local idgens = Tools.newIDGenerator()
 
-if Config.newESX then
-	ESX = nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- WEBHOOK
+-----------------------------------------------------------------------------------------------------------------------------------------
+local webhookbanco = ""
 
-math.randomseed(os.time()) 
-
---- For phone number style XXX-XXXX
-function getPhoneRandomNumber()
-    local numBase0 = math.random(100,999)
-    local numBase1 = math.random(0,9999)
-    local num = string.format("%03d-%04d", numBase0, numBase1)
-
-	return num
-end
-
---- For this style 06XXXXXXXX Remove the -- from the next 3 lines
--- function getPhoneRandomNumber()
---     return '0' .. math.random(600000000,699999999)
--- end
-
---[[
-  Ouverture du téphone lié a un item
-  Un solution ESC basé sur la solution donnée par HalCroves
-  https://forum.fivem.net/t/tutorial-for-gcphone-with-call-and-job-message-other/177904
---]]
---[[
- ESX.RegisterServerCallback('gcphone:getItemAmount', function(source, cb, item)
-	print('gcphone:getItemAmount call item : ' .. item)
-	local xPlayer = ESX.GetPlayerFromId(source)
-        local items = xPlayer.getInventoryItem(item)
-
-        if items == nil then
-            cb(0)
-        else
-            cb(items.count)
-        end
-end)
---]]
-
---====================================================================================
---  SIM CARDS // Thanks to AshKetchumza for the idea an some code.
---  TO ENABLE SIM CARDS, Remove --[[ & ]]-- on lines 49 and 76.
---====================================================================================
-
---[[
-RegisterServerEvent('gcPhone:useSimCard')
-AddEventHandler('gcPhone:useSimCard', function(source, identifier)
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
-    local myPhoneNumber = nil
-    repeat
-        myPhoneNumber = getPhoneRandomNumber()
-        local id = getIdentifierByPhoneNumber(myPhoneNumber)
-    until id == nil
-    MySQL.Async.insert("UPDATE users SET phone = @myPhoneNumber WHERE identifier = @identifier", { 
-        ['@myPhoneNumber'] = myPhoneNumber,
-        ['@identifier'] = xPlayer.identifier
-    }, function (rows)
-        xPlayer.removeInventoryItem('sim_card', 1)
-        local num = getNumberPhone(xPlayer.identifier)
-        TriggerClientEvent("gcPhone:myPhoneNumber", _source, num)
-        TriggerClientEvent("gcPhone:contactList", _source, getContacts(identifier))
-        TriggerClientEvent("gcPhone:allMessage", _source, getMessages(identifier))
-        TriggerClientEvent('gcPhone:getBourse', _source, getBourse())
-        sendHistoriqueCall(_source, num)
-    end)
-end)
-
-
-ESX.RegisterUsableItem('sim_card', function (source)
-    TriggerEvent('gcPhone:useSimCard', source)
-end)
-]]--
-
---====================================================================================
---  Utils
---====================================================================================
-function getSourceFromIdentifier(identifier, cb)
-	local xPlayers = ESX.GetPlayers()
-	
-	for i=1, #xPlayers, 1 do
-		local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
-		
-		if(xPlayer.identifier ~= nil and xPlayer.identifier == identifier) or (xPlayer.identifier == identifier) then
-			cb(xPlayer.source)
-			return
-		end
+function SendWebhookMessage(webhook,message)
+	if webhook ~= nil and webhook ~= "" then
+		PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({content = message}), { ['Content-Type'] = 'application/json' })
 	end
-	cb(nil)
 end
 
-function getNumberPhone(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT vrp_users.phone FROM vrp_users WHERE vrp_users.id = @identifier", {
-        ['@identifier'] = identifier
-    })
-    if result[1] ~= nil then
-        return result[1].phone
-    end
-    return nil
-end
-function getIdentifierByPhoneNumber(phone) 
-    local result = MySQL.Sync.fetchAll("SELECT vrp_users.id FROM vrp_users WHERE vrp_users.phone = @phone", {
-        ['@phone'] = phone
-    })
-    if result[1] ~= nil then
-        return result[1].id
-    end
-    return nil
-end
-
-function getIdentifiant(id)
-    for _, v in ipairs(id) do
-        return v
-    end
-end
-
-function getOrGeneratePhoneNumber (identifier, cb)
-    local identifier = identifier
-    local myPhoneNumber = getNumberPhone(identifier)
-    if myPhoneNumber == '0' or myPhoneNumber == nil then
-        repeat
-            myPhoneNumber = getPhoneRandomNumber()
-            local id = getIdentifierByPhoneNumber(myPhoneNumber)
-        until id == nil
-        MySQL.Async.insert("UPDATE vrp_users SET phone = @myPhoneNumber WHERE identifier = @identifier", { 
-            ['@myPhoneNumber'] = myPhoneNumber,
-            ['@identifier'] = identifier
-        }, function ()
-            cb(myPhoneNumber)
-        end)
-    else
-        cb(myPhoneNumber)
-    end
-end
---====================================================================================
---  Contacts
---====================================================================================
-function getContacts(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT * FROM phone_users_contacts WHERE phone_users_contacts.identifier = @identifier", {
-        ['@identifier'] = identifier
-    })
-    return result
-end
-
-function addContact(source, identifier, number, display)
-    local sourcePlayer = tonumber(source)
-    MySQL.Async.insert("INSERT INTO phone_users_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)", {
-        ['@identifier'] = identifier,
-        ['@number'] = number,
-        ['@display'] = display,
-    },function()
-        notifyContactChange(sourcePlayer, identifier)
-    end)
-end
-
-function updateContact(source, identifier, id, number, display)
-    local sourcePlayer = tonumber(source)
-    MySQL.Async.insert("UPDATE phone_users_contacts SET number = @number, display = @display WHERE id = @id", { 
-        ['@number'] = number,
-        ['@display'] = display,
-        ['@id'] = id,
-    },function()
-        notifyContactChange(sourcePlayer, identifier)
-    end)
-end
-
-function deleteContact(source, identifier, id)
-    local sourcePlayer = tonumber(source)
-    MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier AND `id` = @id", {
-        ['@identifier'] = identifier,
-        ['@id'] = id,
-    })
-    notifyContactChange(sourcePlayer, identifier)
-end
-
-function deleteAllContact(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier", {
-        ['@identifier'] = identifier
-    })
-end
-
-function notifyContactChange(source, identifier)
-    local sourcePlayer = tonumber(source)
-    local identifier = identifier
-    if sourcePlayer ~= nil then 
-        TriggerClientEvent("gcPhone:contactList", sourcePlayer, getContacts(identifier))
-    end
-end
-
-RegisterServerEvent('gcPhone:addContact')
-AddEventHandler('gcPhone:addContact', function(display, phoneNumber)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    addContact(sourcePlayer, identifier, phoneNumber, display)
-end)
-
-RegisterServerEvent('gcPhone:updateContact')
-AddEventHandler('gcPhone:updateContact', function(id, display, phoneNumber)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    updateContact(sourcePlayer, identifier, id, phoneNumber, display)
-end)
-
-RegisterServerEvent('gcPhone:deleteContact')
-AddEventHandler('gcPhone:deleteContact', function(id)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    deleteContact(sourcePlayer, identifier, id)
-end)
-
---====================================================================================
---  Messages
---====================================================================================
-function getMessages(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT phone_messages.* FROM phone_messages LEFT JOIN vrp_users ON vrp_users.id = @identifier WHERE phone_messages.receiver = vrp_users.phone", {
-         ['@identifier'] = identifier
-    })
-    return result
-    --return MySQLQueryTimeStamp("SELECT phone_messages.* FROM phone_messages LEFT JOIN users ON vrp_users.id = @identifier WHERE phone_messages.receiver = vrp_users.phone", {['@identifier'] = identifier})
-end
-
-RegisterServerEvent('gcPhone:_internalAddMessage')
-AddEventHandler('gcPhone:_internalAddMessage', function(transmitter, receiver, message, owner, cb)
-    cb(_internalAddMessage(transmitter, receiver, message, owner))
-end)
-
-function _internalAddMessage(transmitter, receiver, message, owner)
-    local Query = "INSERT INTO phone_messages (`transmitter`, `receiver`,`message`, `isRead`,`owner`) VALUES(@transmitter, @receiver, @message, @isRead, @owner);"
-    local Query2 = 'SELECT * from phone_messages WHERE `id` = @id;'
-	local Parameters = {
-        ['@transmitter'] = transmitter,
-        ['@receiver'] = receiver,
-        ['@message'] = message,
-        ['@isRead'] = owner,
-        ['@owner'] = owner
-    }
-    local id = MySQL.Sync.insert(Query, Parameters)
-    return MySQL.Sync.fetchAll(Query2, {
-        ['@id'] = id
-    })[1]
-end
-
-function addMessage(source, identifier, phone, message)
-    local sourcePlayer = tonumber(source)
-    local otherIdentifier = getIdentifierByPhoneNumber(phone)
-    local myPhone = getNumberPhone(identifier)
-    if otherIdentifier ~= nil then 
-        local tomess = _internalAddMessage(myPhone, phone, message, 0)
-        getSourceFromIdentifier(otherIdentifier, function (osou)
-            if tonumber(osou) ~= nil then 
-                -- TriggerClientEvent("gcPhone:allMessage", osou, getMessages(otherIdentifier))
-                TriggerClientEvent("gcPhone:receiveMessage", tonumber(osou), tomess)
-            end
-        end) 
-    end
-    local memess = _internalAddMessage(phone, myPhone, message, 1)
-    TriggerClientEvent("gcPhone:receiveMessage", sourcePlayer, memess)
-end
-
-function setReadMessageNumber(identifier, num)
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("UPDATE phone_messages SET phone_messages.isRead = 1 WHERE phone_messages.receiver = @receiver AND phone_messages.transmitter = @transmitter", { 
-        ['@receiver'] = mePhoneNumber,
-        ['@transmitter'] = num
-    })
-end
-
-function deleteMessage(msgId)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `id` = @id", {
-        ['@id'] = msgId
-    })
-end
-
-function deleteAllMessageFromPhoneNumber(source, identifier, phone)
+function src.checkItemPhone()
     local source = source
-    local identifier = identifier
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber and `transmitter` = @phone", {['@mePhoneNumber'] = mePhoneNumber,['@phone'] = phone})
-end
-
-function deleteAllMessage(identifier)
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber", {
-        ['@mePhoneNumber'] = mePhoneNumber
-    })
-end
-
-RegisterServerEvent('gcPhone:sendMessage')
-AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    addMessage(sourcePlayer, identifier, phoneNumber, message)
-end)
-
-RegisterServerEvent('gcPhone:deleteMessage')
-AddEventHandler('gcPhone:deleteMessage', function(msgId)
-    deleteMessage(msgId)
-end)
-
-RegisterServerEvent('gcPhone:deleteMessageNumber')
-AddEventHandler('gcPhone:deleteMessageNumber', function(number)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    deleteAllMessageFromPhoneNumber(sourcePlayer,identifier, number)
-    -- TriggerClientEvent("gcphone:allMessage", sourcePlayer, getMessages(identifier))
-end)
-
-RegisterServerEvent('gcPhone:deleteAllMessage')
-AddEventHandler('gcPhone:deleteAllMessage', function()
-    local _source = source
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    deleteAllMessage(identifier)
-end)
-
-RegisterServerEvent('gcPhone:setReadMessageNumber')
-AddEventHandler('gcPhone:setReadMessageNumber', function(num)
-    local _source = source
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    setReadMessageNumber(identifier, num)
-end)
-
-RegisterServerEvent('gcPhone:deleteALL')
-AddEventHandler('gcPhone:deleteALL', function()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    deleteAllMessage(identifier)
-    deleteAllContact(identifier)
-    appelsDeleteAllHistorique(identifier)
-    TriggerClientEvent("gcPhone:contactList", sourcePlayer, {})
-    TriggerClientEvent("gcPhone:allMessage", sourcePlayer, {})
-    TriggerClientEvent("appelsDeleteAllHistorique", sourcePlayer, {})
-end)
-
---====================================================================================
---  Gestion des appels
---====================================================================================
-local AppelsEnCours = {}
-local PhoneFixeInfo = {}
-local lastIndexCall = 10
-
-function getHistoriqueCall (num)
-    local result = MySQL.Sync.fetchAll("SELECT * FROM phone_calls WHERE phone_calls.owner = @num ORDER BY time DESC LIMIT 120", {
-        ['@num'] = num
-    })
-    return result
-end
-
-function sendHistoriqueCall (src, num) 
-    local histo = getHistoriqueCall(num)
-    TriggerClientEvent('gcPhone:historiqueCall', src, histo)
-end
-
-function saveAppels (appelInfo)
-    if appelInfo.extraData == nil or appelInfo.extraData.useNumber == nil then
-        MySQL.Async.insert("INSERT INTO phone_calls (`owner`, `num`,`incoming`, `accepts`) VALUES(@owner, @num, @incoming, @accepts)", {
-            ['@owner'] = appelInfo.transmitter_num,
-            ['@num'] = appelInfo.receiver_num,
-            ['@incoming'] = 1,
-            ['@accepts'] = appelInfo.is_accepts
-        }, function()
-            notifyNewAppelsHisto(appelInfo.transmitter_src, appelInfo.transmitter_num)
-        end)
-    end
-    if appelInfo.is_valid == true then
-        local num = appelInfo.transmitter_num
-        if appelInfo.hidden == true then
-            num = "###-####"
-        end
-        MySQL.Async.insert("INSERT INTO phone_calls (`owner`, `num`,`incoming`, `accepts`) VALUES(@owner, @num, @incoming, @accepts)", {
-            ['@owner'] = appelInfo.receiver_num,
-            ['@num'] = num,
-            ['@incoming'] = 0,
-            ['@accepts'] = appelInfo.is_accepts
-        }, function()
-            if appelInfo.receiver_src ~= nil then
-                notifyNewAppelsHisto(appelInfo.receiver_src, appelInfo.receiver_num)
-            end
-        end)
-    end
-end
-
-function notifyNewAppelsHisto (src, num) 
-    sendHistoriqueCall(src, num)
-end
-
-RegisterServerEvent('gcPhone:getHistoriqueCall')
-AddEventHandler('gcPhone:getHistoriqueCall', function()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-	xPlayer = ESX.GetPlayerFromId(_source)
-    identifier = xPlayer.identifier
-    local srcPhone = getNumberPhone(identifier)
-    sendHistoriqueCall(sourcePlayer, num)
-end)
-
-RegisterServerEvent('gcPhone:register_FixePhone')
-AddEventHandler('gcPhone:register_FixePhone', function(phone, coords)
-	Config.FixePhone[phone] = {name = _U('phone_booth'), coords = {x = coords.x, y = coords.y, z = coords.z}}
-	TriggerClientEvent('gcPhone:register_FixePhone', -1, phone, Config.FixePhone[phone])
-end)
-
-RegisterServerEvent('gcPhone:internal_startCall')
-AddEventHandler('gcPhone:internal_startCall', function(source, phone, rtcOffer, extraData)
-    if Config.FixePhone[phone] ~= nil then
-        onCallFixePhone(source, phone, rtcOffer, extraData)
-        return
-    end
-    
-    local rtcOffer = rtcOffer
-    if phone == nil or phone == '' then 
-        --print('BAD CALL NUMBER IS NIL')
-        return
-    end
-
-    local hidden = string.sub(phone, 1, 1) == '#'
-    if hidden == true then
-        phone = string.sub(phone, 2)
-    end
-
-    local indexCall = lastIndexCall
-    lastIndexCall = lastIndexCall + 1
-
-    local sourcePlayer = tonumber(source)
-	local xPlayer = ESX.GetPlayerFromId(source)
-    local identifier = xPlayer.identifier
-
-    local srcPhone = ''
-    if extraData ~= nil and extraData.useNumber ~= nil then
-        srcPhone = extraData.useNumber
-    else
-        srcPhone = getNumberPhone(identifier)
-    end
-    local destPlayer = getIdentifierByPhoneNumber(phone)
-    local is_valid = destPlayer ~= nil and destPlayer ~= identifier
-    AppelsEnCours[indexCall] = {
-        id = indexCall,
-        transmitter_src = sourcePlayer,
-        transmitter_num = srcPhone,
-        receiver_src = nil,
-        receiver_num = phone,
-        is_valid = destPlayer ~= nil,
-        is_accepts = false,
-        hidden = hidden,
-        rtcOffer = rtcOffer,
-        extraData = extraData
-    }
-
-    if is_valid == true then
-        getSourceFromIdentifier(destPlayer, function (srcTo)
-            if srcTo ~= nill then
-                AppelsEnCours[indexCall].receiver_src = srcTo
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-                TriggerClientEvent('gcPhone:waitingCall', srcTo, AppelsEnCours[indexCall], false)
-            else
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-            end
-        end)
-    else
-        TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-        TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-    end
-
-end)
-
-RegisterServerEvent('gcPhone:startCall')
-AddEventHandler('gcPhone:startCall', function(phone, rtcOffer, extraData)
-    local _source = source
-    TriggerEvent('gcPhone:internal_startCall',_source, phone, rtcOffer, extraData)
-end)
-
-RegisterServerEvent('gcPhone:candidates')
-AddEventHandler('gcPhone:candidates', function (callId, candidates)
-    -- print('send cadidate', callId, candidates)
-    if AppelsEnCours[callId] ~= nil then
-        local _source = source
-        local to = AppelsEnCours[callId].transmitter_src
-        if _source == to then 
-            to = AppelsEnCours[callId].receiver_src
-        end
-        -- print('TO', to)
-        TriggerClientEvent('gcPhone:candidates', to, candidates)
-    end
-end)
-
-RegisterServerEvent('gcPhone:acceptCall')
-AddEventHandler('gcPhone:acceptCall', function(infoCall, rtcAnswer)
-    local id = infoCall.id
-    if AppelsEnCours[id] ~= nil then
-        if PhoneFixeInfo[id] ~= nil then
-            onAcceptFixePhone(source, infoCall, rtcAnswer)
-            return
-        end
-        AppelsEnCours[id].receiver_src = infoCall.receiver_src or AppelsEnCours[id].receiver_src
-        if AppelsEnCours[id].transmitter_src ~= nil and AppelsEnCours[id].receiver_src~= nil then
-            AppelsEnCours[id].is_accepts = true
-            AppelsEnCours[id].rtcAnswer = rtcAnswer
-            TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].transmitter_src, AppelsEnCours[id], true)
-	    SetTimeout(1000, function() -- change to +1000, if necessary.
-       		TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].receiver_src, AppelsEnCours[id], false)
-	    end)
-            saveAppels(AppelsEnCours[id])
+    local user_id = vRP.getUserId(source)
+    if user_id then
+        if vRP.getInventoryItemAmount(user_id,"cellphone") >= 1 then
+            return true 
+        else
+            TriggerClientEvent("Notify",source,"negado","Você não possui um celular em sua mochila.") 
+            return false
         end
     end
-end)
-
-RegisterServerEvent('gcPhone:rejectCall')
-AddEventHandler('gcPhone:rejectCall', function (infoCall)
-    local _source = source
-    local id = infoCall.id
-    if AppelsEnCours[id] ~= nil then
-        if PhoneFixeInfo[id] ~= nil then
-            onRejectFixePhone(source, infoCall)
-            return
-        end
-        if AppelsEnCours[id].transmitter_src ~= nil then
-            TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].transmitter_src)
-        end
-        if AppelsEnCours[id].receiver_src ~= nil then
-            TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].receiver_src)
-        end
-
-        if AppelsEnCours[id].is_accepts == false then 
-            saveAppels(AppelsEnCours[id])
-        end
-        TriggerEvent('gcPhone:removeCall', AppelsEnCours)
-        AppelsEnCours[id] = nil
-    end
-end)
-
-RegisterServerEvent('gcPhone:appelsDeleteHistorique')
-AddEventHandler('gcPhone:appelsDeleteHistorique', function (numero)
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-	local xPlayer = ESX.GetPlayerFromId(_source)
-    local identifier = xPlayer.identifier
-    local srcPhone = getNumberPhone(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner AND `num` = @num", {
-        ['@owner'] = srcPhone,
-        ['@num'] = numero
-    })
-end)
-
-function appelsDeleteAllHistorique(srcIdentifier)
-    local srcPhone = getNumberPhone(srcIdentifier)
-    MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner", {
-        ['@owner'] = srcPhone
-    })
 end
 
-RegisterServerEvent('gcPhone:appelsDeleteAllHistorique')
-AddEventHandler('gcPhone:appelsDeleteAllHistorique', function ()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    local xPlayer = ESX.GetPlayerFromId(_source)
-    local identifier = xPlayer.identifier
-    appelsDeleteAllHistorique(identifier)
-end)
+math.randomseed(os.time())
 
---====================================================================================
---  OnLoad
---====================================================================================
-AddEventHandler('esx:playerLoaded',function(playerId, xPlayer)
-    local sourcePlayer = playerId
-    local identifier = xPlayer.identifier
-    local num = getNumberPhone(identifier)
-
-	getOrGeneratePhoneNumber(identifier, function (myPhoneNumber)
-        TriggerClientEvent('gcPhone:myPhoneNumber', sourcePlayer, myPhoneNumber)
-        TriggerClientEvent('gcPhone:contactList', sourcePlayer, getContacts(identifier))
-        TriggerClientEvent('gcPhone:allMessage', sourcePlayer, getMessages(identifier))
-        TriggerClientEvent('gcPhone:getBourse', sourcePlayer, getBourse())
-        sendHistoriqueCall(sourcePlayer, num)
-    end)
-end)
-
-RegisterServerEvent('gcPhone:allUpdate')
-AddEventHandler('gcPhone:allUpdate', function()
-    local _source = source
-    local sourcePlayer = tonumber(_source)
-    local xPlayer = ESX.GetPlayerFromId(_source)
-    while xPlayer == nil do
-        xPlayer = ESX.GetPlayerFromId(_source)
-        Citizen.Wait(10000)
-    end
-    local identifier = xPlayer.identifier
-    local num = getNumberPhone(identifier)
-    TriggerClientEvent("gcPhone:myPhoneNumber", sourcePlayer, num)
-    TriggerClientEvent("gcPhone:contactList", sourcePlayer, getContacts(identifier))
-    TriggerClientEvent("gcPhone:allMessage", sourcePlayer, getMessages(identifier))
-    TriggerClientEvent('gcPhone:getBourse', sourcePlayer, getBourse())
-    sendHistoriqueCall(sourcePlayer, num)
-end)
-
---[[ AddEventHandler('onMySQLReady', function ()
-    MySQL.Async.fetchAll("DELETE FROM phone_messages WHERE (DATEDIFF(CURRENT_DATE,time) > 10)")
-end) --]]
-
---====================================================================================
---  App bourse
---====================================================================================
-function getBourse()
-    --  Format
-    --  Array 
-    --  Object
-    -- 	libelle type String    | Nom
-    --  price type number      | Prix actuelle
-    --  difference type number | Evolution 
-
-    -- local result = MySQL.Sync.fetchAll("SELECT * FROM `recolt` LEFT JOIN `items` ON items.`id` = recolt.`treated_id` WHERE fluctuation = 1 ORDER BY price DESC",{})
-    local result = {
-        {
-            libelle = 'Google',
-            price = 125.2,
-            difference =  -12.1
-        },
-        {
-            libelle = 'Microsoft',
-            price = 132.2,
-            difference = 3.1
-        },
-        {
-            libelle = 'Amazon',
-            price = 120,
-            difference = 0
-        }
-    }
-    return result
-end
-
---====================================================================================
---  App ... WIP
---====================================================================================
--- SendNUIMessage('ongcPhoneRTC_receive_offer')
--- SendNUIMessage('ongcPhoneRTC_receive_answer')
-
--- RegisterNUICallback('gcPhoneRTC_send_offer', function (data)
-
--- end)
-
--- RegisterNUICallback('gcPhoneRTC_send_answer', function (data)
-
--- end)
-
-function onCallFixePhone (source, phone, rtcOffer, extraData)
-    local indexCall = lastIndexCall
-    lastIndexCall = lastIndexCall + 1
-
-    local hidden = string.sub(phone, 1, 1) == '#'
-    if hidden == true then
-        phone = string.sub(phone, 2)
-    end
-    local sourcePlayer = tonumber(source)
-	local xPlayer = ESX.GetPlayerFromId(source)
-    local identifier = xPlayer.identifier
-
-    local srcPhone = ''
-    if extraData ~= nil and extraData.useNumber ~= nil then
-        srcPhone = extraData.useNumber
-    else
-        srcPhone = getNumberPhone(srcIdentifier)
-        --srcPhone = '###-####' -- This change was made for public phones without phone number reading in mind
-    end
-
-    AppelsEnCours[indexCall] = {
-        id = indexCall,
-        transmitter_src = sourcePlayer,
-        transmitter_num = srcPhone,
-        receiver_src = nil,
-        receiver_num = phone,
-        is_valid = false,
-        is_accepts = false,
-        hidden = hidden,
-        rtcOffer = rtcOffer,
-        extraData = extraData,
-        coords = Config.FixePhone[phone].coords
-    }
-    
-    PhoneFixeInfo[indexCall] = AppelsEnCours[indexCall]
-
-    TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-    TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-end
-
-function onAcceptFixePhone(source, infoCall, rtcAnswer)
-    local id = infoCall.id
-    
-    AppelsEnCours[id].receiver_src = source
-    if AppelsEnCours[id].transmitter_src ~= nil and AppelsEnCours[id].receiver_src~= nil then
-        AppelsEnCours[id].is_accepts = true
-        AppelsEnCours[id].forceSaveAfter = true
-        AppelsEnCours[id].rtcAnswer = rtcAnswer
-        PhoneFixeInfo[id] = nil
-        TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-        TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].transmitter_src, AppelsEnCours[id], true)
-        SetTimeout(1000, function() -- change to +1000, if necessary.
-            TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].receiver_src, AppelsEnCours[id], false)
-        end)
-        saveAppels(AppelsEnCours[id])
-    end
-end
-
-function onRejectFixePhone(source, infoCall, rtcAnswer)
-    local id = infoCall.id
-    PhoneFixeInfo[id] = nil
-    TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-    TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].transmitter_src)
-    if AppelsEnCours[id].is_accepts == false then
-        saveAppels(AppelsEnCours[id])
-    end
-    AppelsEnCours[id] = nil 
-end
-
-else
-
-ESX = nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-
-math.randomseed(os.time()) 
-
---- For phone numbers like: XXX-XXXX
 function getPhoneRandomNumber()
-    local numBase0 = math.random(100,999)
-    local numBase1 = math.random(0,9999)
-    local num = string.format("%03d-%04d", numBase0, numBase1)
-
+    local numBase0 = math.random(1000,9999)
+	local numBase1 = math.random(0,9999)
+	local num = string.format("%04d-%04d",numBase0,numBase1)
 	return num
 end
 
---- For this style: 06XXXXXXXX remove the -- from the next 3 lines
--- function getPhoneRandomNumber()
---     return '0' .. math.random(600000000,699999999)
--- end
-
---[[
-  Make the phone an item
-  Solution base from HalCroves
-  Just remove the brackets before and after the "ESX.ReigisterServerCallback" line and "end)""
-  https://forum.fivem.net/t/tutorial-for-gcphone-with-call-and-job-message-other/177904
---]]
---[[
-    ESX.RegisterServerCallback('gcphone:getItemAmount', function(source, cb, item)
-        print('gcphone:getItemAmount call item : ' .. item)
-        local xPlayer = ESX.GetPlayerFromId(source)
-        local items = xPlayer.getInventoryItem(item)
-
-        if items == nil then
-            cb(0)
-        else
-            cb(items.count)
-        end
-    end)
---]]
-
---====================================================================================
---  SIM CARDS // Thanks to AshKetchumza for the idea an some code.
---  TO ENABLE SIM CARDS, Remove --[[ & ]]-- on lines 775 and 803.
---====================================================================================
-
---[[
-RegisterServerEvent('gcPhone:useSimCard')
-AddEventHandler('gcPhone:useSimCard', function(source, identifier)
-    local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
-    local myPhoneNumber = nil
-    repeat
-        myPhoneNumber = getPhoneRandomNumber()
-        local id = getIdentifierByPhoneNumber(myPhoneNumber)
-    until id == nil
-    MySQL.Async.insert("UPDATE users SET phone = @myPhoneNumber WHERE identifier = @identifier", { 
-        ['@myPhoneNumber'] = myPhoneNumber,
-        ['@identifier'] = xPlayer.identifier
-    }, function (rows)
-        xPlayer.removeInventoryItem('sim_card', 1)
-        local num = getNumberPhone(xPlayer.identifier)
-        TriggerClientEvent("gcPhone:myPhoneNumber", _source, num)
-        TriggerClientEvent("gcPhone:contactList", _source, getContacts(identifier))
-        TriggerClientEvent("gcPhone:allMessage", _source, getMessages(identifier))
-        TriggerClientEvent('gcPhone:getBourse', _source, getBourse())
-        sendHistoriqueCall(_source, num)
-    end)
-end)
-
-
-ESX.RegisterUsableItem('sim_card', function (source)
-    TriggerEvent('gcPhone:useSimCard', source)
-end)
-]]--
-
---====================================================================================
---  Utils
---====================================================================================
-function getSourceFromIdentifier(identifier, cb)
-    TriggerEvent("es:getPlayers", function(users)
-        for k , user in pairs(users) do
-        
-            if (user.getIdentifier ~= nil and user.getIdentifier() == identifier) or (user.identifier == identifier) then
-                cb(k)
-                return
-            end
-        end
-    end)
-    cb(nil)
-end
-
 function getNumberPhone(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT vrp_users.phone FROM vrp_users WHERE vrp_users.id = @identifier", {
-        ['@identifier'] = identifier
-    })
-    --print("identificador: "..identifier)
-    if result[1] ~= nil then
-        return result[1].phone
-    end
-    return nil
-end
-function getIdentifierByPhoneNumber(phone) 
-    local result = MySQL.Sync.fetchAll("SELECT vrp_users.id FROM vrp_users WHERE vrp_users.phone = @phone", {
-        ['@phone'] = phone
-    })
-    if result[1] ~= nil then
-        return result[1].id
-    end
-    return nil
+	local result = MySQL.Sync.fetchAll("SELECT vrp_users.phone FROM vrp_users WHERE vrp_users.id = @identifier",{ ['@identifier'] = identifier })
+	if result[1] ~= nil then
+		return result[1].phone
+	end
+	return nil
 end
 
+function getIdentifierByPhoneNumber(phone_number) 
+	local result = MySQL.Sync.fetchAll("SELECT vrp_users.id FROM vrp_users WHERE vrp_users.phone = @phone_number",{ ['@phone_number'] = phone_number })
+	if result[1] ~= nil then
+		return result[1].user_id
+	end
+	return nil
+end
 
 function getPlayerID(source)
-    --local identifiers = GetPlayerIdentifiers(source)
-    --local player = getIdentifiant(identifiers)
-    local user_id = vRP.getUserId(source)
-    -- local result = MySQL.Sync.fetchAll("SELECT vrp_users.id FROM vrp_users WHERE vrp_users.steam = @player", {
-    --     ['@player'] = player
-    -- })
-    -- return result[2].id
-    --print(user_id)
-    return user_id
+	local player = vRP.getUserId(source)
+	return player
 end
+
 function getIdentifiant(id)
-    for _, v in ipairs(id) do
-        return v
-    end
+	for _, v in ipairs(id) do
+		return v
+	end
 end
 
-
-function getOrGeneratePhoneNumber (sourcePlayer, identifier, cb)
-    local sourcePlayer = sourcePlayer
-    local identifier = identifier
-    local myPhoneNumber = getNumberPhone(identifier)
-    if myPhoneNumber == '0' or myPhoneNumber == nil then
-        repeat
-            myPhoneNumber = getPhoneRandomNumber()
-            local id = getIdentifierByPhoneNumber(myPhoneNumber)
-        until id == nil
-        MySQL.Async.insert("UPDATE vrp_users SET phone = @myPhoneNumber WHERE identifier = @identifier", { 
-            ['@myPhoneNumber'] = myPhoneNumber,
-            ['@identifier'] = identifier
-        }, function ()
-            cb(myPhoneNumber)
-        end)
-    else
-        cb(myPhoneNumber)
-    end
+function getOrGeneratePhoneNumber(sourcePlayer,identifier,cb)
+	local sourcePlayer = sourcePlayer
+	local identifier = identifier
+	local myPhoneNumber = getNumberPhone(identifier)
+	if myPhoneNumber == '0' or myPhoneNumber == nil then
+		repeat
+			myPhoneNumber = getPhoneRandomNumber()
+			local id = getIdentifierByPhoneNumber(myPhoneNumber)
+		until id == nil
+		MySQL.Async.insert("UPDATE vrp_users SET phone = @myPhoneNumber WHERE id = @identifier",{ ['@myPhoneNumber'] = myPhoneNumber, ['@identifier'] = identifier },function()
+			cb(myPhoneNumber)
+		end)
+	else
+		cb(myPhoneNumber)
+	end
 end
---====================================================================================
---  Contacts
---====================================================================================
+
 function getContacts(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT * FROM phone_users_contacts WHERE phone_users_contacts.identifier = @identifier", {
-        ['@identifier'] = identifier
-    })
-    return result
+	local result = MySQL.Sync.fetchAll("SELECT * FROM phone_users_contacts WHERE phone_users_contacts.identifier = @identifier",{ ['@identifier'] = identifier })
+	return result
 end
 
-function addContact(source, identifier, number, display)
-    local sourcePlayer = tonumber(source)
-    MySQL.Async.insert("INSERT INTO phone_users_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)", {
-        ['@identifier'] = identifier,
-        ['@number'] = number,
-        ['@display'] = display,
-    },function()
-        notifyContactChange(sourcePlayer, identifier)
-    end)
+function addContact(source,identifier,number,display)
+	local sourcePlayer = tonumber(source)
+	MySQL.Async.insert("INSERT INTO phone_users_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)",{
+		['@identifier'] = identifier,
+		['@number'] = number,
+		['@display'] = display
+	},function()
+		notifyContactChange(sourcePlayer,identifier)
+	end)
 end
 
-function updateContact(source, identifier, id, number, display)
-    local sourcePlayer = tonumber(source)
-    MySQL.Async.insert("UPDATE phone_users_contacts SET number = @number, display = @display WHERE id = @id", { 
-        ['@number'] = number,
-        ['@display'] = display,
-        ['@id'] = id,
-    },function()
-        notifyContactChange(sourcePlayer, identifier)
-    end)
+function updateContact(source,identifier,id,number,display)
+	local sourcePlayer = tonumber(source)
+	MySQL.Async.insert("UPDATE phone_users_contacts SET number = @number, display = @display WHERE id = @id",{ 
+		['@number'] = number,
+		['@display'] = display,
+		['@id'] = id
+	},function()
+		notifyContactChange(sourcePlayer,identifier)
+	end)
 end
 
-function deleteContact(source, identifier, id)
-    local sourcePlayer = tonumber(source)
-    MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier AND `id` = @id", {
-        ['@identifier'] = identifier,
-        ['@id'] = id,
-    })
-    notifyContactChange(sourcePlayer, identifier)
+function deleteContact(source,identifier,id)
+	local sourcePlayer = tonumber(source)
+	MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier AND `id` = @id",{
+		['@identifier'] = identifier,
+		['@id'] = id
+	})
+	notifyContactChange(sourcePlayer,identifier)
 end
 
 function deleteAllContact(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier", {
-        ['@identifier'] = identifier
-    })
+	MySQL.Sync.execute("DELETE FROM phone_users_contacts WHERE `identifier` = @identifier",{
+		['@identifier'] = identifier
+	})
 end
 
-function notifyContactChange(source, identifier)
-    local sourcePlayer = tonumber(source)
-    local identifier = identifier
-    if sourcePlayer ~= nil then 
-        TriggerClientEvent("gcPhone:contactList", sourcePlayer, getContacts(identifier))
-    end
+function notifyContactChange(source,identifier)
+	local sourcePlayer = tonumber(source)
+	local identifier = identifier
+	if sourcePlayer ~= nil then 
+		TriggerClientEvent("gcPhone:contactList",sourcePlayer,getContacts(identifier))
+	end
 end
 
 RegisterServerEvent('gcPhone:addContact')
-AddEventHandler('gcPhone:addContact', function(display, phoneNumber)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    addContact(sourcePlayer, identifier, phoneNumber, display)
+AddEventHandler('gcPhone:addContact',function(display,phoneNumber)
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	addContact(sourcePlayer,identifier,phoneNumber,display)
 end)
-end
 
 RegisterServerEvent('gcPhone:updateContact')
-AddEventHandler('gcPhone:updateContact', function(id, display, phoneNumber)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    updateContact(sourcePlayer, identifier, id, phoneNumber, display)
+AddEventHandler('gcPhone:updateContact',function(id,display,phoneNumber)
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	updateContact(sourcePlayer,identifier,id,phoneNumber,display)
 end)
 
 RegisterServerEvent('gcPhone:deleteContact')
-AddEventHandler('gcPhone:deleteContact', function(id)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    deleteContact(sourcePlayer, identifier, id)
+AddEventHandler('gcPhone:deleteContact',function(id)
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	deleteContact(sourcePlayer,identifier,id)
 end)
 
---====================================================================================
---  Messages
---====================================================================================
 function getMessages(identifier)
-    local result = MySQL.Sync.fetchAll("SELECT phone_messages.* FROM phone_messages LEFT JOIN vrp_users ON vrp_users.id = @identifier WHERE phone_messages.receiver = vrp_users.phone", {
-         ['@identifier'] = identifier
-    })
-    return result
-    --return MySQLQueryTimeStamp("SELECT phone_messages.* FROM phone_messages LEFT JOIN users ON vrp_users.id = @identifier WHERE phone_messages.receiver = vrp_users.phone", {['@identifier'] = identifier})
+	local result = MySQL.Sync.fetchAll("SELECT phone_messages.* FROM phone_messages LEFT JOIN vrp_users ON vrp_users.id = @identifier WHERE phone_messages.receiver = vrp_users.phone",{ ['@identifier'] = identifier })
+	return result
 end
 
 RegisterServerEvent('gcPhone:_internalAddMessage')
-AddEventHandler('gcPhone:_internalAddMessage', function(transmitter, receiver, message, owner, cb)
-    cb(_internalAddMessage(transmitter, receiver, message, owner))
+AddEventHandler('gcPhone:_internalAddMessage',function(transmitter,receiver,message,owner,cb)
+	cb(_internalAddMessage(transmitter,receiver,message,owner))
 end)
 
 function _internalAddMessage(transmitter, receiver, message, owner)
-    local Query = "INSERT INTO phone_messages (`transmitter`, `receiver`,`message`, `isRead`,`owner`) VALUES(@transmitter, @receiver, @message, @isRead, @owner);"
-    local Query2 = 'SELECT * from phone_messages WHERE `id` = @id;'
+	local Query = "INSERT INTO phone_messages (`transmitter`,`receiver`,`message`,`isRead`,`owner`) VALUES(@transmitter,@receiver,@message,@isRead,@owner);"
+	local Query2 = 'SELECT * from phone_messages WHERE `id` = (SELECT LAST_INSERT_ID());'
 	local Parameters = {
-        ['@transmitter'] = transmitter,
-        ['@receiver'] = receiver,
-        ['@message'] = message,
-        ['@isRead'] = owner,
-        ['@owner'] = owner
-    }
-    local id = MySQL.Sync.insert(Query, Parameters)
-    return MySQL.Sync.fetchAll(Query2, {
-        ['@id'] = id
-    })[1]
+		['@transmitter'] = transmitter,
+		['@receiver'] = receiver,
+		['@message'] = message,
+		['@isRead'] = owner,
+		['@owner'] = owner
+	}
+	return MySQL.Sync.fetchAll(Query .. Query2,Parameters)[1]
 end
 
-function addMessage(source, identifier, phone, message, gps_data)
+function addMessage(source,identifier,phone_number,message)
     local sourcePlayer = tonumber(source)
-    local otherIdentifier = getIdentifierByPhoneNumber(phone)
+    local otherIdentifier = getIdentifierByPhoneNumber(phone_number)
     local myPhone = getNumberPhone(identifier)
-    local message = '' .. message ..''
-    local isRealtimeGPS = false
-    local gpsTimeout = Config.ShareRealtimeGPSDefaultTimeInMs
-
-    if (message == '%posrealtime%') then
-        if (gps_data) then
-            gpsTimeout = gps_data.time
-        end
-        local timeInMinutes = ESX.Math.Round( gpsTimeout / (1000 * 60) )
-        local timeString = (timeInMinutes == nil) and '' or ' ' .. tostring(timeInMinutes) .. ' min'
-        message = 'GPS Live Position:' .. timeString .. ''
-        isRealtimeGPS = true
+    if otherIdentifier ~= nil and vRP.getUserSource(otherIdentifier) ~= nil then
+        local tomess = _internalAddMessage(myPhone,phone_number,message,0)
+        TriggerClientEvent("gcPhone:receiveMessage",tonumber(vRP.getUserSource(otherIdentifier)),tomess)
+    else
+        _internalAddMessage(myPhone,phone_number,message,0)
     end
-
-    if (message == '%pos%') then
-        message = 'GPS Position: ' .. gps_data.x .. ', ' .. gps_data.y
-    end
-    --print(myPhone)
-    if otherIdentifier ~= nil then
-        local tomess = _internalAddMessage(myPhone, phone, message, 0)
-        getSourceFromIdentifier(otherIdentifier, function (osou)
-            local targetPlayer = tonumber(osou)
-            if targetPlayer ~= nil then 
-                -- TriggerClientEvent("gcPhone:allMessage", osou, getMessages(otherIdentifier))
-                if (isRealtimeGPS == true) then
-                    TriggerClientEvent('gcPhone:receiveLivePosition', targetPlayer, sourcePlayer, gpsTimeout, myPhone, 0)
-                end
-                TriggerClientEvent("gcPhone:receiveMessage", targetPlayer, tomess)
-            end
-        end) 
-    end
-    
-    local memess = _internalAddMessage(phone, myPhone, message, 1)
-    TriggerClientEvent("gcPhone:receiveMessage", sourcePlayer, memess)
+    local memess = _internalAddMessage(phone_number,myPhone,message,1)
+    TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,memess)
 end
 
 function setReadMessageNumber(identifier, num)
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("UPDATE phone_messages SET phone_messages.isRead = 1 WHERE phone_messages.receiver = @receiver AND phone_messages.transmitter = @transmitter", { 
-        ['@receiver'] = mePhoneNumber,
-        ['@transmitter'] = num
-    })
+	local mePhoneNumber = getNumberPhone(identifier)
+	MySQL.Sync.execute("UPDATE phone_messages SET phone_messages.isRead = 1 WHERE phone_messages.receiver = @receiver AND phone_messages.transmitter = @transmitter",{ 
+		['@receiver'] = mePhoneNumber,
+		['@transmitter'] = num
+	})
 end
 
 function deleteMessage(msgId)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `id` = @id", {
-        ['@id'] = msgId
-    })
+	MySQL.Sync.execute("DELETE FROM phone_messages WHERE `id` = @id",{
+		['@id'] = msgId
+	})
 end
 
-function deleteAllMessageFromPhoneNumber(source, identifier, phone)
-    local source = source
-    local identifier = identifier
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber and `transmitter` = @phone", {['@mePhoneNumber'] = mePhoneNumber,['@phone'] = phone})
+function deleteAllMessageFromPhoneNumber(source,identifier,phone_number)
+	local source = source
+	local identifier = identifier
+	local mePhoneNumber = getNumberPhone(identifier)
+	MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber and `transmitter` = @phone_number",{ ['@mePhoneNumber'] = mePhoneNumber,['@phone_number'] = phone_number })
 end
 
 function deleteAllMessage(identifier)
-    local mePhoneNumber = getNumberPhone(identifier)
-    MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber", {
-        ['@mePhoneNumber'] = mePhoneNumber
-    })
+	local mePhoneNumber = getNumberPhone(identifier)
+	MySQL.Sync.execute("DELETE FROM phone_messages WHERE `receiver` = @mePhoneNumber",{
+		['@mePhoneNumber'] = mePhoneNumber
+	})
+end
+
+local blips = {}
+local inEmergency = { }
+function serviceMessage(phone, sourcePlayer, message, type)
+	local source = sourcePlayer
+	local user_id = vRP.getUserId(source)
+	local answered = false
+	if user_id then
+		TriggerClientEvent("gcPhone:forceClosePhone", source)
+		Citizen.Wait(500)
+		local descricao 
+		if type == "call" then
+			descricao = vRP.prompt(source,"Descrição:","")
+			if descricao == "" then
+				return
+			end
+		else
+			descricao = message
+			if descricao == "" then
+				return
+			end
+		end
+		local x,y,z = vRPclient.getPosition(source)
+		local players = {}
+		local especialidade = false
+		if phone == "911" then
+			if inEmergency[user_id] == "911" then 
+				TriggerClientEvent("Notify",source,"negado","Já Existe um chamado sendo averiguado!")
+				return
+			end
+			players = vRP.getUsersByPermission("policia.permissao")
+			especialidade = "policiais"
+		elseif phone == "112" then
+			if inEmergency[user_id] == "112" then 
+				TriggerClientEvent("Notify",source,"negado","Já Existe um chamado sendo averiguado!")
+				return
+			end
+			players = vRP.getUsersByPermission("paramedico.permissao")
+			especialidade = "paramédicos"
+		elseif phone == "mechanic" then
+			if inEmergency[user_id] == "mechanic" then 
+				TriggerClientEvent("Notify",source,"negado","Já Existe um chamado sendo averiguado!")
+				return
+			end
+			players = vRP.getUsersByPermission("mecanico.permissao")
+			especialidade = "mecânicos"
+		elseif phone == "taxi" then
+			if inEmergency[user_id] == "taxi" then 
+				TriggerClientEvent("Notify",source,"negado","Já Existe um chamado sendo averiguado!")
+				return
+			end
+			players = vRP.getUsersByPermission("taxista.permissao")
+			especialidade = "taxistas"
+		elseif phone == "ADM" then
+			if inEmergency[user_id] == "ADM" then 
+				TriggerClientEvent("Notify",source,"negado","Já Existe um chamado sendo averiguado!")
+				return
+			end
+			players = vRP.getUsersByPermission("admin.permissao")	
+			especialidade = "Administradores"
+		end
+		local adm = ""
+		if especialidade == "Administradores" then
+			adm = "[ADM] "
+		end
+		
+		vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
+		if #players == 0  and especialidade ~= "policiais" then
+			TriggerClientEvent("Notify",source,"importante","Não há "..especialidade.." em serviço.")
+		else
+			local identitys = vRP.getUserIdentity(user_id)
+			TriggerClientEvent("Notify",source,"sucesso","Chamado enviado com sucesso.")
+			inEmergency[user_id] = phone
+			for l,w in pairs(players) do
+				local player = vRP.getUserSource(parseInt(w))
+				local nuser_id = vRP.getUserId(player)
+				if player and player ~= source then
+					async(function()
+						vRPclient.playSound(player,"Out_Of_Area","DLC_Lowrider_Relay_Race_Sounds")
+						TriggerClientEvent('chatMessage',player,"CHAMADO",{19,197,43},adm.."Enviado por ^1"..identitys.name.." "..identitys.firstname.."^0 ["..user_id.."], "..descricao)
+						SetTimeout(30000, function() inEmergency[user_id] = false end)
+						local ok = vRP.request(player,"Aceitar o chamado de <b>"..identitys.name.." "..identitys.firstname.."</b>?",30)
+						if ok then
+							if not answered then
+								answered = true
+								local identity = vRP.getUserIdentity(nuser_id)
+								TriggerClientEvent("Notify",source,"importante","Chamado atendido por <b>"..identity.name.." "..identity.firstname.."</b>, aguarde no local.")
+								vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
+								vRPclient._setGPS(player,x,y)
+							else
+								TriggerClientEvent("Notify",player,"importante","Chamado ja foi atendido por outra pessoa.")
+								vRPclient.playSound(player,"CHECKPOINT_MISSED","HUD_MINI_GAME_SOUNDSET")
+							end
+						end
+						local id = idgens:gen()
+						blips[id] = vRPclient.addBlip(player,x,y,z,358,71,"Chamado",0.6,false)
+						
+						SetTimeout(300000,function() vRPclient.removeBlip(player,blips[id]) idgens:free(id)  end)
+					end)
+				end
+			end
+		end
+	end
 end
 
 RegisterServerEvent('gcPhone:sendMessage')
-AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message, gpsData)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    addMessage(sourcePlayer, identifier, phoneNumber, message, gpsData)
+AddEventHandler('gcPhone:sendMessage',function(phoneNumber,message)
+	local sourcePlayer = tonumber(source)
+	phoneNumber = string.gsub(phoneNumber,"%s+","")
+	if phoneNumber == "911" then
+		serviceMessage(phoneNumber, sourcePlayer, message, "message")
+	elseif phoneNumber == "112" then
+		serviceMessage(phoneNumber, sourcePlayer, message, "message")
+	elseif phoneNumber == "taxi" then
+		serviceMessage(phoneNumber, sourcePlayer, message, "message")
+	elseif phoneNumber == "mechanic" then
+		serviceMessage(phoneNumber, sourcePlayer, message, "message")
+	elseif phoneNumber == "ADM" then
+		serviceMessage(phoneNumber, sourcePlayer, message, "message")
+	else 
+		local identifier = getPlayerID(source)
+		addMessage(sourcePlayer,identifier,phoneNumber,message)
+	end
 end)
 
 RegisterServerEvent('gcPhone:deleteMessage')
-AddEventHandler('gcPhone:deleteMessage', function(msgId)
-    deleteMessage(msgId)
+AddEventHandler('gcPhone:deleteMessage',function(msgId)
+	deleteMessage(msgId)
 end)
 
 RegisterServerEvent('gcPhone:deleteMessageNumber')
-AddEventHandler('gcPhone:deleteMessageNumber', function(number)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    deleteAllMessageFromPhoneNumber(sourcePlayer,identifier, number)
-    -- TriggerClientEvent("gcphone:allMessage", sourcePlayer, getMessages(identifier))
+AddEventHandler('gcPhone:deleteMessageNumber',function(number)
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	deleteAllMessageFromPhoneNumber(sourcePlayer,identifier,number)
 end)
 
 RegisterServerEvent('gcPhone:deleteAllMessage')
-AddEventHandler('gcPhone:deleteAllMessage', function()
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    deleteAllMessage(identifier)
+AddEventHandler('gcPhone:deleteAllMessage',function()
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	deleteAllMessage(identifier)
 end)
 
 RegisterServerEvent('gcPhone:setReadMessageNumber')
-AddEventHandler('gcPhone:setReadMessageNumber', function(num)
-    local identifier = getPlayerID(source)
-    setReadMessageNumber(identifier, num)
+AddEventHandler('gcPhone:setReadMessageNumber',function(num)
+	local sourcePlayer = tonumber(source)  
+	local identifier = getPlayerID(source)
+	setReadMessageNumber(identifier,num)
 end)
 
 RegisterServerEvent('gcPhone:deleteALL')
-AddEventHandler('gcPhone:deleteALL', function()
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    deleteAllMessage(identifier)
-    deleteAllContact(identifier)
-    appelsDeleteAllHistorique(identifier)
-    TriggerClientEvent("gcPhone:contactList", sourcePlayer, {})
-    TriggerClientEvent("gcPhone:allMessage", sourcePlayer, {})
-    TriggerClientEvent("appelsDeleteAllHistorique", sourcePlayer, {})
+AddEventHandler('gcPhone:deleteALL',function()
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	deleteAllMessage(identifier)
+	deleteAllContact(identifier)
+	appelsDeleteAllHistorique(identifier)
+	TriggerClientEvent("gcPhone:contactList",sourcePlayer,{})
+	TriggerClientEvent("gcPhone:allMessage",sourcePlayer,{})
+	TriggerClientEvent("appelsDeleteAllHistorique",sourcePlayer,{})
 end)
 
---====================================================================================
---  Gestion des appels
---====================================================================================
 local AppelsEnCours = {}
-local PhoneFixeInfo = {}
 local lastIndexCall = 10
 
-function getHistoriqueCall (num)
-    local result = MySQL.Sync.fetchAll("SELECT * FROM phone_calls WHERE phone_calls.owner = @num ORDER BY time DESC LIMIT 120", {
-        ['@num'] = num
-    })
-    return result
+function getHistoriqueCall(num)
+	local result = MySQL.Sync.fetchAll("SELECT * FROM phone_calls WHERE phone_calls.owner = @num ORDER BY time DESC LIMIT 120",{ ['@num'] = num })
+	return result
 end
 
-function sendHistoriqueCall (src, num) 
-    local histo = getHistoriqueCall(num)
-    TriggerClientEvent('gcPhone:historiqueCall', src, histo)
+function sendHistoriqueCall(src,num)
+	local histo = getHistoriqueCall(num)
+	TriggerClientEvent('gcPhone:historiqueCall',src,histo)
 end
 
-function saveAppels (appelInfo)
-    if appelInfo.extraData == nil or appelInfo.extraData.useNumber == nil then
-        MySQL.Async.insert("INSERT INTO phone_calls (`owner`, `num`,`incoming`, `accepts`) VALUES(@owner, @num, @incoming, @accepts)", {
-            ['@owner'] = appelInfo.transmitter_num,
-            ['@num'] = appelInfo.receiver_num,
-            ['@incoming'] = 1,
-            ['@accepts'] = appelInfo.is_accepts
-        }, function()
-            notifyNewAppelsHisto(appelInfo.transmitter_src, appelInfo.transmitter_num)
-        end)
-    end
-    if appelInfo.is_valid == true then
-        local num = appelInfo.transmitter_num
-        if appelInfo.hidden == true then
-            num = "###-####"
-        end
-        MySQL.Async.insert("INSERT INTO phone_calls (`owner`, `num`,`incoming`, `accepts`) VALUES(@owner, @num, @incoming, @accepts)", {
-            ['@owner'] = appelInfo.receiver_num,
-            ['@num'] = num,
-            ['@incoming'] = 0,
-            ['@accepts'] = appelInfo.is_accepts
-        }, function()
-            if appelInfo.receiver_src ~= nil then
-                notifyNewAppelsHisto(appelInfo.receiver_src, appelInfo.receiver_num)
-            end
-        end)
-    end
+function saveAppels(appelInfo)
+	if appelInfo.extraData == nil or appelInfo.extraData.useNumber == nil then
+		MySQL.Async.insert("INSERT INTO phone_calls (`owner`,`num`,`incoming`,`accepts`) VALUES(@owner,@num,@incoming,@accepts)",{ ['@owner'] = appelInfo.transmitter_num, ['@num'] = appelInfo.receiver_num, ['@incoming'] = 1, ['@accepts'] = appelInfo.is_accepts },function()
+			notifyNewAppelsHisto(appelInfo.transmitter_src,appelInfo.transmitter_num)
+		end)
+	end
+	if appelInfo.is_valid == true then
+		local num = appelInfo.transmitter_num
+		if appelInfo.hidden == true then
+			mun = "####-####"
+		end
+		MySQL.Async.insert("INSERT INTO phone_calls (`owner`, `num`,`incoming`, `accepts`) VALUES(@owner, @num, @incoming, @accepts)",{ ['@owner'] = appelInfo.receiver_num, ['@num'] = num, ['@incoming'] = 0, ['@accepts'] = appelInfo.is_accepts },function()
+			if appelInfo.receiver_src ~= nil then
+				notifyNewAppelsHisto(appelInfo.receiver_src,appelInfo.receiver_num)
+			end
+		end)
+	end
 end
 
-function notifyNewAppelsHisto (src, num) 
-    sendHistoriqueCall(src, num)
+function notifyNewAppelsHisto(src,num)
+	sendHistoriqueCall(src,num)
 end
 
 RegisterServerEvent('gcPhone:getHistoriqueCall')
-AddEventHandler('gcPhone:getHistoriqueCall', function()
-    local sourcePlayer = tonumber(source)
-    local srcIdentifier = getPlayerID(source)
-    local srcPhone = getNumberPhone(srcIdentifier)
-    sendHistoriqueCall(sourcePlayer, num)
-end)
-
-RegisterServerEvent('gcPhone:register_FixePhone')
-AddEventHandler('gcPhone:register_FixePhone', function(phone, coords)
-	Config.FixePhone[phone] = {name = _U('phone_booth'), coords = {x = coords.x, y = coords.y, z = coords.z}}
-	TriggerClientEvent('gcPhone:register_FixePhone', -1, phone, Config.FixePhone[phone])
+AddEventHandler('gcPhone:getHistoriqueCall',function()
+	local sourcePlayer = tonumber(source)
+	local srcIdentifier = getPlayerID(source)
+	local srcPhone = getNumberPhone(srcIdentifier)
+	sendHistoriqueCall(sourcePlayer,num)
 end)
 
 RegisterServerEvent('gcPhone:internal_startCall')
-AddEventHandler('gcPhone:internal_startCall', function(source, phone, rtcOffer, extraData)
-    if Config.FixePhone[phone] ~= nil then
-        onCallFixePhone(source, phone, rtcOffer, extraData)
-        return
-    end
+AddEventHandler('gcPhone:internal_startCall',function(source,phone_number,rtcOffer,extraData)
+	local rtcOffer = rtcOffer
+	if phone_number == nil or phone_number == '' then
+		return
+	end
+
+	local hidden = string.sub(phone_number,1,1) == '#'
+	if hidden == true then
+		phone_number = string.sub(phone_number,2)
+	end
+
+	local indexCall = lastIndexCall
+	lastIndexCall = lastIndexCall + 1
+
+	local sourcePlayer = tonumber(source)
+	local srcIdentifier = getPlayerID(source)
+	local srcPhone = ''
+
+	if extraData ~= nil and extraData.useNumber ~= nil then
+		srcPhone = extraData.useNumber
+	else
+		srcPhone = getNumberPhone(srcIdentifier)
+	end
+
+	local destPlayer = getIdentifierByPhoneNumber(phone_number)
+	local is_valid = destPlayer ~= nil and destPlayer ~= srcIdentifier
+	AppelsEnCours[indexCall] = { id = indexCall, transmitter_src = sourcePlayer, transmitter_num = srcPhone, receiver_src = nil, receiver_num = phone_number, is_valid = destPlayer ~= nil, is_accepts = false, hidden = hidden, rtcOffer = rtcOffer, extraData = extraData }
     
-    local rtcOffer = rtcOffer
-    if phone == nil or phone == '' then 
-        --print('BAD CALL NUMBER IS NIL')
-        return
-    end
-
-    local hidden = string.sub(phone, 1, 1) == '#'
-    if hidden == true then
-        phone = string.sub(phone, 2)
-    end
-
-    local indexCall = lastIndexCall
-    lastIndexCall = lastIndexCall + 1
-
-    local sourcePlayer = tonumber(source)
-    local srcIdentifier = getPlayerID(source)
-
-    local srcPhone = ''
-    if extraData ~= nil and extraData.useNumber ~= nil then
-        srcPhone = extraData.useNumber
-    else
-        srcPhone = getNumberPhone(srcIdentifier)
-    end
-    local destPlayer = getIdentifierByPhoneNumber(phone)
-    local is_valid = destPlayer ~= nil and destPlayer ~= srcIdentifier
-    AppelsEnCours[indexCall] = {
-        id = indexCall,
-        transmitter_src = sourcePlayer,
-        transmitter_num = srcPhone,
-        receiver_src = nil,
-        receiver_num = phone,
-        is_valid = destPlayer ~= nil,
-        is_accepts = false,
-        hidden = hidden,
-        rtcOffer = rtcOffer,
-        extraData = extraData
-    }
-    
-    if is_valid == true then
-        getSourceFromIdentifier(destPlayer, function (srcTo)
-            if srcTo ~= nill then
-                AppelsEnCours[indexCall].receiver_src = srcTo
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-                TriggerClientEvent('gcPhone:waitingCall', srcTo, AppelsEnCours[indexCall], false)
-            else
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-            end
-        end)
-    else
-        TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-        TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-    end
-
+	if is_valid == true then
+		if vRP.getUserSource(destPlayer) ~= nil then
+			srcTo = tonumber(vRP.getUserSource(destPlayer))
+			if srcTo ~= nill then
+				AppelsEnCours[indexCall].receiver_src = srcTo
+				--TriggerEvent('gcPhone:addCall',AppelsEnCours[indexCall])
+				TriggerClientEvent('gcPhone:waitingCall',sourcePlayer,AppelsEnCours[indexCall],true)
+				TriggerClientEvent('gcPhone:waitingCall',srcTo,AppelsEnCours[indexCall],false)
+			else
+				--TriggerEvent('gcPhone:addCall',AppelsEnCours[indexCall])
+				TriggerClientEvent('gcPhone:waitingCall',sourcePlayer,AppelsEnCours[indexCall],true)
+			end
+		end
+	else
+		TriggerEvent('gcPhone:addCall',AppelsEnCours[indexCall])
+		TriggerClientEvent('gcPhone:waitingCall',sourcePlayer,AppelsEnCours[indexCall],true)
+	end
 end)
 
 RegisterServerEvent('gcPhone:startCall')
-AddEventHandler('gcPhone:startCall', function(phone, rtcOffer, extraData)
-    TriggerEvent('gcPhone:internal_startCall',source, phone, rtcOffer, extraData)
+AddEventHandler('gcPhone:startCall',function(phone_number,rtcOffer,extraData)
+	local source = source
+	phoneNumber = string.gsub(phone_number,"%s+","")
+	if phoneNumber == "911" then
+		serviceMessage(phoneNumber, source, "", "call")
+	elseif phoneNumber == "112" then
+		serviceMessage(phoneNumber, source, "", "call")
+	elseif phoneNumber == "taxi" then
+		serviceMessage(phoneNumber, source, "", "call")
+	elseif phoneNumber == "mechanic" then
+		serviceMessage(phoneNumber, source, "", "call")
+	elseif phoneNumber == "ADM" then
+		serviceMessage(phoneNumber, source, "", "call")
+	else 
+		TriggerEvent('gcPhone:internal_startCall',source,phone_number,rtcOffer,extraData)
+	end
+
+	
 end)
 
 RegisterServerEvent('gcPhone:candidates')
-AddEventHandler('gcPhone:candidates', function (callId, candidates)
-    -- print('send cadidate', callId, candidates)
-    if AppelsEnCours[callId] ~= nil then
-        local source = source
-        local to = AppelsEnCours[callId].transmitter_src
-        if source == to then 
-            to = AppelsEnCours[callId].receiver_src
-        end
-        -- print('TO', to)
-        TriggerClientEvent('gcPhone:candidates', to, candidates)
-    end
+AddEventHandler('gcPhone:candidates',function(callId,candidates)
+	if AppelsEnCours[callId] ~= nil then
+		local source = source
+		local to = AppelsEnCours[callId].transmitter_src
+		if source == to then 
+			to = AppelsEnCours[callId].receiver_src
+		end
+		TriggerClientEvent('gcPhone:candidates',to,candidates)
+	end
 end)
 
 RegisterServerEvent('gcPhone:acceptCall')
-AddEventHandler('gcPhone:acceptCall', function(infoCall, rtcAnswer)
-    local id = infoCall.id
-    if AppelsEnCours[id] ~= nil then
-        if PhoneFixeInfo[id] ~= nil then
-            onAcceptFixePhone(source, infoCall, rtcAnswer)
-            return
-        end
-        AppelsEnCours[id].receiver_src = infoCall.receiver_src or AppelsEnCours[id].receiver_src
-        if AppelsEnCours[id].transmitter_src ~= nil and AppelsEnCours[id].receiver_src~= nil then
-            AppelsEnCours[id].is_accepts = true
-            AppelsEnCours[id].rtcAnswer = rtcAnswer
-            TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].transmitter_src, AppelsEnCours[id], true)
-            SetTimeout(1000, function() -- change to +1000, if necessary.
-                TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].receiver_src, AppelsEnCours[id], false)
-            end)
-            saveAppels(AppelsEnCours[id])
-        end
-    end
+AddEventHandler('gcPhone:acceptCall',function(infoCall,rtcAnswer)
+	local id = infoCall.id
+	if AppelsEnCours[id] ~= nil then
+		AppelsEnCours[id].receiver_src = infoCall.receiver_src or AppelsEnCours[id].receiver_src
+		if AppelsEnCours[id].transmitter_src ~= nil and AppelsEnCours[id].receiver_src ~= nil then
+			AppelsEnCours[id].is_accepts = true
+			AppelsEnCours[id].rtcAnswer = rtcAnswer
+			TriggerClientEvent('gcPhone:acceptCall',AppelsEnCours[id].transmitter_src,AppelsEnCours[id],true)
+			TriggerClientEvent('gcPhone:acceptCall',AppelsEnCours[id].receiver_src,AppelsEnCours[id],false)
+			saveAppels(AppelsEnCours[id])
+		end
+	end
 end)
 
 RegisterServerEvent('gcPhone:rejectCall')
-AddEventHandler('gcPhone:rejectCall', function (infoCall)
-    local id = infoCall.id
-    if AppelsEnCours[id] ~= nil then
-        if PhoneFixeInfo[id] ~= nil then
-            onRejectFixePhone(source, infoCall)
-            return
-        end
-        if AppelsEnCours[id].transmitter_src ~= nil then
-            TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].transmitter_src)
-        end
-        if AppelsEnCours[id].receiver_src ~= nil then
-            TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].receiver_src)
-        end
+AddEventHandler('gcPhone:rejectCall',function(infoCall)
+	local id = infoCall.id
+	if AppelsEnCours[id] ~= nil then
+		if AppelsEnCours[id].transmitter_src ~= nil then
+			TriggerClientEvent('gcPhone:rejectCall',AppelsEnCours[id].transmitter_src)
+		end
+		if AppelsEnCours[id].receiver_src ~= nil then
+			TriggerClientEvent('gcPhone:rejectCall',AppelsEnCours[id].receiver_src)
+		end
 
-        if AppelsEnCours[id].is_accepts == false then 
-            saveAppels(AppelsEnCours[id])
-        end
-        TriggerEvent('gcPhone:removeCall', AppelsEnCours)
-        AppelsEnCours[id] = nil
-    end
+		if AppelsEnCours[id].is_accepts == false then 
+			saveAppels(AppelsEnCours[id])
+		end
+		TriggerEvent('gcPhone:removeCall',AppelsEnCours)
+		AppelsEnCours[id] = nil
+	end
 end)
 
 RegisterServerEvent('gcPhone:appelsDeleteHistorique')
-AddEventHandler('gcPhone:appelsDeleteHistorique', function (numero)
-    local sourcePlayer = tonumber(source)
-    local srcIdentifier = getPlayerID(source)
-    local srcPhone = getNumberPhone(srcIdentifier)
-    MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner AND `num` = @num", {
-        ['@owner'] = srcPhone,
-        ['@num'] = numero
-    })
+AddEventHandler('gcPhone:appelsDeleteHistorique',function(numero)
+	local sourcePlayer = tonumber(source)
+	local srcIdentifier = getPlayerID(source)
+	local srcPhone = getNumberPhone(srcIdentifier)
+	MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner AND `num` = @num",{
+		['@owner'] = srcPhone,
+		['@num'] = numero
+	})
 end)
 
 function appelsDeleteAllHistorique(srcIdentifier)
-    local srcPhone = getNumberPhone(srcIdentifier)
-    MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner", {
-        ['@owner'] = srcPhone
-    })
+	local srcPhone = getNumberPhone(srcIdentifier)
+	MySQL.Sync.execute("DELETE FROM phone_calls WHERE `owner` = @owner",{ ['@owner'] = srcPhone })
 end
 
 RegisterServerEvent('gcPhone:appelsDeleteAllHistorique')
-AddEventHandler('gcPhone:appelsDeleteAllHistorique', function ()
-    local sourcePlayer = tonumber(source)
-    local srcIdentifier = getPlayerID(source)
-    appelsDeleteAllHistorique(srcIdentifier)
+AddEventHandler('gcPhone:appelsDeleteAllHistorique',function()
+	local sourcePlayer = tonumber(source)
+	local srcIdentifier = getPlayerID(source)
+	appelsDeleteAllHistorique(srcIdentifier)
 end)
 
---====================================================================================
---  OnLoad
---====================================================================================
-AddEventHandler('es:playerLoaded',function(source)
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    local num = getNumberPhone(source)
-    
-    getOrGeneratePhoneNumber(sourcePlayer, identifier, function (myPhoneNumber)
-        TriggerClientEvent('gcPhone:myPhoneNumber', sourcePlayer, myPhoneNumber)
-        TriggerClientEvent('gcPhone:contactList', sourcePlayer, getContacts(identifier))
-        TriggerClientEvent('gcPhone:allMessage', sourcePlayer, getMessages(identifier))
-        TriggerClientEvent('gcPhone:getBourse', sourcePlayer, getBourse())
-        sendHistoriqueCall(sourcePlayer, num)
-    end)
+AddEventHandler("vRP:playerSpawn",function(user_id,source,first_spawn)
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	getOrGeneratePhoneNumber(sourcePlayer,identifier,function(myPhoneNumber)
+		TriggerClientEvent("gcPhone:myPhoneNumber",sourcePlayer,myPhoneNumber)
+		TriggerClientEvent("vRP:updateBalanceGc", source, bmoney)
+		TriggerClientEvent("gcPhone:contactList",sourcePlayer,getContacts(identifier))
+		TriggerClientEvent("gcPhone:allMessage",sourcePlayer,getMessages(identifier))
+	end)
 end)
 
--- Just For reload
 RegisterServerEvent('gcPhone:allUpdate')
-AddEventHandler('gcPhone:allUpdate', function()
-    local sourcePlayer = tonumber(source)
-    local identifier = getPlayerID(source)
-    local num = getNumberPhone(identifier)
-    TriggerClientEvent("gcPhone:myPhoneNumber", sourcePlayer, num)
-    TriggerClientEvent("gcPhone:contactList", sourcePlayer, getContacts(identifier))
-    TriggerClientEvent("gcPhone:allMessage", sourcePlayer, getMessages(identifier))
-    TriggerClientEvent('gcPhone:getBourse', sourcePlayer, getBourse())
-    sendHistoriqueCall(sourcePlayer, num)
+AddEventHandler('gcPhone:allUpdate',function()
+	local sourcePlayer = tonumber(source)
+	local identifier = getPlayerID(source)
+	local num = getNumberPhone(identifier)
+	TriggerClientEvent("gcPhone:myPhoneNumber",sourcePlayer,num)
+		TriggerClientEvent("vRP:updateBalanceGc", source, bmoney)
+		TriggerClientEvent("gcPhone:contactList",sourcePlayer,getContacts(identifier))
+	TriggerClientEvent("gcPhone:allMessage",sourcePlayer,getMessages(identifier))
+	sendHistoriqueCall(sourcePlayer,num)
 end)
 
-
-AddEventHandler('onMySQLReady', function ()
-    -- MySQL.Async.fetchAll("DELETE FROM phone_messages WHERE (DATEDIFF(CURRENT_DATE,time) > 10)")
+AddEventHandler('onMySQLReady',function()
+	MySQL.Async.fetchAll("DELETE FROM phone_messages WHERE (DATEDIFF(CURRENT_DATE,time) > 10)")
 end)
 
---====================================================================================
---  App bourse
---====================================================================================
-function getBourse()
-    --  Format
-    --  Array 
-    --  Object
-    -- 	libelle type String    | Nom
-    --  price type number      | Prix actuelle
-    --  difference type number | Evolution 
-
-    -- local result = MySQL.Sync.fetchAll("SELECT * FROM `recolt` LEFT JOIN `items` ON items.`id` = recolt.`treated_id` WHERE fluctuation = 1 ORDER BY price DESC",{})
-    local result = {
-        {
-            libelle = 'Google',
-            price = 125.2,
-            difference =  -12.1
-        },
-        {
-            libelle = 'Microsoft',
-            price = 132.2,
-            difference = 3.1
-        },
-        {
-            libelle = 'Amazon',
-            price = 120,
-            difference = 0
-        }
-    }
-    return result
-end
-
---====================================================================================
---  App ... WIP
---====================================================================================
--- SendNUIMessage('ongcPhoneRTC_receive_offer')
--- SendNUIMessage('ongcPhoneRTC_receive_answer')
-
--- RegisterNUICallback('gcPhoneRTC_send_offer', function (data)
-
--- end)
-
--- RegisterNUICallback('gcPhoneRTC_send_answer', function (data)
-
--- end)
-
-function onCallFixePhone (source, phone, rtcOffer, extraData)
-    local indexCall = lastIndexCall
-    lastIndexCall = lastIndexCall + 1
-
-    local hidden = string.sub(phone, 1, 1) == '#'
-    if hidden == true then
-        phone = string.sub(phone, 2)
+RegisterNetEvent("vRP/update_gc_phone")
+AddEventHandler("vRP/update_gc_phone", function()
+    if source ~= nil then
+        local user_id = vRP.getUserId(source)
+        if user_id ~= nil then
+            local bmoney = vRP.getBank(user_id)
+            TriggerClientEvent("vRP:updateBalanceGc", source, bmoney)
+        end
     end
-    local sourcePlayer = tonumber(source)
-    local srcIdentifier = getPlayerID(source)
+end)
 
-    local srcPhone = ''
-    if extraData ~= nil and extraData.useNumber ~= nil then
-        srcPhone = extraData.useNumber
+RegisterCommand("money",function(source,args,rawCommand)
+	if source ~= nil then
+        local user_id = vRP.getUserId(source)
+        if user_id ~= nil then
+            local bmoney = vRP.getBank(user_id)
+            TriggerClientEvent("vRP:updateBalanceGc", source, bmoney)
+        end
+    end
+end)
+
+AddEventHandler("vRP:playerSpawn", function(user_id, source, first_spawn)
+    if user_id ~= nil then
+        local money = vRP.getBank(user_id)
+        TriggerClientEvent("vRP:updateBalanceGc", source, money)
+    end
+end)
+
+RegisterServerEvent('bank:transfer')
+AddEventHandler('bank:transfer', function(id, amount)
+    local _source = source
+    local user_id = vRP.getUserId(source)
+    local targetPlayer = vRP.getUserSource(tonumber(id))
+	-- print(targetPlayer)
+    local amount =  tonumber(amount)
+	if amount <= 0 then
+		return TriggerClientEvent("Notify",_source,"sucesso","Você digitou uma quantia inválida.")
+	end
+    local identity = vRP.getUserIdentity(user_id)
+    local identityT = vRP.getUserIdentity(tonumber(id))    
+    if targetPlayer == nil then
+        return TriggerClientEvent("Notify",_source,"sucesso","Usuario invalido ou offline.")
     else
-        srcPhone = getNumberPhone(srcIdentifier)
-        --srcPhone = '###-####' -- This change was made for public phones without phone number reading in mind
+		local myBank = vRP.getBank(user_id)
+		if true then
+			if myBank >= amount then
+				vRP.setBankMoney(user_id, myBank - amount)
+				vRP.giveBankMoney(tonumber(id),amount)
+				TriggerClientEvent("Notify",targetPlayer,"sucesso","Você rebeu $" .. amount .." de "  ..identity.name.. " ID: " .. tostring(user_id))
+				TriggerClientEvent("Notify",_source,"sucesso","Tranferencia sucedida")       
+				SendWebhookMessage(webhookbanco,"```prolog\n[ID]: "..user_id.." "..identity.name.." "..identity.name2.." \n[ENVIOU CELULAR]: $"..vRP.format(parseInt(amount)).."\n[PARA]:"..tonumber(id).."  "..os.date("\n[Data]: %d/%m/%Y [Hora]: %H:%M:%S").." \r```")
+				local bmoney = vRP.getBank(user_id)
+				local bmoney2 = vRP.getBank(id)
+            	TriggerClientEvent("vRP:updateBalanceGc", source, bmoney)
+				TriggerClientEvent("vRP:updateBalanceGc", source, bmoney2)
+			else
+				TriggerClientEvent("Notify",_source,"sucesso","SEM MONEY") 
+			end
+		end
     end
-
-    AppelsEnCours[indexCall] = {
-        id = indexCall,
-        transmitter_src = sourcePlayer,
-        transmitter_num = srcPhone,
-        receiver_src = nil,
-        receiver_num = phone,
-        is_valid = false,
-        is_accepts = false,
-        hidden = hidden,
-        rtcOffer = rtcOffer,
-        extraData = extraData,
-        coords = Config.FixePhone[phone].coords
-    }
-    
-    PhoneFixeInfo[indexCall] = AppelsEnCours[indexCall]
-
-    TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-    TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-end
-
-function onAcceptFixePhone(source, infoCall, rtcAnswer)
-    local id = infoCall.id
-    
-    AppelsEnCours[id].receiver_src = source
-    if AppelsEnCours[id].transmitter_src ~= nil and AppelsEnCours[id].receiver_src~= nil then
-        AppelsEnCours[id].is_accepts = true
-        AppelsEnCours[id].forceSaveAfter = true
-        AppelsEnCours[id].rtcAnswer = rtcAnswer
-        PhoneFixeInfo[id] = nil
-        TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-        TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].transmitter_src, AppelsEnCours[id], true)
-        SetTimeout(1000, function() -- change to +1000, if necessary.
-            TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].receiver_src, AppelsEnCours[id], false)
-        end)
-        saveAppels(AppelsEnCours[id])
-    end
-end
-
-function onRejectFixePhone(source, infoCall, rtcAnswer)
-    local id = infoCall.id
-    PhoneFixeInfo[id] = nil
-    TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
-    TriggerClientEvent('gcPhone:rejectCall', AppelsEnCours[id].transmitter_src)
-    if AppelsEnCours[id].is_accepts == false then
-        saveAppels(AppelsEnCours[id])
-    end
-    AppelsEnCours[id] = nil
-end
+end)
