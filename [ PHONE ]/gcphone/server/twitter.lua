@@ -1,3 +1,7 @@
+local Tunnel = module("vrp","lib/Tunnel")
+local Proxy = module("vrp","lib/Proxy")
+vRP = Proxy.getInterface("vRP")
+
 function TwitterGetTweets(accountId,cb)
 	if accountId == nil then
 		MySQL.Async.fetchAll([===[
@@ -186,7 +190,10 @@ RegisterServerEvent('gcPhone:twitter_postTweets')
 AddEventHandler('gcPhone:twitter_postTweets',function(username,password,message)
 	local sourcePlayer = tonumber(source)
 	local srcIdentifier = getPlayerID(source)
-	TwitterPostTweet(username,password,message,sourcePlayer,srcIdentifier)
+	local user_id = vRP.getUserId(sourcePlayer)
+	if user_id then
+		TwitterPostTweet(username,password,message,sourcePlayer,srcIdentifier)
+	end
 end)
 
 RegisterServerEvent('gcPhone:twitter_toogleLikeTweet')

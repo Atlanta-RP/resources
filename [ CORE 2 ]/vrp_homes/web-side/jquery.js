@@ -186,7 +186,7 @@ const updateVault = () => {
 
 			if (data.inventario[slot] !== undefined) {
 				const v = data.inventario[slot];
-				const item = `<div class="item populated" style="background-image: url('nui://vrp_inventory/web-side/images/${v.index}.png'); background-size: 120px; background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
+				const item = `<div class="item populated" style="background-image: url('https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png'); background-size: 120px; background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
 					<div id="peso">${(v.peso*v.amount).toFixed(2)}</div>
 					<div id="quantity">${formatarNumero(v.amount)}x</div>
 					<div id="itemname">${v.name}</div>
@@ -207,7 +207,7 @@ const updateVault = () => {
 
 			if (nameList2[x-1] !== undefined) {
 				const v = nameList2[x-1];
-				const item = `<div class="item2 populated" style="background-image: url('nui://vrp_inventory/web-side/images/${v.index}.png'); background-size: 120px; background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
+				const item = `<div class="item2 populated" style="background-image: url('https://raw.githubusercontent.com/Atlanta-RP/RRM/master/images/${v.index}.png'); background-size: 120px; background-position: center; background-repeat: no-repeat;" data-item-key="${v.key}" data-name-key="${v.name}" data-slot="${slot}">
 					<div id="peso">${(v.peso*v.amount).toFixed(2)}</div>
 					<div id="quantity">${formatarNumero(v.amount)}x</div>
 					<div id="itemname">${v.name}</div>

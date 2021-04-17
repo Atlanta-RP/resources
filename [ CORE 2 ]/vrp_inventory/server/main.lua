@@ -129,15 +129,18 @@ function func.Mochila()
 				end
 			end
 
-			local grupos = vRP.query("vRP/get_perm",{ user_id = parseInt(user_id))
+			local grupos = vRP.query("vRP/get_perm",{ user_id = parseInt(user_id)})
 			local texto = ""
+			principalCor = ""
 			for k,v in pairs(grupos) do
-				texto = texto..v.permiss.." "
+				texto = texto.."<span style=\"color:"..v.group_color..";\">"..v.permiss.."</span> "
+				-- principalCor = "<span style=\"color:"..v.group_color..";\">".."</span> "
+				principalCor = v.group_color
 			end
 
 			--print(vRP.getBackpack(user_id))
 			local identity = vRP.getUserIdentity(user_id)
-			return inventory,vRP.computeInvWeight(user_id),vRP.getBackpack(user_id),{ identity.name.." "..identity.name2,parseInt(user_id),parseInt(identity.bank),parseInt(vRP.getGmsId(user_id)),identity.phone,identity.registration },texto
+			return inventory,vRP.computeInvWeight(user_id),vRP.getBackpack(user_id),{ "<span style=\"color:"..principalCor..";\">"..identity.name.." "..identity.name2.."</span> ",parseInt(user_id),parseInt(identity.bank),parseInt(vRP.getGmsId(user_id)),identity.phone,identity.registration },texto
 		end
 	end
 end

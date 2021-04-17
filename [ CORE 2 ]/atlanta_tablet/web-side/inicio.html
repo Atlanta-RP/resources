@@ -1,0 +1,26 @@
+	<link rel="stylesheet" type="text/css" href="css.css"/>
+	
+	<span class="title">Sejam bem-vindos ao Atlanta Roleplay</span>
+	<span class="stitle">
+		<ul>
+			<li>O servidor está na versão: <b><span id="versao"></span></b></li>
+		</ul>
+	</span>
+
+	<span class="title">Notas da atualização</span>
+	<span class="stitle">
+		<ul>
+			<li>Novidade 1</li>
+			<li>Novidade 2</li>
+			<li>Novidade 3</li>
+			<li>Novidade 4</li>
+			<li>Novidade 5</li>
+			<li>Novidade 6</li>
+		</ul>
+	</span>
+	<script src="jquery.js" type="text/javascript"></script>
+		<script>
+			$.post("http://atlanta_tablet/"+"versao",JSON.stringify("versao"),function(datab){
+			document.getElementById("versao").innerText = datab
+		});
+		</script>

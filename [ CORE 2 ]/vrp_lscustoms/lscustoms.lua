@@ -561,8 +561,10 @@ Citizen.CreateThread(function()
 								if IsControlJustPressed(1,201) then
 									service = vRP.numPermission("Mechanic")
 									local contador = 0
-									for k,v in pairs(service) do
-										contador = contador + 1
+									if service then
+										for k,v in pairs(service) do
+											contador = contador + 1
+										end
 									end
 									if contador >= 1 then
 										if emP.checkWanted() then

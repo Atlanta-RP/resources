@@ -5,6 +5,7 @@ end)
 
 RegisterNetEvent("yordi-phone:addNews")
 AddEventHandler("yordi-phone:addNews", function(getNews)
+  print("aqui")
   SendNUIMessage({event = 'addNews', getNews = getNews})
 end)
 
@@ -27,5 +28,6 @@ RegisterNUICallback('newsGet', function(data, cb)
 end)
 
 RegisterNUICallback('addNews', function(data, cb)
+  print("aqui2")
   TriggerServerEvent('yordi-phone:addNews', data.firstname or '', data.phone_number or '', data.lastname or '', data.title, data.message)
 end)

@@ -4,6 +4,7 @@ vRP.prepare("vRP/get_characters","SELECT id,registration,phone,name,name2,bank F
 -- PREPARE USERS
 -----------------------------------------------------------------------------------------------------------------------------------------
 vRP.prepare("vRP/get_vrp_users","SELECT * FROM vrp_users WHERE id = @id")
+vRP.prepare("vRP/get_nome","SELECT name,name2 FROM vrp_users WHERE id = @id")
 vRP.prepare("vRP/get_vrp_registration","SELECT id FROM vrp_users WHERE registration = @registration")
 vRP.prepare("vRP/get_vrp_phone","SELECT id FROM vrp_users WHERE phone = @phone")
 vRP.prepare("vRP/create_characters","INSERT INTO vrp_users(steam,name,name2) VALUES(@steam,@name,@name2)")
@@ -35,8 +36,9 @@ vRP.prepare("vRP/get_srvdata","SELECT dvalue FROM vrp_srv_data WHERE dkey = @key
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PREPARE vRP_PERMISSIONS
 -----------------------------------------------------------------------------------------------------------------------------------------
+vRP.prepare("vRP/get_version","SELECT * FROM vrp_versao WHERE id = @id")
 vRP.prepare("vRP/get_perms","SELECT * FROM vrp_groups WHERE group_name = @group_name")
-vRP.prepare("vRP/get_perm","SELECT * FROM vrp_permissions WHERE user_id = @user_id")
+vRP.prepare("vRP/get_perm","SELECT * FROM vrp_permissions JOIN vrp_groups ON vrp_permissions.permiss = vrp_groups.group_name WHERE user_id = @user_id ORDER BY vrp_permissions.id")
 vRP.prepare("vRP/get_group","SELECT * FROM vrp_permissions WHERE user_id = @user_id AND permiss = @permiss")
 vRP.prepare("vRP/add_group","INSERT INTO vrp_permissions(user_id,permiss) VALUES(@user_id,@permiss)")
 vRP.prepare("vRP/del_group","DELETE FROM vrp_permissions WHERE user_id = @user_id AND permiss = @permiss")
@@ -87,6 +89,12 @@ vRP.prepare("vRP/add_invoice","INSERT INTO vrp_invoice(user_id,nuser_id,date,pri
 vRP.prepare("vRP/get_invoice","SELECT * FROM vrp_invoice WHERE user_id = @user_id")
 vRP.prepare("vRP/get_myinvoice","SELECT * FROM vrp_invoice WHERE nuser_id = @nuser_id")
 vRP.prepare("vRP/del_invoice","DELETE FROM vrp_invoice WHERE id = @id AND user_id = @user_id")
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- PREPARE vRP_TRANSFERENCIAS
+-----------------------------------------------------------------------------------------------------------------------------------------
+vRP.prepare("vRP/registrar_transferencia","INSERT INTO vrp_transferencias(remetente,destinatario,valor,data) VALUES(@remetente,@destinatario,@valor,@data)")
+vRP.prepare("vRP/get_transferencias","SELECT * FROM vrp_transferencias WHERE remetente = @remetente ORDER BY id DESC LIMIT 10")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PREPARE vRP_SALARY
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -120,8 +128,22 @@ vRP.prepare("vRP/rem_prison","UPDATE vrp_users SET prison = prison - @prison WHE
 vRP.prepare("vRP/fix_prison","UPDATE vrp_users SET prison = 1 WHERE id = @user_id")
 vRP.prepare("vRP/resgate_prison","UPDATE vrp_users SET prison = 0 WHERE id = @user_id")
 -----------------------------------------------------------------------------------------------------------------------------------------
+-- PREPARE vrp_historico_criminal
+-----------------------------------------------------------------------------------------------------------------------------------------
+vRP.prepare("vRP/prender_historico","INSERT INTO vrp_prisoes(id_preso,id_policial,motivo,servicos,data) VALUES(@id_preso,@id_policial,@motivo,@servicos,@data)")
+vRP.prepare("vRP/historico_criminal","SELECT * FROM vrp_prisoes WHERE id_preso = @id_preso ORDER BY id DESC")
+vRP.prepare("vRP/historico_apreensoes","SELECT * FROM vrp_prisoes WHERE id_policial = @id_policial ORDER BY id DESC")
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- PREPARE vrp_historico_multas
+-----------------------------------------------------------------------------------------------------------------------------------------
+vRP.prepare("vRP/inserir_multa","INSERT INTO vrp_historico_multas(user_id,aplicador,data,valor,motivo,fine_id,status) VALUES(@user_id,@aplicador,@data,@valor,@motivo,@fine_id,@status)")
+vRP.prepare("vRP/atualizar_multa","UPDATE vrp_historico_multas SET status = 1 WHERE fine_id = @fine_id")
+vRP.prepare("vRP/ultima_multa","SELECT id FROM vrp_fines WHERE user_id = @user_id ORDER BY id DESC LIMIT 1")
+vRP.prepare("vRP/get_multas_historico","SELECT * FROM vrp_historico_multas WHERE user_id = @user_id ORDER BY id DESC")
+-----------------------------------------------------------------------------------------------------------------------------------------
 -- PREPARE vRP_GEMS
 -----------------------------------------------------------------------------------------------------------------------------------------
+
 vRP.prepare("vRP/set_vRP_gems","UPDATE vrp_infos SET gems = gems + @gems WHERE steam = @steam")
 vRP.prepare("vRP/rem_vRP_gems","UPDATE vrp_infos SET gems = gems - @gems WHERE steam = @steam")
 vRP.prepare("vRP/set_rental_time","UPDATE vrp_vehicles SET premiumtime = @premiumtime WHERE user_id = @user_id AND vehicle = @vehicle")

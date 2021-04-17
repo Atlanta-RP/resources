@@ -774,7 +774,7 @@ RegisterCommand("car",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
  	if user_id then
 		if vRP.hasPermission(user_id,"Admin") and args[1] then
-      		local plate = "ATLANTA"
+      		local plate = "55DTA141"
 			TriggerClientEvent("adminVehicle",source,args[1],plate)
       		TriggerEvent("setPlateEveryone",plate)
 			TriggerEvent("setPlatePlayers",plate,user_id)

@@ -50,6 +50,7 @@ RegisterCommand("keybindphone",function(source,args)
 			menuIsOpen = true
 			SendNUIMessage({ show = true })
 			TriggerEvent("status:celular",true)
+			TriggerServerEvent("gcPhone:allUpdate")
 		end
 	end
 end)

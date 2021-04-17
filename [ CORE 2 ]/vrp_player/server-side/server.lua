@@ -415,7 +415,7 @@ RegisterCommand("placa",function(source,args,rawCommand)
 						end
 					else
 						if not plateSave[string.upper(args[1])] then
-							plateSave[string.upper(args[1])] = { math.random(5000,9999),plateName[math.random(#plateName)].." "..plateName2[math.random(#plateName2)],vRP.generatePhoneNumber() }
+							plateSave[string.upper(args[1])] = { math.random(9999999,99999999),plateName[math.random(#plateName)].." "..plateName2[math.random(#plateName2)],vRP.generatePhoneNumber() }
 						end
 
 						vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
@@ -433,7 +433,7 @@ RegisterCommand("placa",function(source,args,rawCommand)
 							end
 						else
 							if not plateSave[vehPlate] then
-								plateSave[vehPlate] = { math.random(5000,9999),plateName[math.random(#plateName)].." "..plateName2[math.random(#plateName2)],vRP.generatePhoneNumber() }
+								plateSave[vehPlate] = { math.random(9999999,99999999),plateName[math.random(#plateName)].." "..plateName2[math.random(#plateName2)],vRP.generatePhoneNumber() }
 							end
 
 							vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
@@ -1413,3 +1413,4 @@ end)
 -- RegisterCommand('login', function(source,rawCommand)
 -- 	TriggerClientEvent("vrp_spawn:setupChars",source)
 -- end)
+

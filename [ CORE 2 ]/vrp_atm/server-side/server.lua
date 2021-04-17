@@ -86,7 +86,7 @@ function cnVRP.transferirValor(valor,target)
 	if user_id then
 		if vRP.paymentBank(user_id,valor) then
 			vRP.addBank(target,valor)
-
+			vRP.execute("vRP/registrar_transferencia",{ remetente = user_id, destinatario = target,valor = valor,data = os.date("%d/%m/%Y %X") })
 			local nSource = vRP.getUserSource(target)
 			if nSource then
 				TriggerClientEvent("itensNotify",nSource,{ "+","dollars",vRP.format(valor),"Dólares" })

@@ -44,7 +44,8 @@ RegisterCommand("prender",function(source,args,rawCommand)
 			local identity2 = vRP.getUserIdentity(parseInt(user_id))
 			if identity then
 				TriggerClientEvent("Notify",source,"sucesso","<b>"..identity.name.." "..identity.name2.."</b> enviado para a prisão <b>"..parseInt(services).." serviços</b>.",5000)
-				vRP.createWeebHook(records,"```PASSPORT: "..parseInt(nuser_id).."\nNAME: "..identity.name.." "..identity.name2.."\nSERVICES: "..parseInt(services).."\nCRIMES: "..crimes.."\nBY: "..identity2.name.." "..identity2.name2.."```")
+				-- vRP.createWeebHook(records,"```PASSPORT: "..parseInt(nuser_id).."\nNAME: "..identity.name.." "..identity.name2.."\nSERVICES: "..parseInt(services).."\nCRIMES: "..crimes.."\nBY: "..identity2.name.." "..identity2.name2.."```")
+				vRP.execute("vRP/prender_historico", { id_preso = nuser_id, id_policial = user_id, motivo = crimes ,servicos = services, data = os.date("%d/%m/%Y %X")})
 			end
 
 			local nplayer = vRP.getUserSource(parseInt(nuser_id))
@@ -198,7 +199,11 @@ RegisterCommand("multar",function(source,args,rawCommand)
 				vRP.setFines(parseInt(nuser_id),parseInt(value),parseInt(user_id),tostring(reason))
 				vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
 				TriggerClientEvent("Notify",source,"importante","Multa aplicada em <b>"..identity.name.." "..identity.name2.."</b> no valor de <b>$"..vRP.format(parseInt(value)).." dólares</b>.",5000)
-				vRP.createWeebHook(fines,"```PASSPORT: "..parseInt(nuser_id).."\nNAME: "..identity.name.." "..identity.name2.."\nVALUE: $"..vRP.format(parseInt(value)).."\nCRIMES: "..reason.."\nBY: "..identity2.name.." "..identity2.name2.."```")
+				-- print(nuser_id)
+				local multa = vRP.query("vRP/ultima_multa",{user_id = parseInt(nuser_id) })
+				
+				vRP.execute("vRP/inserir_multa", { user_id = nuser_id, aplicador = user_id, data = os.date("%d/%m/%Y %X"), valor = vRP.format(parseInt(value)), motivo = tostring(reason), fine_id = multa[1].id, status = 0 })
+				--vRP.createWeebHook(fines,"```PASSPORT: "..parseInt(nuser_id).."\nNAME: "..identity.name.." "..identity.name2.."\nVALUE: $"..vRP.format(parseInt(value)).."\nCRIMES: "..reason.."\nBY: "..identity2.name.." "..identity2.name2.."```")
 			end
 		end
 	end

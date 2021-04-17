@@ -35,9 +35,9 @@ function cnVRP.gallonBuying()
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
-		local request = vRP.request(source,"Deseja comprar um <b>Galão</b> por <b>$250</b>?",30)
+		local request = vRP.request(source,"Deseja comprar um <b>Galão</b> por <b>$50</b>?",30)
 		if request then
-			if vRP.paymentBank(user_id,250) then
+			if vRP.paymentBank(user_id,50) then
 				vRP.giveInventoryItem(user_id,"WEAPON_PETROLCAN",1)
 				vRP.giveInventoryItem(user_id,"WEAPON_PETROLCAN_AMMO",4500)
 				return true

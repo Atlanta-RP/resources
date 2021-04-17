@@ -8,8 +8,8 @@ vRP = Proxy.getInterface("vRP")
 -- CONNECTION
 -----------------------------------------------------------------------------------------------------------------------------------------
 cnVRP = {}
-Tunnel.bindInterface("vrp_bank",cnVRP)
-vBANK = Tunnel.getInterface("vrp_bank")
+Tunnel.bindInterface("atlanta_bank",cnVRP)
+vBANK = Tunnel.getInterface("atlanta_bank")
 
 local bank = 0
 
@@ -18,8 +18,8 @@ function setBank (value)
     SendNUIMessage({event = 'updateBankbalance', banking = bank})
 end
 
-RegisterNetEvent('vrp_bank:updates12ds')
-AddEventHandler('vrp_bank:updates12ds', function(playerData)
+RegisterNetEvent('atlanta_bank:updates12ds')
+AddEventHandler('atlanta_bank:updates12ds', function(playerData)
    local bankmoney = vBANK.requestBank()
    if bankmoney then
       setBank(bankmoney)
@@ -42,8 +42,17 @@ end)
 
 RegisterNetEvent("yordi-phone:fatura_getBilling")
 AddEventHandler("yordi-phone:fatura_getBilling", function(getFatura)
+      print("teste")
       SendNUIMessage({event = 'getFatura', getFatura = getFatura})
       cnVRP.requestBankClient()
+end)
+
+-- vRP.getInvoice
+
+RegisterNUICallback('getFatura', function(data, cb)
+      payFatura(data.id, data.sender, data.amount, data.target)
+      cnVRP.requestBankClient()
+      cb()
 end)
 
 RegisterNUICallback('getFaturaBilling', function(data, cb)

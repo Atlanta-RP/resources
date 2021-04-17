@@ -69,13 +69,13 @@ function getOrGeneratePhoneNumber(sourcePlayer,identifier,cb)
 end
 
 function getContacts(identifier)
-	local result = MySQL.Sync.fetchAll("SELECT * FROM phone_contacts WHERE phone_contacts.identifier = @identifier",{ ['@identifier'] = identifier })
+	local result = MySQL.Sync.fetchAll("SELECT * FROM yordi_phone_users_contacts WHERE yordi_phone_users_contacts.identifier = @identifier",{ ['@identifier'] = identifier })
 	return result
 end
 
 function addContact(source,identifier,number,display)
 	local sourcePlayer = tonumber(source)
-	MySQL.Async.insert("INSERT INTO phone_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)",{
+	MySQL.Async.insert("INSERT INTO yordi_phone_users_contacts (`identifier`, `number`,`display`) VALUES(@identifier, @number, @display)",{
 		['@identifier'] = identifier,
 		['@number'] = number,
 		['@display'] = display
@@ -86,7 +86,7 @@ end
 
 function updateContact(source,identifier,id,number,display)
 	local sourcePlayer = tonumber(source)
-	MySQL.Async.insert("UPDATE phone_contacts SET number = @number, display = @display WHERE id = @id",{ 
+	MySQL.Async.insert("UPDATE yordi_phone_users_contacts SET number = @number, display = @display WHERE id = @id",{ 
 		['@number'] = number,
 		['@display'] = display,
 		['@id'] = id
@@ -97,7 +97,7 @@ end
 
 function deleteContact(source,identifier,id)
 	local sourcePlayer = tonumber(source)
-	MySQL.Sync.execute("DELETE FROM phone_contacts WHERE `identifier` = @identifier AND `id` = @id",{
+	MySQL.Sync.execute("DELETE FROM yordi_phone_users_contacts WHERE `identifier` = @identifier AND `id` = @id",{
 		['@identifier'] = identifier,
 		['@id'] = id
 	})
@@ -105,7 +105,7 @@ function deleteContact(source,identifier,id)
 end
 
 function deleteAllContact(identifier)
-	MySQL.Sync.execute("DELETE FROM phone_contacts WHERE `identifier` = @identifier",{
+	MySQL.Sync.execute("DELETE FROM yordi_phone_users_contacts WHERE `identifier` = @identifier",{
 		['@identifier'] = identifier
 	})
 end
@@ -187,48 +187,48 @@ function addMessage(source,identifier,phone_number,message)
 	local memess = _internalAddMessage(phone_number,myPhone,message,1)
 	TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,memess)
 	if phone_number == '000-000' then
-		Wait(1250)
-		if not firstmessage[source] then
-			local mensagem = "Salve, Tenho as informações que você precisa 1 - Aceitar / 2 - Quero nao. ( ME RESPONDA APENAS COM NUMEROS )"
-			--if sourcePlayer ~= nil and vRP.getUserSource(sourcePlayer) ~= nil then
-				local tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
-				TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
-				firstmessage[source] = true
-			--end
-		elseif firstmessage[source] and not secondmessage[source] and message == '1' then
-			local mensagem = "Ta afim de saber oq? 1 - Comprar umas nerf? 2 - Loc pra vender as drogas e outros ilegais"
-			--if sourcePlayer ~= nil and vRP.getUserSource(sourcePlayer) ~= nil then
-				local tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
-				TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
-				secondmessage[source] = true
-				vRP.paymentBank(identifier,tonumber(0))
-			--end
-		else
-			if message == '1' or message == '2' then
-				if not etapaecstasy[source] and not etapafueltech[source] and not etapalean[source] then
-					if message == '1' or message == '5' or message == '6' or message == '7' then
-						firstmessage[source] = false
-						secondmessage[source] = false
-					end
-					if message == '1' then
-						mensagem = 'Loc: 2662.38, 3468.16 \n Localizaçao do contato. Bate na porta, blz?'
-					elseif message == '2' then
-						mensagem = 'Loc: 19.94, -1601.97 O dono de la conhece uns contatos, chegando la vai no armario que tem um gnomo e mentaliza /delivery que ele te entrega a lista'
-					end
-				else
+		-- Wait(1250)
+		-- if not firstmessage[source] then
+		-- 	local mensagem = "Salve, Tenho as informações que você precisa 1 - Aceitar / 2 - Quero nao. ( ME RESPONDA APENAS COM NUMEROS )"
+		-- 	--if sourcePlayer ~= nil and vRP.getUserSource(sourcePlayer) ~= nil then
+		-- 		local tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
+		-- 		TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
+		-- 		firstmessage[source] = true
+		-- 	--end
+		-- elseif firstmessage[source] and not secondmessage[source] and message == '1' then
+		-- 	local mensagem = "Ta afim de saber oq? 1 - Comprar umas nerf? 2 - Loc pra vender as drogas e outros ilegais"
+		-- 	--if sourcePlayer ~= nil and vRP.getUserSource(sourcePlayer) ~= nil then
+		-- 		local tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
+		-- 		TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
+		-- 		secondmessage[source] = true
+		-- 		vRP.paymentBank(identifier,tonumber(0))
+		-- 	--end
+		-- else
+		-- 	if message == '1' or message == '2' then
+		-- 		if not etapaecstasy[source] and not etapafueltech[source] and not etapalean[source] then
+		-- 			if message == '1' or message == '5' or message == '6' or message == '7' then
+		-- 				firstmessage[source] = false
+		-- 				secondmessage[source] = false
+		-- 			end
+		-- 			if message == '1' then
+		-- 				mensagem = 'Loc: 2662.38, 3468.16 \n Localizaçao do contato. Bate na porta, blz?'
+		-- 			elseif message == '2' then
+		-- 				mensagem = 'Loc: 19.94, -1601.97 O dono de la conhece uns contatos, chegando la vai no armario que tem um gnomo e mentaliza /delivery que ele te entrega a lista'
+		-- 			end
+		-- 		else
 
-					firstmessage[source] = false
-					secondmessage[source] = false
-					etapaecstasy[source] = false
-					etapafueltech[source] = false
-					etapalean[source] = false
-					etapailegal[source] = false
-				end
-				--firstmessage[source] = false
-				tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
-				TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
-			end
-		end
+		-- 			firstmessage[source] = false
+		-- 			secondmessage[source] = false
+		-- 			etapaecstasy[source] = false
+		-- 			etapafueltech[source] = false
+		-- 			etapalean[source] = false
+		-- 			etapailegal[source] = false
+		-- 		end
+		-- 		--firstmessage[source] = false
+		-- 		tomess = _internalAddMessage(phone_number,myPhone,mensagem,0)
+		-- 		TriggerClientEvent("gcPhone:receiveMessage",sourcePlayer,tomess)
+		-- 	end
+		-- end
 	else
 		local otherIdentifier = getIdentifierByPhoneNumber(phone_number)
 		--local myPhone = getNumberPhone(identifier)
@@ -485,6 +485,6 @@ AddEventHandler('gcPhone:allUpdate',function()
 	sendHistoriqueCall(sourcePlayer,num)
 end)
 
-AddEventHandler('onMySQLReady',function()
-	MySQL.Async.fetchAll("DELETE FROM phone_messages WHERE (DATEDIFF(CURRENT_DATE,time) > 10)")
-end)
+-- AddEventHandler('onMySQLReady',function()
+-- 	MySQL.Async.fetchAll("DELETE FROM phone_messages WHERE (DATEDIFF(CURRENT_DATE,time) > 10)")
+-- end)

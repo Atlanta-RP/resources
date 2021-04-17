@@ -27,7 +27,6 @@ function newsnewAdd (title, message, sourcePlayer, cb)
     local source = source
     local user = vRP.getUserId(source)
     local identity = vRP.getUserIdentity(user)
-
     MySQL.Async.insert("INSERT INTO yordi_news (`phone_number`, `firstname`, `lastname`, `title`, `message`) VALUES(@phone_number, @firstname, @lastname, @title, @message);", {
 	  ['@phone_number'] = identity.phone,
 	  ['@firstname'] = identity.name,

@@ -83,6 +83,6 @@ end)
 
 AddEventHandler("onResourceStart",function(resourceName)
     if GetCurrentResourceName() == resourceName then 
-        print("\27[32m ["..GetCurrentResourceName().."] - Desenvolvido por twitch.tv/NyoGamesYT! VENDA PROIBIDA\27[37m")
+        --print("\27[32m ["..GetCurrentResourceName().."] - Desenvolvido por twitch.tv/NyoGamesYT! VENDA PROIBIDA\27[37m")
     end
 end)

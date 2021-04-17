@@ -2,13 +2,13 @@ local Tunnel = module("vrp","lib/Tunnel")
 local Proxy = module("vrp","lib/Proxy")
 vRP = Proxy.getInterface("vRP")
 
-local myPedId = nil
-local phoneProp = 0
+local phoneProp = nil
 local phoneModel = "prop_amb_phone"
 local currentStatus = "out"
 local lastDict = nil
 local lastAnim = nil
 local lastIsFreeze = false
+local animName = nil
 
 local ANIMS = {
 	['cellphone@'] = {
@@ -47,24 +47,53 @@ local ANIMS = {
 
 function newPhoneProp()
 	deletePhone()
-	RequestModel(phoneModel)
-	while not HasModelLoaded(phoneModel) do
+
+	local mhash = GetHashKey(phoneModel)
+
+	RequestModel(mhash)
+	while not HasModelLoaded(mhash) do
+		RequestModel(mhash)
 		Citizen.Wait(10)
 	end
-	phoneProp = CreateObject(GetHashKey(phoneModel),1.0,1.0,1.0,1,1,0)
-	SetEntityCollision(phoneProp,false,false)
-	AttachEntityToEntity(phoneProp,myPedId,GetPedBoneIndex(myPedId,28422),0.0,0.0,0.0,0.0,0.0,0.0,1,1,0,0,2,1)
-	Citizen.InvokeNative(0xAD738C3085FE7E11,phoneProp,true,true)
+
+	local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1),0.0,0.0,-5.0)
+	phoneProp = CreateObject(mhash,coords.x,coords.y,coords.z,true,true,false)
+	AttachEntityToEntity(phoneProp,GetPlayerPed(-1),GetPedBoneIndex(GetPlayerPed(-1),28422),0.0,0.0,0.0,0.0,0.0,0.0,false,false,false,false,2,true)
+	SetEntityAsMissionEntity(phoneProp,true,true)
+	SetModelAsNoLongerNeeded(mhash)
+
+	NetworkRegisterEntityAsNetworked(phoneProp)
+	local netid = ObjToNet(phoneProp)
+	SetNetworkIdExistsOnAllMachines(netid,true)
+	NetworkSetNetworkIdDynamic(netid,true)
+	SetNetworkIdCanMigrate(netid,false)
+	for _,i in ipairs(GetActivePlayers()) do
+		SetNetworkIdSyncToPlayer(netid,i,true)
+	end
 end
+
+Citizen.CreateThread(function()
+	while true do
+		local ped = PlayerPedId()
+		if not IsEntityPlayingAnim(ped,"cellphone@",animName,3) and phoneProp ~= nil then
+			TaskPlayAnim(ped,"cellphone@",animName,3.0,3.0,-1,50,0,0,0,0)
+		end
+		Citizen.Wait(1)
+	end
+end)
 
 function deletePhone()
 	TriggerEvent("binoculos")
 	if DoesEntityExist(phoneProp) then
-		DetachEntity(phoneProp,true,true)
-		Citizen.InvokeNative(0xAD738C3085FE7E11,phoneProp,true,true)
-		SetEntityAsNoLongerNeeded(Citizen.PointerValueIntInitialized(phoneProp))
-		DeleteEntity(phoneProp)
+		TriggerServerEvent("tryDeleteEntity",ObjToNet(phoneProp))
 		phoneProp = nil
+	end
+end
+
+function loadAnimDict(dict)
+	RequestAnimDict(dict)
+	while not HasAnimDictLoaded(dict) do
+		Citizen.Wait(10)
 	end
 end
 
@@ -77,31 +106,30 @@ function PhonePlayAnim(status,freeze,force)
 		return
 	end
 
-	myPedId = PlayerPedId()
 	local freeze = freeze or false
 
 	local dict = "cellphone@"
-	if IsPedInAnyVehicle(myPedId,false) then
+	if IsPedInAnyVehicle(GetPlayerPed(-1),false) then
 		dict = "anim@cellphone@in_car@ps"
 	end
 	loadAnimDict(dict)
 
 	local anim = ANIMS[dict][currentStatus][status]
 	if currentStatus ~= 'out' then
-		StopAnimTask(myPedId,lastDict,lastAnim,1.0)
+		StopAnimTask(GetPlayerPed(-1),lastDict,lastAnim,1.0)
 	end
 
 	local flag = 50
 	if freeze == true then
 		flag = 14
 	end
-	TaskPlayAnim(myPedId,dict,anim,3.0,-1,-1,flag,0,false,false,false)
+	animName = anim
+	TaskPlayAnim(GetPlayerPed(-1),dict,anim,3.0,3.0,-1,flag,0,false,false,false)
 
 	if status ~= 'out' and currentStatus == 'out' then
 		Citizen.Wait(380)
 		newPhoneProp()
-		TriggerEvent("status:celular",true)
-		SetCurrentPedWeapon(myPedId,GetHashKey("WEAPON_UNARMED"),true)
+		SetCurrentPedWeapon(GetPlayerPed(-1),GetHashKey("WEAPON_UNARMED"),true)
 	end
 
 	lastDict = dict
@@ -110,34 +138,34 @@ function PhonePlayAnim(status,freeze,force)
 	currentStatus = status
 
 	if status == 'out' then
+		TriggerEvent("gcphoneVoip",false)
+		TriggerEvent("status:celular",false)
 		Citizen.Wait(180)
 		deletePhone()
-		StopAnimTask(myPedId,lastDict,lastAnim,1.0)
-		TriggerEvent("status:celular",false)
+		StopAnimTask(GetPlayerPed(-1),lastDict,lastAnim,1.0)
 	end
 end
 
 function PhonePlayOut()
-	PhonePlayAnim('out')
-end
-
-function PhonePlayText()
-	PhonePlayAnim('text')
-end
-
-function PhonePlayCall(freeze)
-	PhonePlayAnim('call',freeze)
-end
-
-function PhonePlayIn()
-	if currentStatus == 'out' then
-		PhonePlayText()
+	if GetEntityHealth(GetPlayerPed(-1)) >= 102 and not vRP.isHandcuffed() then
+		PhonePlayAnim('out')
 	end
 end
 
-function loadAnimDict(dict)
-	RequestAnimDict(dict)
-	while not HasAnimDictLoaded(dict) do
-		Citizen.Wait(10)
+function PhonePlayText()
+	if GetEntityHealth(GetPlayerPed(-1)) >= 102 and not vRP.isHandcuffed() then
+		PhonePlayAnim('text')
+	end
+end
+
+function PhonePlayCall()
+	if GetEntityHealth(GetPlayerPed(-1)) >= 102 and not vRP.isHandcuffed() then
+		PhonePlayAnim('call')
+	end
+end
+
+function PhonePlayIn()
+	if currentStatus == 'out' and GetEntityHealth(GetPlayerPed(-1)) >= 102 and not vRP.isHandcuffed() then
+		PhonePlayText()
 	end
 end
