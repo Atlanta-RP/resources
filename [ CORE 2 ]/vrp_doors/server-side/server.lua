@@ -15,21 +15,7 @@ Tunnel.bindInterface("vrp_doors",cnVRP)
 local doors = {
 
 	-- DEPARTAMENT POLICE ANTIGA
-	-- [1] = { ["x"] = 461.83, ["y"] = -1001.99, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true},
-	-- [2] = { ["x"] = 461.86, ["y"] = -998.37, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true},
-	-- [3] = { ["x"] = 461.77, ["y"] = -993.63, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true},
-	-- [4] = { ["x"] = 468.97, ["y"] = -1014.46, ["z"] = 26.39, ["hash"] = 2271212864, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["other"] = 5, ["sound"] = true },
-	-- [5] = { ["x"] = 468.35, ["y"] = -1014.44, ["z"] = 26.39, ["hash"] = 2271212864, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["other"] = 4, ["sound"] = true },
-	-- [6] = { ["x"] = 453.12, ["y"] = -982.52, ["z"] = 30.68, ["hash"] = 749848321, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [7] = { ["x"] = 461.23, ["y"] = -986.01, ["z"] = 30.68, ["hash"] = 749848321, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [8] = { ["x"] = 431.83, ["y"] = -979.51, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [9] = { ["x"] = 428.04, ["y"] = -979.42, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [10] = { ["x"] = 468.47, ["y"] = -997.93, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [11] = { ["x"] = 471.33, ["y"] = -997.92, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [12] = { ["x"] = 474.18, ["y"] = -997.95, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [13] = { ["x"] = 477.09, ["y"] = -997.92, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [14] = { ["x"] = 479.98, ["y"] = -997.95, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
-	-- [15] = { ["x"] = 435.93, ["y"] = -979.45, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
+
 	[1] = { ["x"] = 361.77, ["y"] = -1584.5, ["z"] = 29.3, ["hash"] = -1501157055, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true, ["other"] = 2 },
 	[2] = { ["x"] = 360.95, ["y"] = -1585.57, ["z"] = 29.3, ["hash"] = -1501157055, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true, ["other"] = 1 },
 	[3] = { ["x"] = 365.63, ["y"] = -1588.71, ["z"] = 29.3, ["hash"] = -1320876379, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Police", ["sound"] = true },
@@ -105,6 +91,23 @@ local doors = {
 	[72] = { ["x"] = -1864.66, ["y"] = 2060.11, ["z"] = 140.98, ["hash"] = -1141522158, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true, ["other"] = 71 },
 	[73] = { ["x"] = -1886.93, ["y"] = 2051.51, ["z"] = 140.99, ["hash"] = 1077118233, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true, ["other"] = 74 },
 	[74] = { ["x"] = -1885.64, ["y"] = 2051.03, ["z"] = 140.99, ["hash"] = 1077118233, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true, ["other"] = 73 },
+	[75] = { ["x"] = 461.83, ["y"] = -1001.99, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true},
+	[76] = { ["x"] = 461.86, ["y"] = -998.37, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true},
+	[77] = { ["x"] = 461.77, ["y"] = -993.63, ["z"] = 24.92, ["hash"] = 631614199, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true},
+	[78] = { ["x"] = 468.97, ["y"] = -1014.46, ["z"] = 26.39, ["hash"] = 2271212864, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["other"] = 5, ["sound"] = true },
+	[79] = { ["x"] = 468.35, ["y"] = -1014.44, ["z"] = 26.39, ["hash"] = 2271212864, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["other"] = 4, ["sound"] = true },
+	[80] = { ["x"] = 453.12, ["y"] = -982.52, ["z"] = 30.68, ["hash"] = 749848321, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[81] = { ["x"] = 461.23, ["y"] = -986.01, ["z"] = 30.68, ["hash"] = 749848321, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[82] = { ["x"] = 431.83, ["y"] = -979.51, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[83] = { ["x"] = 428.04, ["y"] = -979.42, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[84] = { ["x"] = 468.47, ["y"] = -997.93, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[85] = { ["x"] = 471.33, ["y"] = -997.92, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[86] = { ["x"] = 474.18, ["y"] = -997.95, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[87] = { ["x"] = 477.09, ["y"] = -997.92, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[88] = { ["x"] = 479.98, ["y"] = -997.95, ["z"] = 24.9, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[89] = { ["x"] = 435.93, ["y"] = -979.45, ["z"] = 26.67, ["hash"] = -1033001619, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[90] = { ["x"] = 434.34, ["y"] = -982.57, ["z"] = 30.72, ["hash"] = 320433149, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
+	[91] = { ["x"] = 434.34, ["y"] = -981.42, ["z"] = 30.72, ["hash"] = -1215222675, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Admin", ["sound"] = true },
 	-- [XX] = { ["x"] = , ["y"] = , ["z"] = , ["hash"] = , ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "XXXXXX", ["sound"] = true }
 }
 -----------------------------------------------------------------------------------------------------------------------------------------

@@ -115,8 +115,8 @@ img {
 }
 
 button {
-	top: 50%;
-	left: 50%;
+	top: 51.8%;
+	left: 49.1%;
 	width: 30px;
 	height: 30px;
 	display: none;
@@ -134,16 +134,16 @@ button:hover {
 }
 
 #bank-top {
-	text-align: right;
+	text-align: center;
 	line-height: 17px;
 	color: whitesmoke;
-	margin-bottom: 20px;
+	margin-top: 3%;
 	width: 920px;
 	height: 54px;
 	float: left;
 	letter-spacing: 1.5px;
-	padding: 0 40px 0 0;
-	font-size: 16px !important;
+	/*padding: 0 20px 0 0;*/
+	font-size: 18px !important;
 }
 
 
@@ -163,13 +163,18 @@ button:hover {
 }
 
 #bank-left a {
-	width: 240px;
+	width: 200px;
 	padding: 15px 20px;
-	background-image: linear-gradient(#f3a000,#d57800);
+	background-image: linear-gradient(#ffffff, #787878);
 	float: left;
-	color: #523600;
-	margin: 0 0 10px 0;
+	color: black;
+	margin: 0 0 10px 35px;
 	border-radius: 2px;
+}
+
+#bank-left a:hover {
+	background-image: linear-gradient(rgba(255, 255, 255, 0.54), rgba(120, 120, 120, 0.55));
+	color: black;
 }
 
 #bank-left texto {
@@ -243,95 +248,11 @@ button:hover {
 	color: #444;
 }
 
-.multas {
-	color: #155e39;
-	font-weight: 700;
-	position: absolute;
-	background: #2dc177;
-	padding: 12px 12px 11px;
-	margin: -1px 0 0 500px;
-	border-radius: 2px;
-}
-
-.multas:hover {
-	background: #31d080;
-}
-
-.salario {
-	color: #155e39;
-	font-weight: 700;
-	position: absolute;
-	background: #2dc177;
-	padding: 12px 12px 11px;
-	margin: -1px 0 0 471px;
-	border-radius: 2px;
-}
-
-.salario:hover {
-	background: #31d080;
-}
-
-.faturas {
-	color: #155e39;
-	font-weight: 700;
-	position: absolute;
-	background: #2dc177;
-	padding: 12px 12px 11px;
-	margin: -1px 0 0 500px;
-	border-radius: 2px;
-}
-
-.faturas:hover {
-	background: #31d080;
-}
-
-.menu-depositar {
-	float: left;
-	width: 625px;
-	padding: 20px 20px;
-	background: #fff;
-	margin-right: 11px;
-	border-radius: 2px;
-	box-shadow: 1px 1px rgba(0,0,0,0.1);
-}
-
-.deposito, .saque {
-	border: 0;
-	float: left;
-	width: 154px;
-	padding: 14px 20px 13px;
-	font-size: 20px;
-	margin-right: 10px;
-	background: rgba(0,0,0,0.1);
-	border-radius: 2px;
-}
-
-
-
-.depositar, .sacar {
-	width: 100px;
-	text-align: center;
-	color: #155e39;
-	font-weight: 700;
-	background: #2dc177;
-	padding: 15px 10px;
-	font-size: 20px;
-	border-radius: 2px;
-	float: left;
-}
-
-.menu-sacar {
-	float: left;
-	width: 625px;
-	padding: 20px;
-	background: #fff;
-	border-radius: 2px;
-}
 
 .menu-space {
 	float: left;
 	width: 625px;
-	padding: 20px;
+	padding: 10px;
 	background: rgba(255, 255, 255, 0);
 	border-radius: 2px;
 }
@@ -363,12 +284,13 @@ button:hover {
 
 .menu-buscar {
 	float: left;
-	width: 625px;
+	width: 582px;
 	padding: 20px 20px;
-	background: #fff;
+	background-image: linear-gradient(#ffffff, #787878);
 	margin-right: 0px;
 	border-radius: 2px;
 	box-shadow: 1px 1px rgba(0,0,0,0.1);
+	color: black;
 }
 
 .busca {
@@ -385,9 +307,9 @@ button:hover {
 .buscar {
 	width: 100px;
 	text-align: center;
-	color: #155e39;
+	color: #0c2b7b;
 	font-weight: 700;
-	background: #2dc177;
+	background: #1a4cdb;
 	padding: 15px 10px;
 	font-size: 20px;
 	border-radius: 2px;
@@ -410,12 +332,13 @@ button:hover {
 
 .menu-multas {
 	float: left;
-	width: 625px;
+	width: 582px;
 	padding: 20px 20px;
-	background: #fff;
+	background-image: linear-gradient(#ffffff, #787878);
 	margin-right: 0px;
 	border-radius: 2px;
 	box-shadow: 1px 1px rgba(0,0,0,0.1);
+	color: black;
 }
 
 .multa {
@@ -432,9 +355,9 @@ button:hover {
 .multar {
 	width: 100px;
 	text-align: center;
-	color: #155e39;
+	color: #0c2b7b;
 	font-weight: 700;
-	background: #2dc177;
+	background: #1a4cdb;
 	padding: 15px 10px;
 	font-size: 20px;
 	border-radius: 2px;

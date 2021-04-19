@@ -12,17 +12,17 @@ Tunnel.bindInterface("atlanta_bank",cRP)
 -----------------------------------------------------------------------------------------------------------------------------------------
 ------------on/off
 -----------------------------------------------------------------------------------------------------------------------------------------
--- Citizen.CreateThread(function()
---     PerformHttpRequest("https://discord.com/api/webhooks/810391336544501780/GZPF2oJAxYH2KnORPJe3TJsLmn-gJOxaE7B3cR0iybrlquPDw3rTW_sZMs1c-lZC_r0A", function(err, text, headers) end, 'POST', json.encode({
---         content = '@everyone',
---         embeds = {
---             {
---                 description = '**SERVIDOR ONLINE:**\n\n**Aperte F8 e conecte: connect cfx.re/join/mpkkxq**',
---                 color = 2723266 --Se quiser mudar a cor é aqui
---             }
---         }
---     }), { ['Content-Type'] = 'application/json' })
--- end)
+ Citizen.CreateThread(function()
+     PerformHttpRequest("https://discordapp.com/api/webhooks/833044997891817522/bvFrN-kMQBVm8TavqZIqj3rW8T6IwPWfEuHnX-vH_K21E6LUsJQpnYpylK7RMzbzjcew", function(err, text, headers) end, 'POST', json.encode({
+         content = '@everyone',
+         embeds = {
+             {
+                 description = '**SERVIDOR ONLINE:**\n\n**Aperte F8 e conecte: connect cfx.re/join/XXXXX**',
+                 color = 2723266 --Se quiser mudar a cor é aqui
+             }
+         }
+     }), { ['Content-Type'] = 'application/json' })
+ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- REQUESTWANTED
 -----------------------------------------------------------------------------------------------------------------------------------------

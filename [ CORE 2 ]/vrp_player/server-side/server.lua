@@ -1140,6 +1140,39 @@ RegisterCommand("faturas",function(source,args,rawCommand)
 		end
 	end
 end)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- FATURAS
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterCommand("pix",function(source,args,rawCommand)
+	local user_id = vRP.getUserId(source)
+	if user_id then
+		local destinatario = vRP.prompt(source,"Passaporte:","")
+		if destinatario == "" or parseInt(destinatario) <= 0 then
+			return
+		end
+
+		local valor = vRP.prompt(source,"Valor:","")
+		if valor == "" or parseInt(valor) <= 0 then
+			return
+		end
+		valor = parseInt(valor)
+		if vRP.paymentBank(user_id,valor) then
+			vRP.addBank(destinatario,valor)
+			vRP.execute("vRP/registrar_transferencia",{ remetente = user_id, destinatario = destinatario,valor = valor,data = os.date("%d/%m/%Y %X") })
+			TriggerClientEvent("Notify",source,"sucesso","[BANCO] Transferência de realizada com sucesso para ["..destinatario.."] ($"..valor..").",5000)
+			local nSource = vRP.getUserSource(destinatario)
+			TriggerClientEvent("atlanta_bank:Updates12ds",source,"requestInicio")
+			if nSource then
+				TriggerClientEvent("Notify",nSource,"sucesso","[BANCO] Transferência de ["..user_id.."] recebida com sucesso (+ $"..valor..").",5000)
+			end
+		else
+			TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente na sua conta bancária.",3000)
+		end
+	end
+end)
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- LIVERY
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -1241,6 +1274,10 @@ RegisterCommand('mascara',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setmascara",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1249,13 +1286,17 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- /blusa
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand('blusa',function(source,args,rawCommand)
+RegisterCommand('camisa',function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if vRPclient.getHealth(source) > 101 then
 		if not vRPclient.isHandcuffed(source) then
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setblusa",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1271,6 +1312,10 @@ RegisterCommand('colete',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setcolete",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1286,6 +1331,10 @@ RegisterCommand('jaqueta',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setjaqueta",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1301,6 +1350,10 @@ RegisterCommand('maos',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setmaos",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1316,6 +1369,10 @@ RegisterCommand('calca',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setcalca",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1331,6 +1388,10 @@ RegisterCommand('acessorios',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setacessorios",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1346,6 +1407,10 @@ RegisterCommand('sapatos',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setsapatos",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1361,6 +1426,10 @@ RegisterCommand('chapeu',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setchapeu",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end
@@ -1377,6 +1446,10 @@ RegisterCommand('oculos',function(source,args,rawCommand)
 			if not vRP.searchReturn(source,user_id) then
 				if user_id then
 					TriggerClientEvent("setoculos",source,args[1],args[2])
+					local custom = vSKINSHOP.getCustomization(source)
+					if custom then
+						vRP.setUData(user_id,"Clothings",json.encode(custom))
+					end
 				end
 			end
 		end

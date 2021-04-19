@@ -143,6 +143,12 @@ function setNewCustom()
 end
 
 
+RegisterNetEvent("nyo_tattoo:skinData")
+AddEventHandler("nyo_tattoo:skinData",function(status)
+    nyoTattooS.getTattoo()
+end)
+
+
 function criarBlip()
     for k,v in pairs(tattooShops) do 
         for k2, v2 in pairs(v.coord) do

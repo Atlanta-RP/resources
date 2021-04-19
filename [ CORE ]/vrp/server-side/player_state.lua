@@ -70,6 +70,13 @@ AddEventHandler("vRP:playerSpawn",function(user_id,source)
 			resultData = "clean"
 		end
 		TriggerClientEvent("vrp_skinshop:skinData",source,resultData)
+
+		--VRP_TATTOOS
+		TriggerClientEvent("nyo_tattoo:skinData",source)
+		--
+		--print("terminou")
+
+
 		
 	end
 end)

@@ -33,7 +33,7 @@ function nyoTattooS.getTattoo()
     local custom = {}
     local data = vRP.getUData(user_id,"vRP:tattoos")
      if data ~= '' then
-        custom = json.decode(data)  
+        custom = json.decode(data)
         nyoTattooC.setTattoos(source,custom)
         Wait(100)
         nyoTattooC.applyTatto(source)
@@ -52,9 +52,16 @@ function nyoTattooS.payment(price, totalPrice, newTatto)
             TriggerClientEvent("Notify",source,"sucesso","Você pagou <b>$"..totalPrice.." dólares</b> em suas tatuagens.",5000)
             vRP.setUData(user_id,"vRP:tattoos",json.encode(newTatto))
             nyoTattooC.payment(source, true)
-        else 
-            TriggerClientEvent("Notify",source,"negado","Você não tem dinheiro suficiente",5000)
-            nyoTattooC.payment(source, false)
+        else
+            if totalPrice == 0 then
+                TriggerClientEvent("Notify",source,"sucesso","Você pagou <b>$"..totalPrice.." dólares</b> em suas tatuagens.",5000)
+                vRP.setUData(user_id,"vRP:tattoos",json.encode(newTatto))
+                nyoTattooC.payment(source, true)
+            else
+                TriggerClientEvent("Notify",source,"negado","Você não tem dinheiro suficiente",5000)
+                nyoTattooC.payment(source, false)
+            end
+
         end 
     else 
         TriggerClientEvent("Notify",source,"negado","Ocorreu um erro na sua compra! Tente novamente!",5000)
@@ -73,7 +80,7 @@ AddEventHandler("vRP:playerSpawn",function(user_id,source,first_spawn)
             nyoTattooC.setTattoos(source,custom)
             Wait(100)
             nyoTattooC.applyTatto(source)
-        else 
+        else
             nyoTattooC.setTattoos(source,custom)
             Wait(100)
             nyoTattooC.applyTatto(source)
@@ -82,7 +89,7 @@ AddEventHandler("vRP:playerSpawn",function(user_id,source,first_spawn)
 end)
 
 AddEventHandler("onResourceStart",function(resourceName)
-    if GetCurrentResourceName() == resourceName then 
+    if GetCurrentResourceName() == resourceName then
         --print("\27[32m ["..GetCurrentResourceName().."] - Desenvolvido por twitch.tv/NyoGamesYT! VENDA PROIBIDA\27[37m")
     end
 end)
