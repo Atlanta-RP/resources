@@ -33,14 +33,16 @@ function cnVRP.paymentCheckin()
 
 		local value = 400
 		if GetEntityHealth(GetPlayerPed(source)) <= 101 then
-			value = value + 3000
+			value = value + 500
 		end
 
-		if vRP.tryGetInventoryItem(user_id,"dollars",parseInt(value)) then
+		if vRP.paymentBank(user_id,parseInt(value)) then
+			TriggerClientEvent("Notify",source,"sucesso","Pagamento de "..value.." dólares realizado.",5000)
 			return true
 		else
-			TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente na sua mochila.",5000)
+			TriggerClientEvent("Notify",source,"negado","Dinheiro insuficiente no banco.",5000)
 		end
+
 	end
 	return false
 end

@@ -142,7 +142,7 @@ RegisterCommand("capuzz",function(source,args,rawCommand)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if vRP.hasPermission(user_id,"Owner") and args[1] then
-			TriggerClientEvent("vrp_hud:toggleHood",source,args[1])
+			TriggerClientEvent("atlanta_hud:toggleHood",source,args[1])
 		end
 	end
 end)

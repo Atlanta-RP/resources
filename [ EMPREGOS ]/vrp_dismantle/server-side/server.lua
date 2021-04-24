@@ -218,6 +218,8 @@ function cnVRP.checkVehlist()
 					TriggerClientEvent("Notify",source,"negado","Este veículo é protegido pela seguradora.",1000)
 				end
 			end
+		else
+			TriggerClientEvent("Notify",source,"negado","Você precisa de um lockpick para isso.",1000)
 		end
 		return false
 	end
@@ -230,11 +232,15 @@ function cnVRP.paymentMethod(vehicle)
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		vRP.upgradeStress(user_id,20)
-		local value = math.random(2000,4000)
+		local value = math.random(9000,17000)
 
 		vRPRAGE.deleteVehicle(source,vehicle)
 		vRP.giveInventoryItem(user_id,"dollars",parseInt(value),true)
 		vRP.giveInventoryItem(user_id,itensList[math.random(#itensList)],math.random(25,50),true)
+		vRP.giveInventoryItem(user_id,"glass",math.random(10,17),true)
+		vRP.giveInventoryItem(user_id,"rubber",math.random(8,17),true)
+		vRP.giveInventoryItem(user_id,"aluminum",math.random(15,20),true)
+
 	end
 end
 -----------------------------------------------------------------------------------------------------------------------------------------

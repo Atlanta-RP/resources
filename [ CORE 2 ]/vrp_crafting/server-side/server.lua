@@ -96,46 +96,54 @@ local craftList = {
 				["amount"] = 1,
 				["destroy"] = true,
 				["require"] = {
-					["plastic"] = 10,
+					["plastic"] = 5,
 					["rubber"] = 10,
-					["aluminum"] = 10,
-					["copper"] = 8
+					["aluminum"] = 7,
+					["copper"] = 3
 				}
 			},
-			["handcuff"] = {
-				["amount"] = 1,
-				["destroy"] = true,
-				["require"] = {
-					["plastic"] = 50,
-					["aluminum"] = 50,
-					["copper"] = 50
-				}
-			},
+			--["handcuff"] = {
+			--	["amount"] = 1,
+			--	["destroy"] = true,
+			--	["require"] = {
+			--		["plastic"] = 50,
+			--		["aluminum"] = 50,
+			--		["copper"] = 50
+			--	}
+			--},
 			["hood"] = {
 				["amount"] = 1,
 				["destroy"] = true,
 				["require"] = {
-					["rubber"] = 300,
-					["glass"] = 30
+					["rubber"] = 60,
+					["paperbag"] = 2
 				}
 			},
-			["c4"] = {
-				["amount"] = 1,
-				["destroy"] = true,
-				["require"] = {
-					["glass"] = 30,
-					["rubber"] = 6,
-					["aluminum"] = 6,
-					["copper"] = 6
-				}
-			},
+			--["c4"] = {
+			--	["amount"] = 1,
+			--	["destroy"] = true,
+			--	["require"] = {
+			--		["glass"] = 30,
+			--		["rubber"] = 6,
+			--		["aluminum"] = 6,
+			--		["copper"] = 6
+			--	}
+			--},
 			["rope"] = {
 				["amount"] = 1,
 				["destroy"] = true,
 				["require"] = {
 					["rubber"] = 150,
-					["plastic"] = 50,
-					["glass"] = 20
+					["plastic"] = 30,
+					["copper"] = 10
+				}
+			},
+			["fueltech"] = {
+				["amount"] = 1,
+				["destroy"] = true,
+				["require"] = {
+					["cpuchip"] = 25,
+					["aluminum"] = 30
 				}
 			}
 		}

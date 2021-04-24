@@ -11,7 +11,7 @@ vRPclient = Tunnel.getInterface("vRP")
 cnVRP = {}
 Tunnel.bindInterface("vrp_garages",cnVRP)
 vCLIENT = Tunnel.getInterface("vrp_garages")
-vHUD = Tunnel.getInterface("vrp_hud")
+vHUD = Tunnel.getInterface("atlanta_hud")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VARIAVEIS
 -----------------------------------------------------------------------------------------------------------------------------------------

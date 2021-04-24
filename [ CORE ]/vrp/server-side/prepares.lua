@@ -158,3 +158,7 @@ vRP.prepare("vRP/insertChest","INSERT INTO vrp_srv_data (dkey,dvalue) VALUES (@n
 vRP.prepare("vRP/getExistChestLoja","SELECT * FROM vrp_chests_lojas WHERE name = @name")
 vRP.prepare("vRP/get_alltableLoja","SELECT * FROM vrp_chests_lojas")
 vRP.prepare("vRP/addChestLoja","INSERT INTO vrp_chests_lojas (permiss,name,x,y,z,weight) VALUES (@permiss,@name,@x,@y,@z,@weight)")
+
+vRP.prepare("vRP/getExistSecretChest","SELECT * FROM vrp_secret_chests WHERE name = @name")
+vRP.prepare("vRP/get_alltableSecret","SELECT * FROM vrp_secret_chests")
+vRP.prepare("vRP/addSecretChest","INSERT INTO vrp_secret_chests (name,x,y,z,weight) VALUES (@name,@x,@y,@z,@weight)")

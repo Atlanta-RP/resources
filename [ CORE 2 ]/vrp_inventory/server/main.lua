@@ -1430,7 +1430,127 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
 									vRP.upgradeStress(user_id,2)
 									vRP.upgradeThirst(user_id,20)
+									TriggerClientEvent("setEnergetic",source,30,1.10)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
+					if itemName == "expresso" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_aa_coffee@idle_a", "idle_a","p_amb_coffeecup_01",49,28422)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.upgradeStress(user_id,2)
+									vRP.upgradeThirst(user_id,10)
+									TriggerClientEvent("setEnergetic",source,7,1.40)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
+					if itemName == "brash" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_aa_coffee@idle_a", "idle_a","p_amb_coffeecup_01",49,28422)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.upgradeStress(user_id,2)
+									vRP.upgradeThirst(user_id,18)
 									TriggerClientEvent("setEnergetic",source,30,1.15)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
+					if itemName == "bbspecial" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_aa_coffee@idle_a", "idle_a","p_amb_coffeecup_01",49,28422)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.upgradeStress(user_id,2)
+									vRP.upgradeThirst(user_id,18)
+									TriggerClientEvent("setEnergetic",source,30,1.15)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
+					if itemName == "cappuccino" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_aa_coffee@idle_a", "idle_a","p_amb_coffeecup_01",49,28422)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.upgradeStress(user_id,2)
+									vRP.upgradeThirst(user_id,15)
+									TriggerClientEvent("setEnergetic",source,60,1.05)
+								end
+							end
+							Citizen.Wait(0)
+						until active[user_id] == nil
+					end
+
+					if itemName == "frappe" then
+						active[user_id] = 10
+						vRPclient.stopActived(source)
+						vCLIENT.closeInventory(source)
+						vCLIENT.blockButtons(source,true)
+						TriggerClientEvent("Progress",source,10000,"Utilizando...")
+						vRPclient._createObjects(source,"amb@world_human_aa_coffee@idle_a", "idle_a","p_amb_coffeecup_01",49,28422)
+
+						repeat
+							if active[user_id] == 0 then
+								active[user_id] = nil
+								vCLIENT.blockButtons(source,false)
+								vRPclient._removeObjects(source,"one")
+
+								if vRP.tryGetInventoryItem(user_id,itemName,1,true,slot) then
+									vRP.upgradeStress(user_id,2)
+									vRP.upgradeThirst(user_id,30)
+									TriggerClientEvent("setEnergetic",source,20,1.15)
 								end
 							end
 							Citizen.Wait(0)
@@ -1859,7 +1979,7 @@ AddEventHandler("vrp_inventory:useItem",function(slot,rAmount)
 					if itemName == "hood" then
 						local nplayer = vRPclient.nearestPlayer(source,1)
 						if nplayer and vPLAYER.getHandcuff(nplayer) then
-							TriggerClientEvent("vrp_hud:toggleHood",nplayer)
+							TriggerClientEvent("atlanta_hud:toggleHood",nplayer)
 						end
 					end
 

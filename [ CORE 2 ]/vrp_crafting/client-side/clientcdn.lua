@@ -63,8 +63,8 @@ end
 local craftList = {
     { 68.88,-1570.04,29.6,"generalCrafting","TROCA" },
     { 2662.41,3468.25,55.95,"ilegalCrafting","TROCA ILEGAL" },
-    { -882.04,-438.7,39.6,"fueltechCrafting","TROCA DE PEÇAS" },
-	{ 947.71,-1466.8,30.41,"dkCrafting","FABRICAR EQUIPAMENTOS" },
+    --{ -882.04,-438.7,39.6,"fueltechCrafting","TROCA DE PEÇAS" },
+	{ 732.87,-1064.16,22.17,"dkCrafting","FABRICAR EQUIPAMENTOS" },
     { -1870.43,2061.91,135.44,"mafiaCrafting","FABRICAR ARMAS" },
 	{ 987.0,-92.89,74.85,"theLostCrafting","FABRICAR MUNIÇÃO" },
     { -1162.21,-2021.75,13.19,"mecanicoCrafting","TROCA MECÂNICO" },

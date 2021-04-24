@@ -43,12 +43,10 @@ function startthreaddesmanche()
 								TriggerEvent("cancelando",true)
 								FreezeEntityPosition(vehicle,true)
 								vRP._playAnim(false,{"anim@amb@clubhouse@tutorial@bkr_tut_ig3@","machinic_loop_mechandplayer"},true)
-
 								for i = 0,5 do
 									Citizen.Wait(10000)
 									SetVehicleDoorBroken(vehicle,i,false)
 								end
-
 								for i = 0,7 do
 									Citizen.Wait(10000)
 									SetVehicleTyreBurst(vehicle,i,1,1000.01)

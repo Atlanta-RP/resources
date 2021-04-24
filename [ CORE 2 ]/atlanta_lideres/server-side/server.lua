@@ -21,7 +21,9 @@ local lideres = {
     {"BeanMachine2","BeanMachine2Master","BeanMachine2"},
     {"BagShop","BagShopMaster","BagShop"},
     {"Judiciario","Juiz","Judiciario"},
-    
+    {"DigitalDen","DigitalDenMaster","DigitalDen"},
+    {"Vultur","VulturMaster","Vultur"},
+
 }
 
 -----------------------------------------------------------------------------------------------------------------------------------------

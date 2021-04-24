@@ -236,7 +236,7 @@ Citizen.CreateThread(function()
 			RequestIpl("hei_yacht_heist_lounge_lod")
 			RequestIpl("hei_yacht_heist_slod")
 
-		-- Gunrunning Yacht: -1363.724, 6734.108, 2.44598
+			-- Gunrunning Yacht: -1363.724, 6734.108, 2.44598
 
 			RequestIpl("gr_heist_yacht2")
 			RequestIpl("gr_heist_yacht2_bar")
@@ -296,7 +296,7 @@ Citizen.CreateThread(function()
 			
 		-- Bahama Mamas: -1388.0013, -618.41967, 30.819599
 
-			RequestIpl("hei_sm_16_interior_v_bahama_milo_")
+			--RequestIpl("hei_sm_16_interior_v_bahama_milo_")
 		
 		-- Red Carpet: 300.5927, 199.7589, 104.3776
 			--RequestIpl("redCarpet") 
@@ -702,15 +702,15 @@ end)
 	
 -- end)
 
--- Citizen.CreateThread(function()
--- 	RequestIpl("prologue06_int_np")	
+ Citizen.CreateThread(function()
+ 	RequestIpl("prologue06_int_np")
 
--- 	local interiorid = GetInteriorAtCoords(883.4142, -2282.372, 31.44168)
+ 	local interiorid = GetInteriorAtCoords(883.4142, -2282.372, 31.44168)
 
--- 	ActivateInteriorEntitySet(interiorid, "np_prolog_clean")
--- 	--ActivateInteriorEntitySet(interiorid, "np_prolog_broken")
+ 	ActivateInteriorEntitySet(interiorid, "np_prolog_clean")
+ 	--ActivateInteriorEntitySet(interiorid, "np_prolog_broken")
 
--- 	RefreshInterior(interiorid)
+ 	RefreshInterior(interiorid)
 	
--- end)
+ end)
 

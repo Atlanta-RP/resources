@@ -163,12 +163,13 @@ local shops = {
 	["digitalDen"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
+		["loja"] = "DigitalDenMaster",
 		["list"] = {
-			["radio"] = 4000,
-			["cellphone"] = 2000,
-			["binoculars"] = 1000,
-			["camera"] = 2000,
-			["vape"] = 30000
+			["radio"] = 200,
+			["cellphone"] = 1000,
+			["binoculars"] = 60,
+			["camera"] = 700,
+			["vape"] = 180
 		}
 	},
 	["megaMallStore"] = {
@@ -187,7 +188,7 @@ local shops = {
 			["rubber"] = 80,
 			["aluminum"] = 120,
 			["copper"] = 120,
-			["paperbag"] = 50,
+			["paperbag"] = 2,
 			-- ["raceticket"] = 500,
 			["firecracker"] = 1000,
 			["roupas"] = 250,
@@ -311,7 +312,12 @@ local shops = {
 		["item"] = "dollars",
 		["loja"] = "BeanMachineMaster",
 		["list"] = {
-			["coffee"] = 12
+			["coffee"] = 12,
+			["expresso"] = 15,
+			["brash"] = 16,
+			["frappe"] = 19,
+			["cappuccino"] = 17,
+
 		}
 	},
 	["coffeshop2"] = {
@@ -320,23 +326,14 @@ local shops = {
 		["item"] = "dollars",
 		["loja"] = "BeanMachine2Master",
 		["list"] = {
-			["coffee"] = 12
+			["coffee"] = 12,
+			["expresso"] = 15,
+			["bbspecial"] = 16,
+			["frappe"] = 19,
+			["cappuccino"] = 17,
 		}
 	},
 	["burgershot"] = {
-		["mode"] = "Buy",
-		["type"] = "Cash",
-		["item"] = "dollars",
-		["list"] = {
-			["hamburger"] = 20,
-			["sandwich"] = 12,
-			["energetic"] = 9,
-			["cola"] = 6,
-			["soda"] = 6,
-			["fries"] = 7,
-		}
-	},
-	["mcdonalds"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
 		["item"] = "dollars",

@@ -304,7 +304,37 @@ local itemlist = {
 	},
 	["coffee"] = {
 		index = "coffee",
-		name = "Café",
+		name = "Café Comum",
+		type = "use",
+		weight = 0.3
+	},
+	["expresso"] = {
+		index = "expresso",
+		name = "Expresso",
+		type = "use",
+		weight = 0.3
+	},
+	["brash"] = {
+		index = "brash",
+		name = "Café Brash",
+		type = "use",
+		weight = 0.3
+	},
+	["bbspecial"] = {
+		index = "bbspecial",
+		name = "BB Special",
+		type = "use",
+		weight = 0.3
+	},
+	["cappuccino"] = {
+		index = "cappuccino",
+		name = "Cappuccino",
+		type = "use",
+		weight = 0.3
+	},
+	["frappe"] = {
+		index = "frappe",
+		name = "Frappe",
 		type = "use",
 		weight = 0.3
 	},
@@ -360,7 +390,7 @@ local itemlist = {
 		index = "lockpick",
 		name = "Lockpick",
 		type = "use",
-		weight = 5.0
+		weight = 2.0
 	},
 	["toolbox"] = {
 		index = "toolbox",
@@ -926,25 +956,25 @@ local itemlist = {
 		weight = 2.25
 	},
 	["WEAPON_PISTOL_AMMO"] = {
-		index = "pistolammo",
+		index = "A-WEAPON_PISTOL50",
 		name = "M. Pistola",
 		type = "recharge",
 		weight = 0.02
 	},
 	["WEAPON_SMG_AMMO"] = {
-		index = "smgammo",
+		index = "A-WEAPON_SMG",
 		name = "M. Sub Metralhadora",
 		type = "recharge",
 		weight = 0.03
 	},
 	["WEAPON_RIFLE_AMMO"] = {
-		index = "rifleammo",
+		index = "A-WEAPON_ASSAULTRIFLE",
 		name = "M. Rifle",
 		type = "recharge",
 		weight = 0.04
 	},
 	["WEAPON_SHOTGUN_AMMO"] = {
-		index = "shotgunammo",
+		index = "A-WEAPON_PUMPSHOTGUN",
 		name = "M. Escopeta",
 		type = "recharge",
 		weight = 0.05
@@ -999,61 +1029,7 @@ local itemlist = {
 	},
 	["cpuchip"] = {
 		index = "cpuchip",
-		name = "Processador",
-		type = "use",
-		weight = 0.75
-	},
-	["diamante"] = {
-		index = "diamante",
-		name = "Min .Diamante",
-		type = "use",
-		weight = 0.75
-	},
-	["bronze"] = {
-		index = "bronze",
-		name = "Min .Bronze",
-		type = "use",
-		weight = 0.75
-	},
-	["ferro"] = {
-		index = "ferro",
-		name = "Min .Ferro",
-		type = "use",
-		weight = 0.75
-	},
-	["ouro"] = {
-		index = "ouro",
-		name = "Min .Ouro",
-		type = "use",
-		weight = 0.75
-	},
-	["rubi"] = {
-		index = "rubi",
-		name = "Min .Rubi",
-		type = "use",
-		weight = 0.75
-	},
-	["esmeralda"] = {
-		index = "esmeralda",
-		name = "Min .Esmeralda",
-		type = "use",
-		weight = 0.75
-	},
-	["safira"] = {
-		index = "safira",
-		name = "Min .Safira",
-		type = "use",
-		weight = 0.75
-	},
-	["topazio"] = {
-		index = "topazio",
-		name = "Min .Topazio",
-		type = "use",
-		weight = 0.75
-	},
-	["ametista2"] = {
-		index = "ametista2",
-		name = "Min .Ametista",
+		name = "C. 77",
 		type = "use",
 		weight = 0.75
 	},
@@ -1068,6 +1044,42 @@ local itemlist = {
 		name = "Vinho",
 		type = "use",
 		weight = 2.15
+	},
+	["quadro01"] = {
+		index = "quadro01",
+		name = "Salvator Mundi",
+		type = "use",
+		weight = 1.15
+	},
+	["quadro02"] = {
+		index = "quadro02",
+		name = "O Grito",
+		type = "use",
+		weight = 1.15
+	},
+	["quadro03"] = {
+		index = "quadro03",
+		name = "Mona Lisa",
+		type = "use",
+		weight = 1.15
+	},
+	["quadro04"] = {
+		index = "quadro04",
+		name = "1948",
+		type = "use",
+		weight = 1.15
+	},
+	["quadro05"] = {
+		index = "quadro05",
+		name = "Ronda Noturna",
+		type = "use",
+		weight = 1.15
+	},
+	["circuitoEletrico"] = {
+		index = "circuitoEletrico",
+		name = "Circuito Elétrico",
+		type = "use",
+		weight = 0.5
 	},
 }
 -----------------------------------------------------------------------------------------------------------------------------------------

@@ -23,7 +23,7 @@ Config.FixePhone = {
 }
 
 Config.KeyOpenClose = 311 -- F1
-Config.KeyTakeCall  = 38  -- E
+--Config.KeyTakeCall  = 38  -- E
 
 Config.UseMumbleVoIP = true -- Use Frazzle's Mumble-VoIP Resource (Recomended!) https://github.com/FrazzIe/mumble-voip
 Config.UseTokoVoIP   = false

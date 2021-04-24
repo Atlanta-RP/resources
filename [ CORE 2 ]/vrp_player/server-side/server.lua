@@ -183,7 +183,7 @@ function cnVRP.deleteChar()
 		Citizen.Wait(1000)
 		vRP.rejoinServer(source)
 		Citizen.Wait(1000)
-		TriggerClientEvent("vrp_spawn:setupChars",source)
+		TriggerClientEvent("atlanta_spawn:setupChars",source)
 	end
 end
 
@@ -295,7 +295,7 @@ RegisterCommand("call",function(source,args,rawCommand)
 		-- 	players = vRP.getUsersByPermission("Juiz")	
 		-- 	especialidade = "juizes"
 		else 
-			TriggerClientEvent("Notify",source,"importante","Especifique um serviço.",2000)
+			TriggerClientEvent("Notify",source,"importante","Especifique um serviço (911 - Policia, 112 - EMS, mec - Mecânicos).",2000)
 			return
 		end
 		local adm = ""
@@ -312,19 +312,18 @@ RegisterCommand("call",function(source,args,rawCommand)
 			for l,w in pairs(players) do
 				local player = vRP.getUserSource(parseInt(w))
 				local nuser_id = vRP.getUserId(player)
-				if player and player ~= uplayer then
+				if player then --and player ~= uplayer
 					async(function()
 						vRPclient.playSound(player,"Out_Of_Area","DLC_Lowrider_Relay_Race_Sounds")
 						TriggerClientEvent("Notify",source,"importante","CHAMADO: Enviado por "..identitys.name.." "..identitys.name2.." ["..user_id.."], "..descricao,9000)
-						--TriggerClientEvent('chatMessage',player,"CHAMADO",{19,197,43},adm.."Enviado por ^1"..identitys.name.." "..identitys.name2.."^0 ["..user_id.."], "..descricao)
-						--SendWebhookMessage(webhookcall, "```prolog\n[ID]: "..user_id.." "..identitys.name.." "..identitys.name2.."\n[CHAMADO PARA]: "..especialidade.."\n[MENSAGEM]: "..descricao.." "..os.date("\n[Data]: %d/%m/%Y [Hora]: %H:%M:%S").." \r```")
 						local ok = vRP.request(player,"Aceitar o chamado de <b>"..identitys.name.." "..identitys.name2.."</b>?",30)
 						if ok then
 							if not answered then
 								answered = true
 								local identity = vRP.getUserIdentity(nuser_id)
-								TriggerClientEvent("Notify",source,"importante","Chamado atendido por <b>"..identity.name.." "..identity.name2.."</b>, aguarde no local.")
+								TriggerClientEvent("Notify",source,"importante","Chamado atendido por <b>"..identity.name.." "..identity.name2.."</b>, aguarde no local.",6000)
 								vRPclient.playSound(source,"Event_Message_Purple","GTAO_FM_Events_Soundset")
+								vCLIENT.marcarMapa(x,y)
 								vRPclient._setGPS(player,x,y)
 							else
 								TriggerClientEvent("Notify",player,"importante","Chamado ja foi atendido por outra pessoa.")
@@ -1484,6 +1483,6 @@ RegisterCommand('bvida', function(source,rawCommand)
 end)
 
 -- RegisterCommand('login', function(source,rawCommand)
--- 	TriggerClientEvent("vrp_spawn:setupChars",source)
+-- 	TriggerClientEvent("atlanta_spawn:setupChars",source)
 -- end)
 

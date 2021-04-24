@@ -85,13 +85,13 @@ body {
 .item .itemname {
 	margin-top: auto;
 	align-self: center;
-
+''
 	width: 100%;
 	color: #d0d0d0;
 	padding: 7px 10px;
 
 	letter-spacing: 1px;
-	font-size: .64rem;
+	font-size: .54rem;
 	text-align: center;
 	white-space: nowrap;
 	text-overflow: ellipsis;
