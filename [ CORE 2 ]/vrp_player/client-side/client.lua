@@ -96,6 +96,62 @@ Citizen.CreateThread(function()
 		Citizen.Wait(timeDistance)
 	end
 end)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- THREADELEVADOR
+-----------------------------------------------------------------------------------------------------------------------------------------
+local elevadorBaixo = { 138.37,-137.06,54.87}
+local elevadorCima = { 137.5,-134.36,60.52}
+
+Citizen.CreateThread(function()
+	while true do
+		local timeDistance = 500
+		local ped = PlayerPedId()
+		if not IsPedInAnyVehicle(ped) then
+			local coords = GetEntityCoords(ped)
+			local distance = #(coords - vector3(elevadorBaixo[1],elevadorBaixo[2],elevadorBaixo[3]))
+			if distance <= 3 then
+				timeDistance = 4
+				DrawMarker(27, elevadorBaixo[1],elevadorBaixo[2],elevadorBaixo[3]-1 ,0,0,0,0,0,0,3.0,3.0,1.0,255, 102, 0,200,0,0,0,1)
+				DrawText3D(elevadorBaixo[1],elevadorBaixo[2],elevadorBaixo[3]-1,"~g~E~w~   ELEVADOR")
+				if distance <= 1.5 and IsControlJustPressed(1,38) then
+					DoScreenFadeOut(1000)
+					Citizen.Wait(1000)
+					SetEntityCoordsNoOffset(ped,elevadorCima[1],elevadorCima[2],elevadorCima[3],0,0,1)
+					Citizen.Wait(1000)
+					DoScreenFadeIn(1000)
+
+				end
+			end
+		end
+		Citizen.Wait(timeDistance)
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		local timeDistance = 500
+		local ped = PlayerPedId()
+		if not IsPedInAnyVehicle(ped) then
+			local coords = GetEntityCoords(ped)
+			local distance = #(coords - vector3(elevadorCima[1],elevadorCima[2],elevadorCima[3]))
+			if distance <= 3 then
+				timeDistance = 4
+				DrawMarker(27, elevadorCima[1],elevadorCima[2],elevadorCima[3]-1 ,0,0,0,0,0,0,3.0,3.0,1.0,255, 102, 0,200,0,0,0,1)
+				DrawText3D(elevadorCima[1],elevadorCima[2],elevadorCima[3]-1,"~g~E~w~   ELEVADOR")
+				if distance <= 1.5 and IsControlJustPressed(1,38) then
+					DoScreenFadeOut(1000)
+					Citizen.Wait(1000)
+					SetEntityCoordsNoOffset(ped,elevadorBaixo[1],elevadorBaixo[2],elevadorBaixo[3],0,0,1)
+					Citizen.Wait(1000)
+					DoScreenFadeIn(1000)
+				end
+			end
+		end
+		Citizen.Wait(timeDistance)
+	end
+end)
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DIVING
 -----------------------------------------------------------------------------------------------------------------------------------------

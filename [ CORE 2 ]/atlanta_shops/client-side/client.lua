@@ -101,12 +101,12 @@ local shopList = {
 	{ 1135.69,-987.5,46.12,"lavandaStore" },
 	{280.25,-971.93,29.42,"coffeshop"},
 	{-633.53,235.28,81.89,"coffeshop2"},
-	{340.62,186.73,103.0,"cinema"},
-	{342.58,186.18,103.0,"cinema"},
-	{-1839.16,-1186.89,19.19,"bar"},
-	{-170.34,294.82,93.77,"bar"},
+	{-1839.16,-1186.89,19.19,"pearls"},
+	{-1844.95,-1198.11,14.34,"pearls"},
 	{359.77,280.5,94.2,"bar"},
-	{127.98,-1284.91,29.28,"bar"},
+	{127.98,-1284.91,29.28,"vanilla"},
+	{-563.33,286.3,85.38,"vanilla"},
+	{-560.17,286.5,82.18,"tequila"},
 	{-1193.9,-892.9,14.0,"burgershot"},
 	{-1195.25,-890.78,14.0,"burgershot"},
 	{-1192.67,-894.77,14.0,"burgershot"},
@@ -223,11 +223,11 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------
 local propShops = {
 	-- { "prop_vend_coffe_01","coffeeMachine" },
-	{ "prop_vend_soda_02","sodaMachine" },
-	{ "prop_vend_soda_01","colaMachine" },
-	{ "v_ret_247_donuts","donutMachine" },
+	--{ "prop_vend_soda_02","sodaMachine" },
+	--{ "prop_vend_soda_01","colaMachine" },
+	--{ "v_ret_247_donuts","donutMachine" },
 	-- { "prop_burgerstand_01","burgerMachine" },
-	{ "prop_hotdogstand_01","hotdogMachine" },
+	--{ "prop_hotdogstand_01","hotdogMachine" },
 	{ "prop_vend_water_01","waterMachine" }
 }
 

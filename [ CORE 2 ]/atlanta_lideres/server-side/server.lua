@@ -23,6 +23,10 @@ local lideres = {
     {"Judiciario","Juiz","Judiciario"},
     {"DigitalDen","DigitalDenMaster","DigitalDen"},
     {"Vultur","VulturMaster","Vultur"},
+    {"Vanilla","VanillaMaster","Vanilla"},
+    {"Tequila","TequilaMaster","Tequila"},
+    {"Pearls","PearlsMaster","Pearls"},
+    {"ComedyClub","ComedyClubMaster","ComedyClub"},
 
 }
 

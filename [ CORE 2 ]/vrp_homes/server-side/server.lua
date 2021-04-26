@@ -1569,7 +1569,7 @@ end)
 local mobileTheft = {
 	["MOBILE01"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1589,7 +1589,7 @@ local mobileTheft = {
 	},
 	["MOBILE02"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1609,7 +1609,7 @@ local mobileTheft = {
 	},
 	["MOBILE03"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1629,7 +1629,7 @@ local mobileTheft = {
 	},
 	["MOBILE04"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1649,7 +1649,7 @@ local mobileTheft = {
 	},
 	["MOBILE05"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1669,7 +1669,7 @@ local mobileTheft = {
 	},
 	["MOBILE06"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1689,7 +1689,7 @@ local mobileTheft = {
 	},
 	["MOBILE07"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1709,7 +1709,7 @@ local mobileTheft = {
 	},
 	["MOBILE08"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1729,7 +1729,7 @@ local mobileTheft = {
 	},
 	["MOBILE09"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1749,7 +1749,7 @@ local mobileTheft = {
 	},
 	["MOBILE10"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1769,7 +1769,7 @@ local mobileTheft = {
 	},
 	["MOBILE11"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1791,7 +1791,7 @@ local mobileTheft = {
 	},
 	["MOBILE12"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1813,7 +1813,7 @@ local mobileTheft = {
 	},
 	["MOBILE13"] = {
 		[1] = { "joint",math.random(10) },
-		[2] = { "dollars",math.random(500,999) },
+		[2] = { "dollars",math.random(70,150) },
 		[3] = { "postit",math.random(4) },
 		[4] = { "plastic",math.random(10,15) },
 		[5] = { "glass",math.random(10,15) },
@@ -1834,7 +1834,7 @@ local mobileTheft = {
 		[20] = { "blackcard",1 }
 	},
 	["LOCKER"] = {
-		[1] = { "dollars",math.random(2500,5000) },
+		[1] = { "dollars",math.random(1000,1500) },
 		[2] = { "ring",math.random(4,8) },
 		[3] = { "watch",math.random(4,8) },
 		[4] = { "bluecard",1 },

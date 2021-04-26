@@ -82,7 +82,7 @@ local function SetupInsideCam()
 end
 
 local function DriveInGarage()
-	TriggerServerEvent('lockGarage',true,currentgarage)
+	TriggerServerEvent('lockGarageilegal',true,currentgarage)
 	SetPlayerControl(PlayerId(),false,256)
 
 	local pos = currentpos
@@ -500,7 +500,7 @@ local function DriveOutOfGarage(pos)
 		--TaskVehicleDriveToCoord(ped,veh,pos.outside.x,pos.outside.y,pos.outside.z,f(5),f(0.1),GetEntityModel(veh),16777216,f(0.1),true)
 
 		pos = currentpos.inside
-		TriggerServerEvent("LSC:finished",myveh)
+		TriggerServerEvent("LSCilegal:finished",myveh)
 
 		FreezeEntityPosition(veh,false)
 		SetVehicleDoorsLocked(veh,0)
@@ -512,7 +512,7 @@ local function DriveOutOfGarage(pos)
 		SetVehicleLights(veh,0)
 		inside = false
 
-		TriggerServerEvent('lockGarage',false,currentgarage)
+		TriggerServerEvent('lockGarageilegal',false,currentgarage)
 		SetPlayerControl(PlayerId(),true)
 		currentgarage = 0
 	end)
@@ -666,11 +666,11 @@ function LSCMenu:onButtonSelected(name,button)
 			return
 		end
 	end
-	TriggerServerEvent("LSC:buttonSelected",name,button)
+	TriggerServerEvent("LSCilegal:buttonSelected",name,button)
 end
 
-RegisterNetEvent("LSC:buttonSelected")
-AddEventHandler("LSC:buttonSelected",function(name,button,canpurchase)
+RegisterNetEvent("LSCilegal:buttonSelected")
+AddEventHandler("LSCilegal:buttonSelected",function(name,button,canpurchase)
 	name = name:lower()
 	local m = LSCMenu.currentmenu
 	local price = button.price or 0
@@ -1166,8 +1166,8 @@ function UnfakeVeh()
 	SetVehicleWindowTint(veh,myveh.windowtint)
 end
 
-RegisterNetEvent('lockGarage')
-AddEventHandler('lockGarage',function(tbl)
+RegisterNetEvent('lockGarageilegal')
+AddEventHandler('lockGarageilegal',function(tbl)
 	for i,garage in ipairs(tbl) do
 		garages[i].locked = garage.locked
 	end

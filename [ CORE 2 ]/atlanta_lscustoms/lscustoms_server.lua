@@ -26,7 +26,6 @@ local tbl = {
 	[3] = { locked = false, player = nil },
 	[4] = { locked = false, player = nil },
 	[5] = { locked = false, player = nil },
-	[6] = { locked = false, player = nil }
 }
 
 RegisterServerEvent("lockGarage")
@@ -49,6 +48,7 @@ AddEventHandler("playerDropped",function()
 				g.locked = false
 				g.player = nil
 				TriggerClientEvent("lockGarage",-1,tbl)
+
 			end
 		end
 	end

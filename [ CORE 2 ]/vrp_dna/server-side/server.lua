@@ -93,13 +93,13 @@ Citizen.CreateThread(function()
 		if resultTimers > 0 then
 			resultTimers = resultTimers - 10
 			if resultTimers <= 0 then
-				if math.random(100) >= 50 then
+				if math.random(100) >= 5 then
 					TriggerClientEvent("vrp_dna:lastResult",-1,dnaResult)
 				else
 					TriggerClientEvent("vrp_dna:lastResult",-1,"falhou")
 				end
 			end
 		end
-		Citizen.Wait(10000)
+		Citizen.Wait(1)
 	end
 end)

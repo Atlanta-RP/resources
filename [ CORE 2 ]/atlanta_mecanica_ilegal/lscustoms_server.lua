@@ -22,15 +22,10 @@ end
 
 local tbl = {
 	[1] = { locked = false, player = nil },
-	[2] = { locked = false, player = nil },
-	[3] = { locked = false, player = nil },
-	[4] = { locked = false, player = nil },
-	[5] = { locked = false, player = nil },
-	[6] = { locked = false, player = nil }
 }
 
-RegisterServerEvent("lockGarage")
-AddEventHandler("lockGarage",function(b,garage)
+RegisterServerEvent("lockGarageilegal")
+AddEventHandler("lockGarageilegal",function(b,garage)
 	local source = source
 	tbl[parseInt(garage)].locked = b
 	if not b then
@@ -38,7 +33,7 @@ AddEventHandler("lockGarage",function(b,garage)
 	else
 		tbl[parseInt(garage)].player = source
 	end
-	TriggerClientEvent("lockGarage",-1,tbl)
+	TriggerClientEvent("lockGarageilegal",-1,tbl)
 end)
 
 AddEventHandler("playerDropped",function()
@@ -48,31 +43,31 @@ AddEventHandler("playerDropped",function()
 			if source == g.player then
 				g.locked = false
 				g.player = nil
-				TriggerClientEvent("lockGarage",-1,tbl)
+				TriggerClientEvent("lockGarageilegal",-1,tbl)
 			end
 		end
 	end
 end)
 
-RegisterServerEvent("LSC:buttonSelected")
-AddEventHandler("LSC:buttonSelected", function(name,button)
+RegisterServerEvent("LSCilegal:buttonSelected")
+AddEventHandler("LSCilegal:buttonSelected", function(name,button)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then
 		if button.price then
 			if vRP.paymentBank(user_id,parseInt(button.price)) then
-				TriggerClientEvent("LSC:buttonSelected",source,name,button,true)
+				TriggerClientEvent("LSCilegal:buttonSelected",source,name,button,true)
 			else
-				TriggerClientEvent("LSC:buttonSelected",source,name,button,false)
+				TriggerClientEvent("LSCilegal:buttonSelected",source,name,button,false)
 			end
 		else
-			TriggerClientEvent("LSC:buttonSelected",source,name,button,false)
+			TriggerClientEvent("LSCilegal:buttonSelected",source,name,button,false)
 		end
 	end
 end)
 
-RegisterServerEvent("LSC:finished")
-AddEventHandler("LSC:finished",function(veh)
+RegisterServerEvent("LSCilegal:finished")
+AddEventHandler("LSCilegal:finished",function(veh)
 	local source = source
 	local user_id = vRP.getUserId(source)
 	if user_id then

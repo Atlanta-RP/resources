@@ -14,9 +14,9 @@ vRPclient = Tunnel.getInterface("vRP")
 
 local locais = {
 	--{coordX,coordY,coordZ,ItemPremio,Quantidade,ativo,timeout}
-	{751.06,1273.93,360.3,"fios",math.random(2,4),true,60000},
-	{740.78,1276.11,360.3,"fios",1,true,30000},
-	{765.97,1273.5,360.3,"fios",math.random(2,4),true,60000},
+	{751.06,1273.93,360.3,"circuitoEletrico",math.random(2,4),true,60000},
+	{740.78,1276.11,360.3,"eletronics",1,true,30000},
+	{765.97,1273.5,360.3,"circuitoEletrico",math.random(2,4),true,60000},
 }
 
 

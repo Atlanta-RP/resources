@@ -290,10 +290,10 @@ const updateMochila = () => {
 		$(".myInfos").html(`
 			<b>${data.infos[0]} <i>#${data.infos[1]}</i></b>
 			<div class="infosContent">
-				<span><s>Nº:</s> ${data.infos[4]}</span>
-				<span><s>RG:</s> ${data.infos[5]}</span>
-				<span><s>BANCO:</s> $${formatarNumero(data.infos[2])}</span>
-				<span><s>COINS:</s> ${formatarNumero(data.infos[3])}</span>
+				<span><s style="color:${data.infos[6]} !important;">Nº:</s> ${data.infos[4]}</span>
+				<span><s style="color:${data.infos[6]} !important;">RG:</s> ${data.infos[5]}</span>
+				<span><s style="color:${data.infos[6]} !important;">BANCO:</s> $${formatarNumero(data.infos[2])}</span>
+				<span><s style="color:${data.infos[6]} !important;">COINS:</s> ${formatarNumero(data.infos[3])}</span>
 				<span>{${(data.peso).toFixed(2)}KG / ${(data.maxpeso).toFixed(2)}KG}</span>
 				<br><br>
 				<span><s>Grupos:</s>  ${data.grupos}</span>

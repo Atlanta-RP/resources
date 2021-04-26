@@ -27,16 +27,10 @@ local shops = {
 			["cigarette"] = 8,
 			["skate"] = 200,
 			["lighter"] = 20,
+			["donut"] = 4,
 			["chocolate"] = 5,
-			-- ["absolut"] = 40,
-			-- ["chandon"] = 45,
-			["dewars"] = 25,
-			-- ["hennessy"] = 30,
-			["backpackp"] = 5000,
-			-- ["backpackm"] = 10000,
-			-- ["backpackg"] = 15000,
-			-- ["backpackx"] = 20000,
-			-- ["divingsuit"] = 5000,
+			["dewars"] = 23,
+			["backpackp"] = 119,
 			["roupas"] = 250,
 			["chiclete"] = 3,
 			["soda"] = 5
@@ -47,14 +41,14 @@ local shops = {
 		["type"] = "Cash",
 		["perm"] = "Paramedic",
 		["list"] = {
-			["gauze"] = 300,
-			["bandage"] = 250,
+			["gauze"] = 40,
+			["bandage"] = 30,
 			["analgesic"] = 50,
-			["warfarin"] = 1000,
-			["sinkalmy"] = 500,
-			["ritmoneury"] = 750,
-			["adrenaline"] = 1050,
-			["codeina"] = 1000
+			["warfarin"] = 200,
+			["sinkalmy"] = 150,
+			["ritmoneury"] = 250,
+			["adrenaline"] = 300,
+			["codeina"] = 80
 		}
 	},
 	["ammunationStore"] = {
@@ -108,33 +102,32 @@ local shops = {
 			["plastic"] = 15,
 			["glass"] = 15,
 			["rubber"] = 15,
-			["aluminum"] = 20,
-			["copper"] = 20,
+			["aluminum"] = 15,
+			["copper"] = 15,
 			["eletronics"] = 20,
-			["emptybottle"] = 20,
-			["lighter"] = 300,
-			["bucket"] = 100,
-			["divingsuit"] = 2500,
-			["teddy"] = 250,
-			["fishingrod"] = 2500,
-			["identity"] = 300,
-			["radio"] = 2000,
-			["cellphone"] = 1000,
-			["binoculars"] = 500,
-			["camera"] = 1000,
-			["vape"] = 15000,
-			["pager"] = 3000,
-			["keyboard"] = 250,
-			["mouse"] = 225,
-			["ring"] = 200,
-			["watch"] = 350,
-			["goldbar"] = 500,
-			["playstation"] = 400,
-			["xbox"] = 400,
-			["legos"] = 200,
-			["ominitrix"] = 350,
-			["bracelet"] = 500,
-			["dildo"] = 250,
+			["emptybottle"] = 1,
+			["lighter"] = 10,
+			["bucket"] = 7,
+			["teddy"] = 20,
+			["fishingrod"] = 100,
+			["identity"] = 5,
+			["radio"] = 100,
+			["cellphone"] = 300,
+			["binoculars"] = 20,
+			["camera"] = 200,
+			["vape"] = 60,
+			["pager"] = 100,
+			["keyboard"] = 180,
+			["mouse"] = 99,
+			["ring"] = 120,
+			["watch"] = 200,
+			["goldbar"] = 600,
+			["playstation"] = 300,
+			["xbox"] = 300,
+			["legos"] = 20,
+			["ominitrix"] = 20,
+			["bracelet"] = 137,
+			["dildo"] = 76,
 			["postit"] = 10
 		}
 	},
@@ -150,14 +143,14 @@ local shops = {
 		["type"] = "Cash",
 		["list"] = {
 			["bait"] = 10,
-			["fishingrod"] = 5000
+			["fishingrod"] = 200
 		}
 	},
 	["registryStore"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
 		["list"] = {
-			["identity"] = 600
+			["identity"] = 30
 		}
 	},
 	["digitalDen"] = {
@@ -177,21 +170,15 @@ local shops = {
 		["type"] = "Cash",
 		["list"] = {
 			["postit"] = 20,
-			["energetic"] = 50,
-			["emptybottle"] = 40,
-			["chocolate"] = 10,
-			["cola"] = 18,
-			["teddy"] = 500,
-			["rose"] = 50,
-			["plastic"] = 80,
-			["glass"] = 80,
-			["rubber"] = 80,
-			["aluminum"] = 120,
-			["copper"] = 120,
+			["teddy"] = 50,
+			["rose"] = 23,
+			["plastic"] = 150,
+			["glass"] = 150,
+			["rubber"] = 150,
+			["aluminum"] = 150,
+			["copper"] = 150,
 			["paperbag"] = 2,
-			-- ["raceticket"] = 500,
-			["firecracker"] = 1000,
-			["roupas"] = 250,
+			["firecracker"] = 200,
 			["analgesic"] = 150
 		}
 	},
@@ -209,6 +196,7 @@ local shops = {
 	},
 	["comedyBar"] = {
 		["mode"] = "Buy",
+		["loja"] = "ComedyClubMaster",
 		["type"] = "Cash",
 		["list"] = {
 			["energetic"] = 10,
@@ -234,50 +222,46 @@ local shops = {
 			["hennessy"] = 30,
 		}
 	},
-	["cinema"] = {
+	["vanilla"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
+		["loja"] = "VanillaMaster",
 		["list"] = {
 			["energetic"] = 10,
 			["cola"] = 7,
 			["soda"] = 7,
-			["fries"] = 8,
+			["absolut"] = 22,
+			["chandon"] = 45,
+			["dewars"] = 20,
+			["hennessy"] = 30,
 		}
 	},
-	["coffeeMachine"] = {
+	["tequila"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
+		["loja"] = "TequilaMaster",
 		["list"] = {
-			["coffee"] = 9999
+			["energetic"] = 10,
+			["cola"] = 7,
+			["soda"] = 7,
+			["absolut"] = 22,
+			["chandon"] = 45,
+			["dewars"] = 20,
+			["hennessy"] = 30,
 		}
 	},
-	["sodaMachine"] = {
+	["pearls"] = {
 		["mode"] = "Buy",
 		["type"] = "Cash",
+		["loja"] = "PearlsMaster",
 		["list"] = {
-			["soda"] = 18
-		}
-	},
-	["colaMachine"] = {
-		["mode"] = "Buy",
-		["type"] = "Cash",
-		["list"] = {
-			["cola"] = 18
-		}
-	},
-	["donutMachine"] = {
-		["mode"] = "Buy",
-		["type"] = "Cash",
-		["list"] = {
-			["donut"] = 9,
-			["chocolate"] = 9
-		}
-	},
-	["hotdogMachine"] = {
-		["mode"] = "Buy",
-		["type"] = "Cash",
-		["list"] = {
-			["hotdog"] = 18
+			["energetic"] = 10,
+			["cola"] = 7,
+			["soda"] = 7,
+			["absolut"] = 22,
+			["chandon"] = 45,
+			["dewars"] = 20,
+			["hennessy"] = 30,
 		}
 	},
 	["waterMachine"] = {
@@ -292,18 +276,18 @@ local shops = {
 		["type"] = "Cash",
 		["perm"] = "Police",
 		["list"] = {
-			["vest"] = 1000,
+			["vest"] = 500,
 			["gsrkit"] = 200,
 			["gdtkit"] = 200,
-			["WEAPON_SMG"] = 7000,
-			["WEAPON_CARBINERIFLE"] = 12000,
-			["WEAPON_FIREEXTINGUISHER"] = 200,
+			["WEAPON_SMG"] = 4400,
+			["WEAPON_CARBINERIFLE"] = 7000,
+			["WEAPON_FIREEXTINGUISHER"] = 120,
 			["WEAPON_STUNGUN"] = 200,
 			["WEAPON_NIGHTSTICK"] = 200,
-			["WEAPON_COMBATPISTOL"] = 2500,
-			["WEAPON_SMG_AMMO"] = 10,
+			["WEAPON_COMBATPISTOL"] = 2000,
+			["WEAPON_SMG_AMMO"] = 8,
 			["WEAPON_RIFLE_AMMO"] = 10,
-			["WEAPON_PISTOL_AMMO"] = 10
+			["WEAPON_PISTOL_AMMO"] = 6
 		}
 	},
 	["coffeshop"] = {
@@ -415,10 +399,10 @@ local shops = {
 		["loja"] = "BagShopMaster",
 		["item"] = "dollars",
 		["list"] = {
-			["backpackp"] = 4000,
-			["backpackm"] = 10000,
-			["backpackg"] = 15000,
-			["backpackx"] = 20000,
+			["backpackp"] = 100,
+			["backpackm"] = 220,
+			["backpackg"] = 330,
+			["backpackx"] = 440,
 		}
 	},
 

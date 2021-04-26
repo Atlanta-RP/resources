@@ -161,6 +161,19 @@ local craftList = {
 			}
 		}
 	},
+	["digitalDenCrafting"] = {
+		["perm"] = "DigitalDen",
+		["list"] = {
+			["cpuchip"] = {
+				["amount"] = 1,
+				["destroy"] = true,
+				["require"] = {
+					["eletronics"] = 20,
+					["circuitoEletrico"] = 40
+				}
+			}
+		}
+	},
 	["ilegalCrafting"] = {
 		["list"] = {
 			["WEAPON_ASSAULTRIFLE"] = {

@@ -68,7 +68,8 @@ local craftList = {
     { -1870.43,2061.91,135.44,"mafiaCrafting","FABRICAR ARMAS" },
 	{ 987.0,-92.89,74.85,"theLostCrafting","FABRICAR MUNIÇÃO" },
     { -1162.21,-2021.75,13.19,"mecanicoCrafting","TROCA MECÂNICO" },
-	{-1874.53,2059.22,135.92,"vinhoCrafting","FABRICAR VINHO"}
+	{-1874.53,2059.22,135.92,"vinhoCrafting","FABRICAR VINHO"},
+	{1130.32,-467.59,62.81,"digitalDenCrafting","FABRICAR CHIPS"}
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- THREADOPEN

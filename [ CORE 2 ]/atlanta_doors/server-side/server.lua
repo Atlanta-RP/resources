@@ -120,6 +120,16 @@ local doors = {
 	[101] = { ["x"] = -464.76, ["y"] = 28.81, ["z"] = 46.69, ["hash"] = -2066395222, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vultur", ["sound"] = true },
 	[102] = { ["x"] = -456.89, ["y"] = 43.86, ["z"] = 46.24, ["hash"] = -2066395222, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vultur", ["sound"] = true },
 	[103] = { ["x"] = -452.67, ["y"] = -24.29, ["z"] = 44.52, ["hash"] = 796655254, ["lock"] = true, ["text"] = false, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "VulturMaster", ["sound"] = false },
+	[104] = { ["x"] = 95.88, ["y"] = -1285.58, ["z"] = 29.27, ["hash"] = 668467214, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vanilla", ["sound"] = true },
+	[105] = { ["x"] = 99.26, ["y"] = -1292.87, ["z"] = 29.27, ["hash"] = -626684119, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vanilla", ["sound"] = true },
+	[106] = { ["x"] = 113.35, ["y"] = -1297.12, ["z"] = 29.27, ["hash"] = -495720969, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vanilla", ["sound"] = true },
+	[107] = { ["x"] = -570.33, ["y"] = 293.11, ["z"] = 79.18, ["hash"] = -626684119, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Tequila", ["sound"] = true },
+	[108] = { ["x"] = -559.82, ["y"] = 292.44, ["z"] = 82.18, ["hash"] = -626684119, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Tequila", ["sound"] = true },
+	[109] = { ["x"] = -561.79, ["y"] = 293.93, ["z"] = 87.6, ["hash"] = 993120320, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Tequila", ["sound"] = true },
+	[110] = { ["x"] = -568.17, ["y"] = 281.29, ["z"] = 82.98, ["hash"] = 1289778077, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Tequila", ["sound"] = true },
+	[111] = { ["x"] = -1830.79, ["y"] = -1181.23, ["z"] = 19.19, ["hash"] = -1196002204, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
+	[112] = { ["x"] = -1835.99, ["y"] = -1190.12, ["z"] = 19.19, ["hash"] = -1197804771, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
+	[113] = { ["x"] = -1846.78, ["y"] = -1190.8, ["z"] = 14.33, ["hash"] = -1285189121, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
 	-- [XX] = { ["x"] = , ["y"] = , ["z"] = , ["hash"] = , ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "XXXXXX", ["sound"] = true }
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
