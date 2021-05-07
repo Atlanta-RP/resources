@@ -100,11 +100,11 @@ Citizen.CreateThread(function()
 			--print(json.encode(chestCoords))
 			for k,v in pairs(chestCoords) do
 				local distance = #(coords - vector3(parseInt(v.x),parseInt(v.y),parseInt(v.z)))
-				if distance <= 2 then
+				if distance <= 1.5 then
 					timeDistance = 4
 					--DrawText3Ds(v.x,v.y,v.z,"~g~E~w~   ABRIR")
 					drawTxt("~g~E~w~   ABRIR",4,0.5,0.93,0.50,255,255,255,180)
-					if IsControlJustPressed(1,38) and vSERVER.checkIntPermissions(v.chestname) and distance <= 2 then
+					if IsControlJustPressed(1,38) and vSERVER.checkIntPermissions(v.chestname) and distance <= 1.5 then
 						SetNuiFocus(true,true)
 						SendNUIMessage({ action = "showMenu" })
 						TransitionToBlurred(1000)

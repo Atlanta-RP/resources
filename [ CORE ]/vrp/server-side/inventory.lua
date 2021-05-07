@@ -282,7 +282,7 @@ local itemlist = {
 		index = "paperbag",
 		name = "Saco de Papel",
 		type = "use",
-		weight = 3.0
+		weight = 1.0
 	},
 	["water"] = {
 		index = "water",

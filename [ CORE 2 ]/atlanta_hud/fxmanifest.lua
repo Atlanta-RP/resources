@@ -1,5 +1,4 @@
-
-
+---dependency "flux" client_script "@flux/client.lua" --- HUD FEITA POR Rafitz#6666
 fx_version "bodacious"
 game "gta5"
 
@@ -17,4 +16,5 @@ server_scripts {
 
 files {
 	"web-side/*"
-}              
+}
+--- HUD FEITA POR Rafitz#6666

@@ -16,14 +16,14 @@ vCLIENT = Tunnel.getInterface("vrp_lumberman")
 -----------------------------------------------------------------------------------------------------------------------------------------
 local collect = {}
 local collectMin = 2
-local collectMax = 6
+local collectMax = 4
 
 local amount = {}
 local amountMin = 4
 local amountMax = 8
 
-local paymentMin = 125
-local paymentMax = 175
+local paymentMin = 155
+local paymentMax = 355
 local consumeItem = "woodlog"
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TRANSPORTER

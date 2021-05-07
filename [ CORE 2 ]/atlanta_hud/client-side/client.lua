@@ -8,8 +8,8 @@ vRP = Proxy.getInterface("vRP")
 -- CONNECTION
 -----------------------------------------------------------------------------------------------------------------------------------------
 cRP = {}
-Tunnel.bindInterface("atlanta_hud",cRP)
-vSERVER = Tunnel.getInterface("atlanta_hud")
+Tunnel.bindInterface("vrp_hud",cRP)
+vSERVER = Tunnel.getInterface("vrp_hud")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VARIABLES
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -26,14 +26,14 @@ local x,y,z = 0.0,0.0,0.0
 local stress = 0
 local hunger = 100
 local thirst = 100
-local showHud = false
+local showHud = true
 local showMovie = false
 local radioDisplay = ""
 local direction = "Norte"
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- DATE
 -----------------------------------------------------------------------------------------------------------------------------------------
-local hours = 20
+local hours = 13
 local minutes = 0
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SEATBELT
@@ -44,8 +44,15 @@ local beltLock = false
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- UPDATETALKING
 -----------------------------------------------------------------------------------------------------------------------------------------
-AddEventHandler("atlanta_hud:VoiceTalking",function(status)
+AddEventHandler("vrp_hud:VoiceTalking",function(status)
 	talking = status
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- PROGRESS
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("progress")
+AddEventHandler("progress",function(progressTimer)
+	SendNUIMessage({ progress = true, progressTimer = parseInt(progressTimer - 500) })
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- THREADUPDATE - 100
@@ -86,6 +93,13 @@ Citizen.CreateThread(function()
 	end
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
+-- UPDATE
+-----------------------------------------------------------------------------------------------------------------------------------------
+RegisterNetEvent("vrp_hud:update")
+AddEventHandler("vrp_hud:update", function(rHunger, rThirst)
+  hunger, thirst = rHunger, rThirst
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
 -- THREADHUD
 -----------------------------------------------------------------------------------------------------------------------------------------
 Citizen.CreateThread(function()
@@ -93,6 +107,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(500)
 		if showHud then
 			updateDisplayHud(PlayerPedId())
+			SendNUIMessage({ hud = true, movie = false })
 		end
 	end
 end)
@@ -119,6 +134,14 @@ RegisterCommand("hud",function(source,args)
 	updateDisplayHud(PlayerPedId())
 	TriggerEvent("vrp_prison:switchHud",showHud)
 end)
+
+RegisterNetEvent('gcphone:tooglehud')
+AddEventHandler('gcphone:tooglehud',function(state)
+	showHud = state
+	SendNUIMessage({ hud = showHud })
+	updateDisplayHud(PlayerPedId())
+	TriggerEvent("vrp_prison:switchHud",showHud)
+end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- MOVIE
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -130,8 +153,8 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- HOOD
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterNetEvent("atlanta_hud:toggleHood")
-AddEventHandler("atlanta_hud:toggleHood",function()
+RegisterNetEvent("vrp_hud:toggleHood")
+AddEventHandler("vrp_hud:toggleHood",function()
 	showHood = not showHood
 	SendNUIMessage({ hood = showHood })
 
@@ -145,21 +168,21 @@ end)
 -- DISCORDHOOD
 -----------------------------------------------------------------------------------------------------------------------------------------
 local discordHood = true
--- RegisterCommand("seialal",function(source,args,rawCommand)
--- 	discordHood = true
--- 		SendNUIMessage({ hood = false })
+RegisterCommand("seialal",function(source,args,rawCommand)
+	discordHood = true
+		SendNUIMessage({ hood = false })
 
--- end)
-RegisterNetEvent("atlanta_hud:discordTrue")
-AddEventHandler("atlanta_hud:discordTrue",function()
+end)
+RegisterNetEvent("vrp_hud:discordTrue")
+AddEventHandler("vrp_hud:discordTrue",function()
 	if not discordHood then
 		discordHood = true
 		SendNUIMessage({ hood = true })
 	end
 end)
 
-RegisterNetEvent("atlanta_hud:discordFalse")
-AddEventHandler("atlanta_hud:discordFalse",function(status)
+RegisterNetEvent("vrp_hud:discordFalse")
+AddEventHandler("vrp_hud:discordFalse",function(status)
 	if discordHood then
 		discordHood = false
 		SendNUIMessage({ hood = false })
@@ -198,15 +221,15 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TOKOVOIP
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterNetEvent("atlanta_hud:VoiceMode")
-AddEventHandler("atlanta_hud:VoiceMode",function(status)
+RegisterNetEvent("vrp_hud:VoiceMode")
+AddEventHandler("vrp_hud:VoiceMode",function(status)
 	voice = status
 end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- TOKOVOIP
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterNetEvent("atlanta_hud:RadioDisplay")
-AddEventHandler("atlanta_hud:RadioDisplay",function(number)
+RegisterNetEvent("vrp_hud:RadioDisplay")
+AddEventHandler("vrp_hud:RadioDisplay",function(number)
 	if parseInt(number) <= 0 then
 		radioDisplay = ""
 	else
@@ -280,8 +303,8 @@ end)
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- SYNCTIMERS
 -----------------------------------------------------------------------------------------------------------------------------------------
-RegisterNetEvent("atlanta_hud:syncTimers")
-AddEventHandler("atlanta_hud:syncTimers",function(timer)
+RegisterNetEvent("vrp_hud:syncTimers")
+AddEventHandler("vrp_hud:syncTimers",function(timer)
 	minutes = parseInt(timer[1])
 	hours = parseInt(timer[2])
 end)
@@ -364,5 +387,39 @@ Citizen.CreateThread(function()
 		end
 
 		Citizen.Wait(10000)
+	end
+end)
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- THREADGPS
+-----------------------------------------------------------------------------------------------------------------------------------------
+Citizen.CreateThread(function()
+	while true do
+		local ped = PlayerPedId()
+		if IsPedInAnyVehicle(ped) and showHud then
+			if not IsMinimapRendering() then
+				DisplayRadar(true)
+			end
+		else
+			if IsMinimapRendering() then
+				DisplayRadar(false)
+			end
+		end
+
+		Citizen.Wait(1000)
+	end
+end)
+
+
+Citizen.CreateThread(function()
+	local minimap = RequestScaleformMovie("minimap")
+	SetRadarBigmapEnabled(true, false)
+	Wait(0)
+	SetRadarBigmapEnabled(false, false)
+	while true do
+		Wait(0)
+		BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
+		ScaleformMovieMethodAddParamInt(3)
+		SetRadarZoomLevelThisFrame(50.0)
+		EndScaleformMovieMethod()
 	end
 end)

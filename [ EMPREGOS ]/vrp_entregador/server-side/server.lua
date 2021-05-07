@@ -25,7 +25,7 @@ local itemFooding = false
 -- VARIABLES
 -----------------------------------------------------------------------------------------------------------------------------------------
 local itemList = {
-	[1] = { "tacos","hamburger","hotdog","soda","cola","chocolate","sandwich","fries","absolut","chandon","dewars","donut","hennessy" }
+	[1] = { "energetic","cola","soda","absolut","chandon","dewars","hennesy","hamburger","sandwich","fries" }
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- PAYMENTMETHOD
@@ -37,15 +37,15 @@ function cnVRP.paymentMethod()
 		if vRP.tryGetInventoryItem(user_id,"delivery",1) then
 			local myBonus = vRP.bonusDelivery(user_id)
 			if vRP.getInventoryItemAmount(user_id,"dollars2") >= 10 then
-				local value = math.random(200,300)
+				local value = math.random(40,50)
 
 				vRP.giveInventoryItem(user_id,"dollars",parseInt(value+(value*myBonus/100)),true)
 
 				if vRP.tryGetInventoryItem(user_id,"dollars2",10) then
-					vRP.giveInventoryItem(user_id,"dollars",parseInt(math.random(400,600)),true)
+					vRP.giveInventoryItem(user_id,"dollars",parseInt(100),true)
 				end
 			else
-				local value = math.random(400,500)
+				local value = math.random(50,70)
 
 				vRP.giveInventoryItem(user_id,"dollars",parseInt(value+(value*myBonus/100)),true)
 			end
@@ -69,7 +69,7 @@ function cnVRP.dropFood(locate)
 				local taskResult = vTASKBAR.taskOne(source)
 				if taskResult then
 					vRP.removeInventoryItem(user_id,"paperbag",1,false)
-					vRP.giveInventoryItem(user_id,"dollars",300,true)
+					vRP.giveInventoryItem(user_id,"dollars",50,true)
 					vRP.removeInventoryItem(user_id,locates[locate][7],1,false)
 					itemCheck[locate] = true
 					locates[locate][7] = nil

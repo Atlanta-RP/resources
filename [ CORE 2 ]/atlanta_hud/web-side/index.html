@@ -2,69 +2,92 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>#creative</title>
+		<link rel="stylesheet" href="style.css" />
 		<script src="nui://game/ui/jquery.js"></script>
 		<link href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="style.css" />
-		
+		<script src="jquery.js"></script>
 	</head>
 	<body>
 		<div id="displayLogo"></div>
-		
-		<div id="displaySide">
-			
-		</div>
-		
+
 		<div id="displayHud">
 			<div id="displayTop">
 				<span id="mph"></span>
 				<span id="gasoline"></span>
-				<span id="seatBelt"><img src="seatbelt.png"></span>
+				<span id="seatBelt">BELT</span>
 			</div>
 
-			<div id="displayMiddle"></div>
-
 			<div id="displayBottom">
-				<div id="voice01"></div>
-				<div id="voice02"></div>
-				<div id="voice03"></div>
-				<div id="backHealth">
-					<div id="displayHealth"></div>
-					<div id="displayImages"><img src="health.png"></div>
+				<div class="voiceBackground">
+					<div class="middleIcon" id="voice"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="voiceDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-	
-				<div id="backArmour">
-					<div id="displayArmour"></div>
-					<div id="displayImages"><img src="armour.png"></div>
+
+				<div class="oxigenBackground">
+					<div class="middleIcon" style="background: #222 url(oxigen.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="oxigenDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-	
-				<div id="backWater">
-					<div id="displayWater"></div>
-					<div id="displayImages"><img src="water.png"></div>
+
+				<div class="stressBackground">
+					<div class="middleIcon" style="background: #222 url(stress.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="stressDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-	
-				<div id="backFood">
-					<div id="displayFood"></div>
-					<div id="displayImages"><img src="food.png"></div>
+
+				<div class="foodBackground">
+					<div class="middleIcon" style="background: #222 url(food.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="foodDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-	
-				<div id="backStress">
-					<div id="displayStress"></div>
-					<div id="displayImages"><img src="stress.png"></div>
+
+				<div class="waterBackground">
+					<div class="middleIcon" style="background: #222 url(water.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="waterDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-	
-				<div id="backOxigen">
-					<div id="displayOxigen"></div>
-					<div id="displayImages"><img src="oxigen.png"></div>
+
+				<div class="armourBackground">
+					<div class="middleIcon" style="background: #222 url(armour.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="armourDisplay" cx="19" cy="19" r="16"/>
+					</svg>
 				</div>
-				
+
+				<div class="healthBackground">
+					<div class="middleIcon" style="background: #222 url(health.png);"></div>
+
+					<svg height="37px" width="37px">
+						<circle class="healthDisplay" cx="19" cy="19" r="16"/>
+					</svg>
+				</div>
+
+				<div id="progressBackground">
+					<div class="middleIcon" id="textProgress"></div>
+
+					<svg height="37px" width="37px">
+						<circle id="progressDisplay" cx="19" cy="19" r="16"/>
+					</svg>
+				</div>
+				<div id="displayMiddle"></div>
 			</div>
 		</div>
 
 		<div id="movieTop"></div>
 		<div id="movieBottom"></div>
+		<div id="server"><img src="https://cdn.discordapp.com/attachments/828600870774112256/837348054117646346/123456789987.png"></div>
 		<div id="hoodDisplay"></div>
-		<script src="jquery.js"></script>
 	</body>
 </html>
-
-

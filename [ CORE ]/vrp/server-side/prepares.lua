@@ -162,3 +162,7 @@ vRP.prepare("vRP/addChestLoja","INSERT INTO vrp_chests_lojas (permiss,name,x,y,z
 vRP.prepare("vRP/getExistSecretChest","SELECT * FROM vrp_secret_chests WHERE name = @name")
 vRP.prepare("vRP/get_alltableSecret","SELECT * FROM vrp_secret_chests")
 vRP.prepare("vRP/addSecretChest","INSERT INTO vrp_secret_chests (name,x,y,z,weight) VALUES (@name,@x,@y,@z,@weight)")
+
+vRP.prepare("vRP/getIdh","SELECT * FROM atlanta_idh WHERE id = 1")
+vRP.prepare("vRP/setPoluicao","UPDATE atlanta_idh SET poluicao = @poluicao WHERE id = 1")
+vRP.prepare("vRP/setDesenvolvimento","UPDATE atlanta_idh SET desenvolvimento = @desenvolvimento WHERE id = 1")

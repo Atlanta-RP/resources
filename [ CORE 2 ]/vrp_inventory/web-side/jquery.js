@@ -113,7 +113,7 @@ const updateDrag = () => {
 			updateDrag();
 
 			if (origin === "invLeft" && tInv === "invLeft") {
-				console.log("updateks")
+				// console.log("updateks")
 				$.post("http://vrp_inventory/updateSlot", JSON.stringify({
 					item: itemData.key,
 					slot: itemData.slot,

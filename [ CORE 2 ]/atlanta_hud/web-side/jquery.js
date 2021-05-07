@@ -1,125 +1,152 @@
+var tickInterval = undefined;
+
 $(document).ready(function(){
 	window.addEventListener("message",function(event){
 
-		if (event.data.hud !== undefined){
-			if (event.data.hud == true){
-				$("#displayHud").css("display","block");
+		if (event["data"]["progress"] == true){
+			var timeSlamp = event["data"]["progressTimer"];
+
+			var background = document.getElementById("progressBackground");
+			if (background["style"]["display"] == "block"){
+				$("#progressDisplay").css("stroke-dashoffset","100");
+				$("#progressBackground").css("display","none");
+				clearInterval(tickInterval);
+				tickInterval = undefined;
+
+				return
 			} else {
-				$("#displayHud").css("display","none");
+				$("#progressBackground").css("display","block");
+				$("#progressDisplay").css("stroke-dashoffset","100");
 			}
-			return
-		}
 
-		if (event.data.movie !== undefined){
-			if (event.data.movie == true){
-				$("#movieTop").css("display","block");
-				$("#movieBottom").css("display","block");
-			} else {
-				$("#movieTop").css("display","none");
-				$("#movieBottom").css("display","none");
-			}
-			return
-		}
+			var tickPerc = 100;
+			var tickTimer = (timeSlamp / 100);
+			tickInterval = setInterval(tickFrame,tickTimer);
 
-		if (event.data.hood !== undefined){
-			if (event.data.hood == true){
-				$("#hoodDisplay").css("display","block");
-			} else {
-				$("#hoodDisplay").css("display","none");
-			}
-		}
+			function tickFrame(){
+				tickPerc--;
 
-		if (event.data.talking == true) {
-			if (event.data.voice == 1){
-				$("#voice01").css("background","rgba(255,255,0,0)");
-				$("#voice02").css("background","rgba(255,255,0,0)");
-				$("#voice03").css("background","rgba(255,255,0,0.5)");
-			} else if (event.data.voice == 2){
-				$("#voice01").css("background","rgba(255,255,0,0)");
-				$("#voice02").css("background","rgba(255,255,0,0.5)");
-				$("#voice03").css("background","rgba(255,255,0,0.5)");
-			} else if (event.data.voice == 3){
-				$("#voice01").css("background","rgba(255,255,0,0.5)");
-				$("#voice02").css("background","rgba(255,255,0,0.5)");
-				$("#voice03").css("background","rgba(255,255,0,0.5)");
-			}
-		} else {
-			if (event.data.voice == 1) {
-				$("#voice01").css("background","rgba(255,255,255,0)");
-				$("#voice02").css("background","rgba(255,255,255,0)");
-				$("#voice03").css("background","rgba(255,255,255,0.5)");
-			} else if (event.data.voice == 2){
-				$("#voice01").css("background","rgba(255,255,255,0)");
-				$("#voice02").css("background","rgba(255,255,255,0.5)");
-				$("#voice03").css("background","rgba(255,255,255,0.5)");
-			} else if (event.data.voice == 3){
-				$("#voice01").css("background","rgba(255,255,255,0.5)");
-				$("#voice02").css("background","rgba(255,255,255,0.5)");
-				$("#voice03").css("background","rgba(255,255,255,0.5)");
-			}
-		}
-
-		if (event.data.health <= 1){
-			$("#displayHealth").css("height","0");
-		} else {
-			$("#displayHealth").css("height",event.data.health + "%");
-		}
-
-		if(parseInt(event.data.oxigen) <= 9 ){
-			$("#backOxigen").css("display", "block")
-			$("#displayOxigen").css("height",event.data.armour + "%");
-		}else{			
-			$("#backOxigen").css("display", "none")
-		}
-
-		if(parseInt(event.data.armour) > 0 ){
-			$("#backArmour").css("display", "block")
-			$("#displayArmour").css("height",event.data.armour + "%");
-		}else{			
-			$("#backArmour").css("display", "none")
-		}
-		
-		$("#displayWater").css("height",event.data.thirst + "%");
-		$("#displayFood").css("height",event.data.hunger + "%");
-		$("#displayStress").css("height",event.data.stress + "%");
-
-		if (event.data.oxigen <= 10){
-			$("#displayOxigen").css("height",(event.data.oxigen * 10) + "%");
-		} else {
-			$("#displayOxigen").css("height",(event.data.oxigen / 20) + "%");
-		}
-
-		if (event.data.hours <= 9){
-			event.data.hours = "0" + event.data.hours
-		}
-
-		if (event.data.minutes <= 9){
-			event.data.minutes = "0" + event.data.minutes
-		}
-
-		if (event.data.vehicle !== undefined){
-			if (event.data.vehicle == true){
-				var status = document.getElementById("displayTop");
-				if (status.style.display !== "block"){
-					$("#displayTop").css("display","block");
-				}
-
-				if (event.data.seatbelt){
-					$("#seatBelt").css("display","none");
+				if (tickPerc <= 0){
+					clearInterval(tickInterval);
+					tickInterval = undefined;
+					$("#progressBackground").css("display","none");
 				} else {
-					$("#seatBelt").css("display","block");
+					timeSlamp = timeSlamp - (timeSlamp / tickPerc);
 				}
 
-				$("#gasoline").html("GAS <s>" + parseInt(event.data.fuel) + "</s>");
-				$("#mph").html("MPH <s>" + parseInt(event.data.speed) + "</s>");
+				$("#textProgress").html(parseInt(timeSlamp / 1000));
+				$("#progressDisplay").css("stroke-dashoffset",tickPerc);
+			}
+
+			return
+		}
+
+		if (event["data"]["hud"] !== undefined){
+			if (event["data"]["hud"] == true){
+				$("#displayHud").fadeIn(500);
 			} else {
-				var status = document.getElementById("displayTop");
-				if (status.style.display !== "none"){
-					$("#displayTop").css("display","none");
+				$("#displayHud").fadeOut(500);
+			}
+			return
+		}
+
+		if (event["data"]["movie"] !== undefined){
+			if (event["data"]["movie"] == true){
+				$("#movieTop").fadeIn(500);
+				$("#movieBottom").fadeIn(500);
+			} else {
+				$("#movieTop").fadeOut(500);
+				$("#movieBottom").fadeOut(500);
+			}
+			return
+		}
+
+		if (event["data"]["hood"] !== undefined){
+			if (event["data"]["hood"] == true){
+				$("#hoodDisplay").fadeIn(500);
+			} else {
+				$("#hoodDisplay").fadeOut(500);
+			}
+		}
+
+		if (event["data"]["talking"] == true){
+			$("#voice").css("background","#333 url(micOn.png)");
+		} else {
+			$("#voice").css("background","#222 url(micOff.png)");
+
+			if (event["data"]["voice"] == 1){
+				$(".voiceDisplay").css("stroke-dashoffset","66");
+			} else if (event["data"]["voice"] == 2){
+				$(".voiceDisplay").css("stroke-dashoffset","33");
+			} else if (event["data"]["voice"] == 3){
+				$(".voiceDisplay").css("stroke-dashoffset","0");
+			}
+		}
+
+		if (event["data"]["health"] <= 1){
+			$(".healthDisplay").css("stroke-dashoffset","100");
+		} else {
+			$(".healthDisplay").css("stroke-dashoffset",100 - event["data"]["health"]);
+		}
+
+		$(".armourDisplay").css("stroke-dashoffset",100 - event["data"]["armour"]);
+		$(".waterDisplay").css("stroke-dashoffset",100 - event["data"]["thirst"]);
+		$(".foodDisplay").css("stroke-dashoffset",100 - event["data"]["hunger"]);
+		$(".stressDisplay").css("stroke-dashoffset",100 - event["data"]["stress"]);
+
+		if (event["data"]["oxigen"] <= 10){
+			$(".oxigenDisplay").css("stroke-dashoffset",100 - (event["data"]["oxigen"] * 10));
+		} else {
+			$(".oxigenDisplay").css("stroke-dashoffset",100 - (event["data"]["oxigen"] / 20));
+		}
+
+		if (event["data"]["hours"] <= 9){
+			event["data"]["hours"] = "0" + event["data"]["hours"]
+		}
+
+		if (event["data"]["minutes"] <= 9){
+			event["data"]["minutes"] = "0" + event["data"]["minutes"]
+		}
+
+		if (event["data"]["vehicle"] !== undefined){
+			if (event["data"]["vehicle"] == true){
+				if ($("#displayTop").is(":visible") == false){
+					$("#displayTop").fadeIn(500);
+				}
+
+				if (event["data"]["showbelt"] == false){
+					if($("#seatBelt").css("display") === "block"){
+						$("#hardBelt").css("display","none");
+						$("#seatBelt").css("display","none");
+					}
+				} else {
+					if($("#seatBelt").css("display") === "none"){
+						$("#hardBelt").css("display","block");
+						$("#seatBelt").css("display","block");
+					}
+
+					if (event["data"]["hardness"] == 1){
+						$("#hardBelt").css("color","#43a949");
+					} else {
+						$("#hardBelt").css("color","#939393");
+					}
+
+					if (event["data"]["seatbelt"] == 1){
+						$("#seatBelt").css("color","#43a949");
+					} else {
+						$("#seatBelt").css("color","#930000");
+					}
+				}
+
+				$("#gasoline").html("GAS <s>" + parseInt(event["data"]["fuel"]) + "</s>");
+				$("#mph").html("KMH <s>" + parseInt(event["data"]["speed"]) + "</s>");
+			} else {
+				if ($("#displayTop").is(":visible") == true){
+					$("#displayTop").fadeOut(500);
 				}
 			}
 		}
 
-		$("#displayMiddle").html(event.data.street + event.data.radio + "<s>:</s>" + event.data.hours+":"+event.data.minutes);
+		$("#displayMiddle").html(event["data"]["street"] + event["data"]["radio"] + "<s>:</s>" + event["data"]["hours"] +":"+ event["data"]["minutes"]);
 	});
 });

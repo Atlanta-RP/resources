@@ -1,7 +1,15 @@
 -----------------------------------------------------------------------------------------------------------------------------------------
+-- VRP
+-----------------------------------------------------------------------------------------------------------------------------------------
+local Tunnel = module("vrp","lib/Tunnel")
+local Proxy = module("vrp","lib/Proxy")
+local Tools = module("vrp","lib/Tools")
+vRP = Proxy.getInterface("vRP")
+vRPclient = Tunnel.getInterface("vRP")
+-----------------------------------------------------------------------------------------------------------------------------------------
 -- VARIABLES
 -----------------------------------------------------------------------------------------------------------------------------------------
-local hours = 20
+local hours = 13
 local minutes = 0
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- THREADTIMERS
@@ -16,7 +24,7 @@ Citizen.CreateThread(function()
 				hours = 0
 			end
 		end
-		TriggerClientEvent("atlanta_hud:syncTimers",-1,{ minutes,hours })
+		TriggerClientEvent("vrp_hud:syncTimers",-1,{ minutes,hours })
 
 		Citizen.Wait(10000)
 	end
@@ -25,5 +33,5 @@ end)
 -- PLAYERSPAWN
 -----------------------------------------------------------------------------------------------------------------------------------------
 AddEventHandler("vRP:playerSpawn",function(user_id,source)
-	TriggerClientEvent("atlanta_hud:syncTimers",source,{ minutes,hours })
+	TriggerClientEvent("vrp_hud:syncTimers",source,{ minutes,hours })
 end)

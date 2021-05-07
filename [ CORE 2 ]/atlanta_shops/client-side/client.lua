@@ -91,7 +91,7 @@ local shopList = {
 	{ -1563.58,-975.38,13.02,"fishingStore" },
 	{ -1591.95,-1005.87,13.03,"fishingSell" },
 	{ 306.74,-601.9,43.29,"pharmacyStore" },
-	{ 229.39,-369.77,-98.78,"registryStore" },
+	{ 237.7,-413.12,48.12,"registryStore" },
 	{ 46.66,-1749.79,29.64,"megaMallStore" },
 	{ -428.56,-1728.33,19.79,"recyclingSell" },
 	{ 1134.33,-469.45,66.49,"digitalDen" },
@@ -115,7 +115,9 @@ local shopList = {
 	{-2168.38,5198.5,17.03,"vendaIsolado"},
 	{485.92,-1529.44,29.29,"vendaPolicialSecreto"},
 	{398.31,97.03,101.49,"lojaMochilas"},
-	{377.49,-828.07,29.31,"weedz"}
+	{377.49,-828.07,29.31,"weedz"},
+	{12.65,-1600.35,29.38,"tacosBebidas"},
+	{15.65,-1598.32,29.38,"tacosComidas"}
 }
 
 

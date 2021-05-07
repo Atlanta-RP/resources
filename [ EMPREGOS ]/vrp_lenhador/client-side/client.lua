@@ -141,6 +141,8 @@ function startthreadservice()
 									collectBlipMarked()
 								end)
 							end
+						else
+							TriggerClientEvent("Notify",source,"negado","Você precisa de um <b>Machado</b>.",5000)
 						end
 					end
 

@@ -354,7 +354,8 @@ local garages = {
 	[756] = { ["name"] = "Middle256", ["payment"] = false, ["perm"] = false },
 	[757] = { ["name"] = "Middle257", ["payment"] = false, ["perm"] = false },
 	[758] = { ["name"] = "Middle258", ["payment"] = false, ["perm"] = false },
-	[759] = { ["name"] = "GaragemMec", ["payment"] = true, ["public"] = true}
+	[759] = { ["name"] = "GaragemMec", ["payment"] = true, ["public"] = true},
+	[760] = { ["name"] = "GaragemConceVip", ["payment"] = true, ["public"] = true}
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- GARAGES

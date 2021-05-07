@@ -10,6 +10,8 @@ vRP = Proxy.getInterface("vRP")
 cnVRP = {}
 Tunnel.bindInterface("atlanta_shops",cnVRP)
 vCLIENT = Tunnel.getInterface("atlanta_shops")
+
+vIdh = Tunnel.getInterface("atlanta_idh")
 -----------------------------------------------------------------------------------------------------------------------------------------
 -- VARIABLES
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -90,20 +92,21 @@ local shops = {
 		["mode"] = "Sell",
 		["type"] = "Cash",
 		["list"] = {
-			["shrimp"] = 26,
-			["octopus"] = 22,
-			["carp"] = 20
+			["shrimp"] = 18,
+			["octopus"] = 14,
+			["carp"] = 10
 		}
 	},
 	["recyclingSell"] = {
 		["mode"] = "Sell",
 		["type"] = "Cash",
+		["idh"] = 1,
 		["list"] = {
-			["plastic"] = 15,
-			["glass"] = 15,
-			["rubber"] = 15,
-			["aluminum"] = 15,
-			["copper"] = 15,
+			["plastic"] = 10,
+			["glass"] = 10,
+			["rubber"] = 10,
+			["aluminum"] = 10,
+			["copper"] = 10,
 			["eletronics"] = 20,
 			["emptybottle"] = 1,
 			["lighter"] = 10,
@@ -262,6 +265,28 @@ local shops = {
 			["chandon"] = 45,
 			["dewars"] = 20,
 			["hennessy"] = 30,
+		}
+	},
+	["tacosBebidas"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["list"] = {
+			["energetic"] = 50,
+			["cola"] = 50,
+			["soda"] = 50,
+			["absolut"] = 50,
+			["chandon"] = 50,
+			["dewars"] = 50,
+			["hennessy"] = 50,
+		}
+	},
+	["tacosComidas"] = {
+		["mode"] = "Buy",
+		["type"] = "Cash",
+		["list"] = {
+			["hamburger"] = 50,
+			["sandwich"] = 50,
+			["fries"] = 50,
 		}
 	},
 	["waterMachine"] = {
@@ -552,9 +577,14 @@ function cnVRP.functionShops(shopType,shopItem,shopAmount,slot)
 			elseif shops[shopType]["mode"] == "Sell" then
 				if shops[shopType]["list"][shopItem] then
 					if shops[shopType]["type"] == "Cash" then
-						if vRP.tryGetInventoryItem(parseInt(user_id),shopItem,parseInt(shopAmount),true,slot) then	
+						if vRP.tryGetInventoryItem(parseInt(user_id),shopItem,parseInt(shopAmount),true,slot) then
 							vRP.giveInventoryItem(parseInt(user_id),"dollars",parseInt(shops[shopType]["list"][shopItem]*shopAmount),false)
 							TriggerClientEvent("Notify",source,"aviso","Voce recebeu $"..shops[shopType]["list"][shopItem]*shopAmount.." dolares.",5000)
+						end
+						if shops[shopType]["idh"] ~= null and shops[shopType]["idh"] == 1 then
+							--print(shopAmount)
+							--vIdh.setDesenvolvimentoClient(parseInt(shopAmount))
+							TriggerClientEvent("atlanta_idh:setDesenvolvimentoClient",source,shopAmount)
 						end
 					elseif shops[shopType]["type"] == "Consume" then
 						if vRP.tryGetInventoryItem(parseInt(user_id),shopItem,parseInt(shopAmount),true,slot) then

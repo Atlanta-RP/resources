@@ -46,10 +46,10 @@ local doors = {
 	[27] = { ["x"] = -324.2, ["y"] = -1356.26, ["z"] = 31.3, ["hash"] = -1920147247, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true },
 	[28] = { ["x"] = 887.43, ["y"] = -954.03, ["z"] = 39.22, ["hash"] = 776184575, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Groove", ["sound"] = true },
 	[29] = { ["x"] = 443.32, ["y"] = -1899.9, ["z"] = 31.74, ["hash"] = -710818483, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Vagos", ["sound"] = true },
-	[30] = { ["x"] = 1957.03, ["y"] = 5174.31, ["z"] = 47.78, ["hash"] = 776184575, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true },
+	[30] = { ["x"] = 114.19, ["y"] = -1961.23, ["z"] = 21.34, ["hash"] = 23523821, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true },
 	[31] = { ["x"] = -186.2, ["y"] = -1702.86, ["z"] = 32.87, ["hash"] = -1859992197, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Groove", ["sound"] = true }, --
 	[32] = { ["x"] = -197.79, ["y"] = -1700.26, ["z"] = 33.5, ["hash"] = -1859992197, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Groove", ["sound"] = true },
-	[33] = { ["x"] = 113.65, ["y"] = -1973.8, ["z"] = 21.32, ["hash"] = -1775447247, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true },
+	[33] = { ["x"] = 113.63, ["y"] = -1974.1, ["z"] = 21.33, ["hash"] = -1912632538, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true },
 	[34] = { ["x"] = -307.03, ["y"] = -1352.75, ["z"] = 18.29, ["hash"] = 631614199, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true },
 	[35] = { ["x"] = -304.71, ["y"] = -1352.6, ["z"] = 18.29, ["hash"] = 631614199, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Mafia", ["sound"] = true },
 	[36] = { ["x"] = 723.42, ["y"] = -1088.59, ["z"] = 22.23, ["hash"] = 270330101, ["lock"] = true, ["text"] = true, ["distance"] = 70	, ["press"] = 10, ["perm"] = "Dk", ["sound"] = true },
@@ -130,6 +130,8 @@ local doors = {
 	[111] = { ["x"] = -1830.79, ["y"] = -1181.23, ["z"] = 19.19, ["hash"] = -1196002204, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
 	[112] = { ["x"] = -1835.99, ["y"] = -1190.12, ["z"] = 19.19, ["hash"] = -1197804771, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
 	[113] = { ["x"] = -1846.78, ["y"] = -1190.8, ["z"] = 14.33, ["hash"] = -1285189121, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Pearls", ["sound"] = true },
+	[114] = { ["x"] = 118.42, ["y"] = -1973.35, ["z"] = 21.35, ["hash"] = -204046185, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true, ["other"] = 115 },
+	[115] = { ["x"] = 117.14, ["y"] = -1973.8, ["z"] = 21.35, ["hash"] = 989957872, ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "Ballas", ["sound"] = true, ["other"] = 114 },
 	-- [XX] = { ["x"] = , ["y"] = , ["z"] = , ["hash"] = , ["lock"] = true, ["text"] = true, ["distance"] = 5, ["press"] = 1.5, ["perm"] = "XXXXXX", ["sound"] = true }
 }
 -----------------------------------------------------------------------------------------------------------------------------------------

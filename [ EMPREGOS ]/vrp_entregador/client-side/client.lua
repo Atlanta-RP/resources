@@ -432,7 +432,7 @@ Citizen.CreateThread(function()
 				if distance <= 30 then
 					timeDistance = 4
 					DrawText3D(delivery[inLocate][inSelected][1],delivery[inLocate][inSelected][2],delivery[inLocate][inSelected][3],"~g~E~w~   ENTREGAR PACOTE",400)
-					if distance <= 0.6 and IsControlJustPressed(1,38) and GetEntityModel(GetPlayersLastVehicle()) == vehModel then
+					if distance <= 1.6 and IsControlJustPressed(1,38) then
 						inService = false
 						vSERVER.paymentMethod()
 						if DoesBlipExist(serviceBlip) then
