@@ -16,7 +16,7 @@ vCLIENT = Tunnel.getInterface("vrp_crafting")
 local craftList = {
 	["mafiaCrafting"] = {
 		["perm"] = "Mafia",
-		["idh"] = 0,
+		
 		["list"] = {
 			["WEAPON_ASSAULTRIFLE"] = {
 				["amount"] = 1,
@@ -63,7 +63,7 @@ local craftList = {
 	},
 	["theLostCrafting"] = {
 		["perm"] = "TheLost",
-		["idh"] = 0,
+		
 		["list"] = {
 			["WEAPON_RIFLE_AMMO"] = {
 				["amount"] = 10,
@@ -93,7 +93,7 @@ local craftList = {
 	},
 	["dkCrafting"] = {
 		["perm"] = "Dk",
-		["idh"] = 0,
+		
 		["list"] = {
 			["lockpick"] = {
 				["amount"] = 1,
@@ -166,7 +166,7 @@ local craftList = {
 	},
 	["digitalDenCrafting"] = {
 		["perm"] = "DigitalDen",
-		["idh"] = 0,
+		
 		["list"] = {
 			["cpuchip"] = {
 				["amount"] = 1,
@@ -179,7 +179,7 @@ local craftList = {
 		}
 	},
 	["ilegalCrafting"] = {
-		["idh"] = 0,
+		
 		["list"] = {
 			["WEAPON_ASSAULTRIFLE"] = {
 				["amount"] = 1,
@@ -302,7 +302,7 @@ local craftList = {
 		}
 	},
 	["fueltechCrafting"] = {
-		["idh"] = 0,
+		
 		["list"] = {
 			["fueltech"] = {
 				["amount"] = 1,
@@ -444,9 +444,6 @@ function cnVRP.functionCrafting(shopItem,shopType,shopAmount,slot)
 				until advAmount == shopAmount
 			else
 				vRP.giveInventoryItem(user_id,shopItem,craftList[shopType]["list"][shopItem]["amount"]*shopAmount,false,slot)
-				if craftList[shopType]["idh"] ~= null and craftList[shopType]["idh"] == 0 then
-					TriggerClientEvent("atlanta_idh:setPoluicaoClient",source,parseInt(recursos/2))
-				end
 			end
 		end
 
