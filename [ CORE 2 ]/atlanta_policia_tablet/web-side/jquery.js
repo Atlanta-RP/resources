@@ -91,7 +91,7 @@ const carregarMenuNovo = (name,dado) => {
 
 const requestBank = () => {
 	$.post("http://atlanta_policia_tablet/requestUserName",JSON.stringify({}),function(data){
-		$("#bank-top").html('Bem-vindo(a) <b>'+ data.resultado + '</b>,');
+		$("#bank-top").text('Bem-vindo(a) <b>'+ data.resultado + '</b>,');
 	});
 }
 
