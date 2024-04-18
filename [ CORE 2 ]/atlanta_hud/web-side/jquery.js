@@ -147,6 +147,6 @@ $(document).ready(function(){
 			}
 		}
 
-		$("#displayMiddle").html(event["data"]["street"] + event["data"]["radio"] + "<s>:</s>" + event["data"]["hours"] +":"+ event["data"]["minutes"]);
+		$("#displayMiddle").text(event["data"]["street"] + event["data"]["radio"] + "<s>:</s>" + event["data"]["hours"] +":"+ event["data"]["minutes"]);
 	});
 });
