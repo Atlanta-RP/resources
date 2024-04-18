@@ -82,7 +82,7 @@ const carregarMenu = (name) => {
 
 const requestBank = () => {
 	$.post("http://atlanta_bank/requestBank",JSON.stringify({}),function(data){
-		$("#bank-top").html('Bem-vindo Novamente,<br> Seu saldo disponível <white>$' + formatarNumero(data.resultado) +'</white> dólares');
+		$("#bank-top").text('Bem-vindo Novamente,<br> Seu saldo disponível <white>$' + formatarNumero(data.resultado) +'</white> dólares');
 	});
 }
 
